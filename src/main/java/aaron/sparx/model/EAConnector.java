@@ -1,0 +1,88 @@
+package aaron.sparx.model;
+
+public interface EAConnector {
+
+    String TABLE_NAME = "t_connector";
+
+    Column<Integer> CONNECTOR_ID = new Column<>("Connector_ID", Integer.class);
+    Column<String> NAME = new Column<>("Name", String.class);
+    Column<String> DIRECTION = new Column<>("Direction", String.class);
+    Column<String> NOTES = new Column<>("Notes", String.class);
+    Column<String> CONNECTOR_TYPE = new Column<>("Connector_Type", String.class);
+    Column<String> SUB_TYPE = new Column<>("SubType", String.class);
+    Column<String> SOURCE_CARD = new Column<>("SourceCard", String.class);
+    Column<String> SOURCE_ACCESS = new Column<>("SourceAccess", String.class);
+    Column<String> SOURCE_ELEMENT = new Column<>("SourceElement", String.class);
+    Column<String> DEST_CARD = new Column<>("DestCard", String.class);
+    Column<String> DEST_ACCESS = new Column<>("DestAccess", String.class);
+    Column<String> DEST_ELEMENT = new Column<>("DestElement", String.class);
+    Column<String> SOURCE_ROLE = new Column<>("SourceRole", String.class);
+    Column<String> SOURCE_ROLE_TYPE = new Column<>("SourceRoleType", String.class);
+    Column<String> SOURCE_ROLE_NOTE = new Column<>("SourceRoleNote", String.class);
+    Column<String> SOURCE_CONTAINMENT = new Column<>("SourceContainment", String.class);
+    Column<Integer> SOURCE_IS_AGGREGATE = new Column<>("SourceIsAggregate", Integer.class);
+    Column<Integer> SOURCE_IS_ORDERED = new Column<>("SourceIsOrdered", Integer.class);
+    Column<String> SOURCE_QUALIFIER = new Column<>("SourceQualifier", String.class);
+    Column<String> DEST_ROLE = new Column<>("DestRole", String.class);
+    Column<String> DEST_ROLE_TYPE = new Column<>("DestRoleType", String.class);
+    Column<String> DEST_ROLE_NOTE = new Column<>("DestRoleNote", String.class);
+    Column<String> DEST_CONTAINMENT = new Column<>("DestContainment", String.class);
+    Column<Integer> DEST_IS_AGGREGATE = new Column<>("DestIsAggregate", Integer.class);
+    Column<Integer> DEST_IS_ORDERED = new Column<>("DestIsOrdered", Integer.class);
+    Column<String> DEST_QUALIFIER = new Column<>("DestQualifier", String.class);
+    Column<Integer> START_OBJECT_ID = new Column<>("Start_Object_ID", Integer.class);
+    Column<Integer> END_OBJECT_ID = new Column<>("End_Object_ID", Integer.class);
+    Column<String> TOP_START_LABEL = new Column<>("Top_Start_Label", String.class);
+    Column<String> TOP_MID_LABEL = new Column<>("Top_Mid_Label", String.class);
+    Column<String> TOP_END_LABEL = new Column<>("Top_End_Label", String.class);
+    Column<String> BTM_START_LABEL = new Column<>("Btm_Start_LAbel", String.class);
+    Column<String> BTM_MID_LABEL = new Column<>("Btm_Mid_Label", String.class);
+    Column<String> BTM_END_LABEL = new Column<>("Btm_End_Label", String.class);
+    Column<Integer> START_EDGE = new Column<>("Start_Edge", Integer.class);
+    Column<Integer> END_EDGE = new Column<>("End_Edge", Integer.class);
+    Column<Integer> PT_START_X = new Column<>("PtStartX", Integer.class);
+    Column<Integer> PT_START_Y = new Column<>("PtStartY", Integer.class);
+    Column<Integer> PT_END_X = new Column<>("PtEndX", Integer.class);
+    Column<Integer> PT_END_Y = new Column<>("PtEndY", Integer.class);
+    Column<Integer> SEQ_NO = new Column<>("SeqNo", Integer.class);
+    Column<Integer> HEAD_STYLE = new Column<>("HeadStyle", Integer.class);
+    Column<Integer> LINE_STYLE = new Column<>("LineStyle", Integer.class);
+    Column<Integer> ROUTE_STYLE = new Column<>("RouteStyle", Integer.class);
+    Column<Integer> IS_BOLD = new Column<>("IsBold", Integer.class);
+    Column<Integer> LINE_COLOR = new Column<>("LineColor", Integer.class);
+    Column<String> STEREOTYPE = new Column<>("Stereotype", String.class);
+    Column<String> VIRTUAL_INHERITANCE = new Column<>("VirtualInheritance", String.class);
+    Column<String> LINK_ACCESS = new Column<>("LinkAccess", String.class);
+    Column<String> PDATA1 = new Column<>("PDATA1", String.class);
+    Column<String> PDATA2 = new Column<>("PDATA2", String.class);
+    Column<String> PDATA3 = new Column<>("PDATA3", String.class);
+    Column<String> PDATA4 = new Column<>("PDATA4", String.class);
+    Column<String> PDATA5 = new Column<>("PDATA5", String.class);
+    Column<Integer> DIAGRAM_ID = new Column<>("DiagramID", Integer.class);
+    Column<String> EA_GUID = new Column<>("ea_guid", String.class);
+    Column<String> SOURCE_CONSTRAINT = new Column<>("SourceConstraint", String.class);
+    Column<String> DEST_CONSTRAINT = new Column<>("DestConstraint", String.class);
+    Column<Boolean> SOURCE_IS_NAVIGABLE = new Column<>("SourceIsNavigable", Boolean.class);
+    Column<Boolean> DEST_IS_NAVIGABLE = new Column<>("DestIsNavigable", Boolean.class);
+    Column<Boolean> IS_ROOT = new Column<>("IsRoot", Boolean.class);
+    Column<Boolean> IS_LEAF = new Column<>("IsLeaf", Boolean.class);
+    Column<Boolean> IS_SPEC = new Column<>("IsSpec", Boolean.class);
+    Column<String> SOURCE_CHANGEABLE = new Column<>("SourceChangeable", String.class);
+    Column<String> DEST_CHANGEABLE = new Column<>("DestChangeable", String.class);
+    Column<String> SOURCE_TS = new Column<>("SourceTS", String.class);
+    Column<String> DEST_TS = new Column<>("DestTS", String.class);
+    Column<String> STATE_FLAGS = new Column<>("StateFlags", String.class);
+    Column<String> ACTION_FLAGS = new Column<>("ActionFlags", String.class);
+    Column<Boolean> IS_SIGNAL = new Column<>("IsSignal", Boolean.class);
+    Column<Boolean> IS_STIMULUS = new Column<>("IsStimulus", Boolean.class);
+    Column<String> DISPATCH_ACTION = new Column<>("DispatchAction", String.class);
+    Column<Integer> TARGET2 = new Column<>("Target2", Integer.class);
+    Column<String> STYLE_EX = new Column<>("StyleEx", String.class);
+    Column<String> SOURCE_STEREOTYPE = new Column<>("SourceStereotype", String.class);
+    Column<String> DEST_STEREOTYPE = new Column<>("DestStereotype", String.class);
+    Column<String> SOURCE_STYLE = new Column<>("SourceStyle", String.class);
+    Column<String> DEST_STYLE = new Column<>("DestStyle", String.class);
+    Column<String> EVENT_FLAGS = new Column<>("EventFlags", String.class);
+
+}
+
