@@ -68,11 +68,17 @@ public class ModelProcessor {
     }
 
     private void processEdges(final Map<Identifier, Edge> edges) {
-        try (BatchTransaction btx = new BatchTransaction(db, 500, reporter)) {
+        try (BatchTransaction btx = new BatchTransaction(db, 1000, reporter)) {
             edges.forEach((key, edge) -> {
                 Transaction tx = btx.getTransaction();
                 Long startId = identifierToNeo4jId.get(edge.getStart());
                 Long endId = identifierToNeo4jId.get(edge.getEnd());
+                if (startId == null) {
+                    return;
+                }
+                if (endId == null) {
+                    return;
+                }
                 Node startNode = tx.getNodeById(startId);
                 Node endNode = tx.getNodeById(endId);
                 Relationship relationship = startNode.createRelationshipTo(endNode, RelationshipType.withName(edge.getType()));
