@@ -1,6 +1,6 @@
-package aaron.neo4j.csv;
+package aaron.export;
 
-import aaron.neo4j.model.Model;
+import aaron.model.Model;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 

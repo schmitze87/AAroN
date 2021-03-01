@@ -1,8 +1,9 @@
-package aaron.sparx;
+package aaron.sparx.processors;
 
-import aaron.neo4j.model.Edge;
-import aaron.neo4j.model.Model;
-import aaron.neo4j.model.AAroNNode;
+import aaron.model.Edge;
+import aaron.model.Model;
+import aaron.model.AAroNNode;
+import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.ConnectorGUID;
 import aaron.sparx.identifiers.ObjectGUID;
 import aaron.sparx.model.EAObject;
@@ -10,11 +11,9 @@ import aaron.sparx.model.EAXref;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 public class XRefProcessor implements Processor{
 

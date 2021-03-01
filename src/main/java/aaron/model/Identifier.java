@@ -1,4 +1,4 @@
-package aaron.neo4j.model;
+package aaron.model;
 
 public interface Identifier<T> {
 

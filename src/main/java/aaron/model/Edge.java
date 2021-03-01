@@ -1,10 +1,10 @@
-package aaron.neo4j.model;
+package aaron.model;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class Edge {
+public class Edge extends WithProperties {
 
     private String type;
     private Identifier start;

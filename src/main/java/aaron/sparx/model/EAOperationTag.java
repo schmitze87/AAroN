@@ -1,8 +1,8 @@
 package aaron.sparx.model;
 
-public interface EAConnectorTag {
+public interface EAOperationTag {
 
-    String TABLE_NAME = "t_connectortag";
+    String TABLE_NAME = "t_operationtag";
 
     Column<Integer> PROPERTY_ID = new Column<>("PropertyID", Integer.class);
     Column<Integer> ELEMENT_ID = new Column<>("ElementID", Integer.class);

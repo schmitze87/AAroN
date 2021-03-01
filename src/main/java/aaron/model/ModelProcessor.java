@@ -1,11 +1,7 @@
-package aaron.neo4j.extension;
+package aaron.model;
 
 import aaron.apoc.export.util.BatchTransaction;
 import aaron.apoc.export.util.ProgressReporter;
-import aaron.neo4j.model.Edge;
-import aaron.neo4j.model.Identifier;
-import aaron.neo4j.model.Model;
-import aaron.neo4j.model.AAroNNode;
 import org.neo4j.graphdb.*;
 
 import java.util.*;
@@ -18,7 +14,7 @@ public class ModelProcessor {
     private final Map<Identifier, Long> identifierToNeo4jId;
     private final Map<AAroNNode, Set<Identifier>> nodeToIdentifiers;
 
-    ModelProcessor(final GraphDatabaseService db, final ProgressReporter reporter) {
+    public ModelProcessor(final GraphDatabaseService db, final ProgressReporter reporter) {
         this.db = db;
         this.reporter = reporter;
         identifierToNeo4jId = new HashMap<>();
@@ -33,10 +29,7 @@ public class ModelProcessor {
 
     private void init(final Model model) {
         Map<Identifier, AAroNNode> nodesMap = model.getNodes();
-        nodesMap.entrySet().forEach(entry -> {
-            Identifier identifier = entry.getKey();
-            AAroNNode node = entry.getValue();
-
+        nodesMap.forEach((identifier, node) -> {
             Set<Identifier> identifiers = nodeToIdentifiers.getOrDefault(node, new HashSet<>());
             identifiers.add(identifier);
             nodeToIdentifiers.put(node, identifiers);

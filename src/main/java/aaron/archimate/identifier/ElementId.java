@@ -1,6 +1,6 @@
 package aaron.archimate.identifier;
 
-import aaron.neo4j.model.AbstractIdentifier;
+import aaron.model.AbstractIdentifier;
 
 public class ElementId extends AbstractIdentifier<String> {
 

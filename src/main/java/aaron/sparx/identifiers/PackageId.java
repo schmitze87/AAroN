@@ -1,6 +1,6 @@
 package aaron.sparx.identifiers;
 
-import aaron.neo4j.model.AbstractIdentifier;
+import aaron.model.AbstractIdentifier;
 
 public class PackageId extends AbstractIdentifier<Integer> {
 

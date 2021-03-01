@@ -2,9 +2,9 @@ package aaron.sparx.identifiers;
 
 import aaron.model.AbstractIdentifier;
 
-public class DiagramId extends AbstractIdentifier<Integer> {
+public class ConnectorId extends AbstractIdentifier<Integer> {
 
-    public DiagramId(Integer id) {
+    public ConnectorId(final Integer id) {
         super(id);
     }
 }

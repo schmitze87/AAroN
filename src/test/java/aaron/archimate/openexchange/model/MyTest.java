@@ -2,7 +2,7 @@ package aaron.archimate.openexchange.model;
 
 import aaron.archimate.ArchiMateConverter;
 import aaron.archimate.exchangexml.ModelType;
-import aaron.neo4j.model.Model;
+import aaron.model.Model;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;

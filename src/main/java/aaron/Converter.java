@@ -1,6 +1,6 @@
 package aaron;
 
-import aaron.neo4j.model.Model;
+import aaron.model.Model;
 
 import java.io.File;
 import java.io.IOException;

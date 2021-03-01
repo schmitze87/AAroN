@@ -1,50 +1,44 @@
-package aaron.neo4j.extension;
+package aaron.archimate;
 
-import aaron.apoc.export.util.ProgressReporter;
 import aaron.apoc.result.ProgressInfo;
-import aaron.Converter;
-import aaron.neo4j.model.Model;
-import aaron.sparx.SparxConverter;
-import org.neo4j.graphdb.GraphDatabaseService;
-import org.neo4j.graphdb.Transaction;
+import aaron.model.ModelProcessor;
+import aaron.Util;
+import aaron.model.Model;
+import aaron.apoc.export.util.ProgressReporter;
+import org.neo4j.graphdb.*;
 import org.neo4j.procedure.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 import java.util.stream.Stream;
 
-public class SparxImporter {
+public class ArchimateImporter {
 
     @Context
     public GraphDatabaseService db;
 
-    public SparxImporter() {
+    public ArchimateImporter() {
 
     }
 
-    @Procedure(name = "aaron.import.sparxeap", mode = Mode.WRITE)
-    @Description("Imports an Sparx Enterprise Architect Project (EAP) File")
-    public Stream<ProgressInfo> importEAP(@Name("eapFileName") String fileName) {
+    // CALL atea.import.archiexchange("sample1.xml");
+    @Procedure(name = "aaron.import.archiexchange", mode = Mode.WRITE)
+    @Description("Imports an ArchiMate Open Exchange Format XML File")
+    public Stream<ProgressInfo> importArchiExchangeXML(
+            @Name("file") String fileName) {
         String importFolder;
         try (Transaction transaction = db.beginTx()) {
             importFolder = Util.getImportFolder(transaction);
         }
         File file = new File(importFolder, fileName).getAbsoluteFile();
         CompletableFuture<ProgressInfo> future = CompletableFuture.supplyAsync(() -> {
-            ProgressInfo progressInfo = new ProgressInfo(fileName, "file", "eap");
-            progressInfo.batchSize = 1000;
+            ProgressInfo progressInfo = new ProgressInfo(fileName, "file", "xml");
+            progressInfo.batchSize = 500;
             final ProgressReporter reporter = new ProgressReporter(null, new PrintWriter(System.out), progressInfo);
-            Converter converter = new SparxConverter();
-            Model model = null;
-            try {
-                model = converter.convert(file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            ArchiMateConverter converter = new ArchiMateConverter();
+            Model model = converter.convert(file);
             ModelProcessor modelProcessor = new ModelProcessor(db, reporter);
             modelProcessor.process(model);
             return reporter.getTotal();

@@ -1,8 +1,9 @@
-package aaron.sparx;
+package aaron.sparx.processors;
 
-import aaron.neo4j.model.Edge;
-import aaron.neo4j.model.Model;
-import aaron.neo4j.model.AAroNNode;
+import aaron.model.Edge;
+import aaron.model.Model;
+import aaron.model.AAroNNode;
+import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.ImplizitRelationId;
 import aaron.sparx.identifiers.ObjectGUID;
 import aaron.sparx.identifiers.ObjectId;
@@ -18,9 +19,8 @@ public class ObjectProcessor implements Processor{
 
     private final Model model;
 
-    ObjectProcessor(final Model model) {
+    public ObjectProcessor(final Model model) {
         this.model = model;
-
     }
 
     public <U extends Map<String, Object>> void process(final U row) {

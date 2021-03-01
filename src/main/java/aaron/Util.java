@@ -1,4 +1,4 @@
-package aaron.neo4j.extension;
+package aaron;
 
 import org.neo4j.graphdb.Result;
 import org.neo4j.graphdb.Transaction;

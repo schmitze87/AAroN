@@ -1,5 +1,8 @@
 package aaron.sparx.model;
 
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
+
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -28,6 +31,14 @@ public class Column<T> {
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime();
             return clazz.cast(localDateTime);
+        }
+        if (o instanceof String && clazz == Boolean.class) {
+            String s = (String) o;
+            if (StringUtils.isNumeric(s)) {
+                return clazz.cast(BooleanUtils.toBoolean(Integer.parseInt(s)));
+            } else {
+                return clazz.cast(BooleanUtils.toBooleanObject((String) o));
+            }
         }
         return clazz.cast(o);
     }

@@ -1,8 +1,9 @@
-package aaron.sparx;
+package aaron.sparx.processors;
 
-import aaron.neo4j.model.Edge;
-import aaron.neo4j.model.Model;
-import aaron.neo4j.model.AAroNNode;
+import aaron.model.Edge;
+import aaron.model.Model;
+import aaron.model.AAroNNode;
+import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.*;
 import aaron.sparx.model.EADiagram;
 
