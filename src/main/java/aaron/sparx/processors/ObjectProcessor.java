@@ -1,91 +1,91 @@
 package aaron.sparx.processors;
 
+import aaron.model.AAroNNode;
 import aaron.model.Edge;
 import aaron.model.Model;
-import aaron.model.AAroNNode;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.ImplizitRelationId;
 import aaron.sparx.identifiers.ObjectGUID;
 import aaron.sparx.identifiers.ObjectId;
 import aaron.sparx.identifiers.PackageId;
-import aaron.sparx.model.EAObject;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
-public class ObjectProcessor implements Processor{
+import static aaron.sparx.model.EAObject.*;
 
-    private final Model model;
+public class ObjectProcessor extends AbstractProcessor{
 
-    public ObjectProcessor(final Model model) {
-        this.model = model;
+    public ObjectProcessor(String sha1, LocalDateTime time, Model model) {
+        super(sha1, time, model);
     }
 
     public <U extends Map<String, Object>> void process(final U row) {
-        Integer objectId = EAObject.OBJECT_ID.value(row);
-        String objectType = EAObject.OBJECT_TYPE.value(row);
-        Integer diagramId = EAObject.DIAGRAM_ID.value(row);
-        String name = EAObject.NAME.value(row);
-        String alias = EAObject.ALIAS.value(row);
-        String author = EAObject.AUTHOR.value(row);
-        String version = EAObject.VERSION.value(row);
-        String note = EAObject.NOTE.value(row);
-        Integer packageId = EAObject.PACKAGE_ID.value(row);
-        String stereotype = EAObject.STEREOTYPE.value(row);
-        Integer nType = EAObject.NTYPE.value(row);
-        String complexity = EAObject.COMPLEXITY.value(row);
-        Integer effort = EAObject.EFFORT.value(row);
-        String style = EAObject.STYLE.value(row);
-        Integer backColor = EAObject.BACKCOLOR.value(row);
-        Integer borderStyle = EAObject.BORDER_STYLE.value(row);
-        Integer borderWidth = EAObject.BORDER_WIDTH.value(row);
-        Integer fontColor = EAObject.FONT_COLOR.value(row);
-        Integer borderColor = EAObject.BORDER_COLOR.value(row);
-        LocalDateTime createdDate = EAObject.CREATED_DATE.value(row);
-        LocalDateTime modifiedDate = EAObject.MODIFIED_DATE.value(row);
-        String status = EAObject.STATUS.value(row);
-        String _abstract = EAObject.ABSTRACT.value(row);
-        Integer tagged = EAObject.TAGGED.value(row);
-        String pdata1 = EAObject.PDATA1.value(row);
-        String pdata2 = EAObject.PDATA2.value(row);
-        String pdata3 = EAObject.PDATA3.value(row);
-        String pdata4 = EAObject.PDATA4.value(row);
-        String pdata5 = EAObject.PDATA5.value(row);
-        String concurrency = EAObject.CONCURRENCY.value(row);
-        String visibility = EAObject.VISIBILITY.value(row);
-        String persistence = EAObject.PERSISTENCE.value(row);
-        String genType = EAObject.GEN_TYPE.value(row);
-        String genFile = EAObject.GEN_FILE.value(row);
-        String header1 = EAObject.HEADER1.value(row);
-        String header2 = EAObject.HEADER2.value(row);
-        String phase = EAObject.PHASE.value(row);
-        String scope = EAObject.SCOPE.value(row);
-        String genOption = EAObject.GEN_OPTION.value(row);
-        String genLinks = EAObject.GEN_LINKS.value(row);
-        Integer classifier = EAObject.CLASSIFIER.value(row);
-        String eaGuid = GUIDHelper.unwrapGuid(EAObject.EA_GUID.value(row));
-        Integer parentId = EAObject.PARENT_ID.value(row);
-        String runState = EAObject.RUN_STATE.value(row);
-        String classifierGuid = EAObject.CLASSIFIER_GUID.value(row);
-        Integer tPos = EAObject.TPOS.value(row);
-        Boolean isRoot = EAObject.IS_ROOT.value(row);
-        Boolean isLeaf = EAObject.IS_LEAF.value(row);
-        Boolean isSpec = EAObject.IS_SPEC.value(row);
-        Boolean isActive = EAObject.IS_ACTIVE.value(row);
-        String stateFlags = EAObject.STATE_FLAGS.value(row);
-        String packageFlags = EAObject.PACKAGE_FLAGS.value(row);
-        String multiplicity = EAObject.MULTIPLICITY.value(row);
-        String styleEx = EAObject.STYLE_EX.value(row);
-        String actionFlags = EAObject.ACTION_FLAGS.value(row);
-        String eventFlags = EAObject.EVENT_FLAGS.value(row);
+        Integer objectId = OBJECT_ID.value(row);
+        String objectType = OBJECT_TYPE.value(row);
+        Integer diagramId = DIAGRAM_ID.value(row);
+        String name = NAME.value(row);
+        String alias = ALIAS.value(row);
+        String author = AUTHOR.value(row);
+        String version = VERSION.value(row);
+        String note = NOTE.value(row);
+        Integer packageId = PACKAGE_ID.value(row);
+        String stereotype = STEREOTYPE.value(row);
+        Integer nType = NTYPE.value(row);
+        String complexity = COMPLEXITY.value(row);
+        Integer effort = EFFORT.value(row);
+        String style = STYLE.value(row);
+        Integer backColor = BACKCOLOR.value(row);
+        Integer borderStyle = BORDER_STYLE.value(row);
+        Integer borderWidth = BORDER_WIDTH.value(row);
+        Integer fontColor = FONT_COLOR.value(row);
+        Integer borderColor = BORDER_COLOR.value(row);
+        LocalDateTime createdDate = CREATED_DATE.value(row);
+        LocalDateTime modifiedDate = MODIFIED_DATE.value(row);
+        String status = STATUS.value(row);
+        String _abstract = ABSTRACT.value(row);
+        Integer tagged = TAGGED.value(row);
+        String pdata1 = PDATA1.value(row);
+        String pdata2 = PDATA2.value(row);
+        String pdata3 = PDATA3.value(row);
+        String pdata4 = PDATA4.value(row);
+        String pdata5 = PDATA5.value(row);
+        String concurrency = CONCURRENCY.value(row);
+        String visibility = VISIBILITY.value(row);
+        String persistence = PERSISTENCE.value(row);
+        String genType = GEN_TYPE.value(row);
+        String genFile = GEN_FILE.value(row);
+        String header1 = HEADER1.value(row);
+        String header2 = HEADER2.value(row);
+        String phase = PHASE.value(row);
+        String scope = SCOPE.value(row);
+        String genOption = GEN_OPTION.value(row);
+        String genLinks = GEN_LINKS.value(row);
+        Integer classifier = CLASSIFIER.value(row);
+        String eaGuid = GUIDHelper.unwrapGuid(EA_GUID.value(row));
+        Integer parentId = PARENT_ID.value(row);
+        String runState = RUN_STATE.value(row);
+        String classifierGuid = CLASSIFIER_GUID.value(row);
+        Integer tPos = TPOS.value(row);
+        Boolean isRoot = IS_ROOT.value(row);
+        Boolean isLeaf = IS_LEAF.value(row);
+        Boolean isSpec = IS_SPEC.value(row);
+        Boolean isActive = IS_ACTIVE.value(row);
+        String stateFlags = STATE_FLAGS.value(row);
+        String packageFlags = PACKAGE_FLAGS.value(row);
+        String multiplicity = MULTIPLICITY.value(row);
+        String styleEx = STYLE_EX.value(row);
+        String actionFlags = ACTION_FLAGS.value(row);
+        String eventFlags = EVENT_FLAGS.value(row);
 
-        AAroNNode node;
+        AAroNNode node = null;
         if ("Package".equals(objectType) && StringUtils.isNumeric(pdata1)) {
             PackageId identifier = new PackageId(Integer.parseInt(pdata1));
             node = model.getNode(identifier);
-        } else {
+        }
+        if (node == null) {
             node = AAroNNode.builder().build();
         }
 
@@ -137,6 +137,9 @@ public class ObjectProcessor implements Processor{
         node.addProperty("actionFlags", actionFlags);
         node.addProperty("eventFlags", eventFlags);
 
+        node.addProperty("eapHash", sha1);
+        node.addProperty("importedAt", time);
+
         ObjectId objectIdentifier = new ObjectId(objectId);
         ObjectGUID objectGUID = new ObjectGUID(eaGuid);
         model.addNode(objectIdentifier, node);
@@ -153,6 +156,8 @@ public class ObjectProcessor implements Processor{
                     .setEnd(objectIdentifier)
                     .setType("CONTAINS")
                     .addProperty("connectorType", "CONTAINS")
+                    .addProperty("eapHash", sha1)
+                    .addProperty("importedAt", time)
                     .build();
             model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), containsEdge);
 
@@ -165,6 +170,8 @@ public class ObjectProcessor implements Processor{
                         .setEnd(behaviourGUID)
                         .setType("BEHAVIOUR")
                         .addProperty("connectorType", "BEHAVIOUR")
+                        .addProperty("eapHash", sha1)
+                        .addProperty("importedAt", time)
                         .build();
                 model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), behaviourEdge);
             }
@@ -179,6 +186,8 @@ public class ObjectProcessor implements Processor{
                         .setEnd(classifierGUID)
                         .setType("CLASSIFIER")
                         .addProperty("connectorType", "CLASSIFIER")
+                        .addProperty("eapHash", sha1)
+                        .addProperty("importedAt", time)
                         .build();
                 model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), classifierEdge);
             }
@@ -193,6 +202,8 @@ public class ObjectProcessor implements Processor{
                         .setEnd(instanceOfGUID)
                         .setType("INSTANCE_OF")
                         .addProperty("connectorType", "INSTANCE_OF")
+                        .addProperty("eapHash", sha1)
+                        .addProperty("importedAt", time)
                         .build();
                 model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), instanceOfEdge);
             }
@@ -207,6 +218,8 @@ public class ObjectProcessor implements Processor{
                         .setEnd(reusageGUID)
                         .setType("REUSAGE")
                         .addProperty("connectorType", "REUSAGE")
+                        .addProperty("eapHash", sha1)
+                        .addProperty("importedAt", time)
                         .build();
                 model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), reusageEdge);
             }
@@ -221,6 +234,8 @@ public class ObjectProcessor implements Processor{
                         .setEnd(objectIdentifier)
                         .setType("HAS_PORT")
                         .addProperty("connectorType", "HAS_PORT")
+                        .addProperty("eapHash", sha1)
+                        .addProperty("importedAt", time)
                         .build();
                 model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), portEdge);
             }
@@ -232,6 +247,8 @@ public class ObjectProcessor implements Processor{
                         .setEnd(objectIdentifier)
                         .setType("HAS_PART")
                         .addProperty("connectorType", "HAS_PART")
+                        .addProperty("eapHash", sha1)
+                        .addProperty("importedAt", time)
                         .build();
                 model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()),partEdge);
             }
@@ -242,6 +259,8 @@ public class ObjectProcessor implements Processor{
                     .setEnd(objectIdentifier)
                     .setType("EMBEDS")
                     .addProperty("connectorType", "EMBEDS")
+                    .addProperty("eapHash", sha1)
+                    .addProperty("importedAt", time)
                     .build();
             model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()),embedsEdge);
 
@@ -251,6 +270,8 @@ public class ObjectProcessor implements Processor{
                     .setEnd(parentIdentifier)
                     .setType("HAS_PARENT")
                     .addProperty("connectorType", "HAS_PARENT")
+                    .addProperty("eapHash", sha1)
+                    .addProperty("importedAt", time)
                     .build();
             model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()),parentEdge);
         }

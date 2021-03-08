@@ -6,19 +6,19 @@ import aaron.sparx.TaggedValueMode;
 import aaron.sparx.identifiers.AttributeId;
 import aaron.sparx.identifiers.AttributeTagGUID;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import static aaron.sparx.model.EAConnectorTag.*;
 
-public class ConnectorTagProcessor implements Processor{
+public class ConnectorTagProcessor extends  AbstractProcessor{
 
-    private final Model model;
     private final TaggedValueMode mode;
 
-    public ConnectorTagProcessor(final Model model) {
-        this.model = model;
+    public ConnectorTagProcessor(final String sha1, final LocalDateTime time, final Model model) {
+        super(sha1, time, model);
         //Tagged Values for connectors need to be added as properties because there is no corresponding node
-        this.mode = TaggedValueMode.ADD_AS_PROPERTY;
+        this.mode = TaggedValueMode.AS_PROPERTY;
     }
 
     @Override
@@ -33,6 +33,6 @@ public class ConnectorTagProcessor implements Processor{
         AttributeId connectorId = new AttributeId(elementId);
         AttributeTagGUID connectorTagGUID = new AttributeTagGUID(eaGuid);
 
-        TaggedValueHelper.process(model, mode, property, "<memo>".equals(value) ? notes : value, connectorTagGUID, connectorId);
+        TaggedValueHelper.process(sha1, time, model, mode, property, "<memo>".equals(value) ? notes : value, connectorTagGUID, connectorId);
     }
 }

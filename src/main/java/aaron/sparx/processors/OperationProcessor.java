@@ -9,17 +9,16 @@ import aaron.sparx.identifiers.ObjectId;
 import aaron.sparx.identifiers.OperationGUID;
 import aaron.sparx.identifiers.OperationId;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 import java.util.UUID;
 
 import static aaron.sparx.model.EAOperation.*;
 
-public class OperationProcessor implements Processor{
+public class OperationProcessor extends AbstractProcessor{
 
-    final Model model;
-
-    public OperationProcessor(final Model model) {
-        this.model = model;
+    public OperationProcessor(String sha1, LocalDateTime time, Model model) {
+        super(sha1, time, model);
     }
 
     @Override
@@ -82,6 +81,8 @@ public class OperationProcessor implements Processor{
         node.addProperty("stateFlags", stateFlags);
         node.addProperty("eaGuid", eaGuid);
         node.addProperty("styleEx", styleEx);
+        node.addProperty("eapHash", sha1);
+        node.addProperty("importedAt", time);
 
         model.addNode(operationIdentifier, node);
         model.addNode(operationGUID, node);
@@ -93,6 +94,8 @@ public class OperationProcessor implements Processor{
                 .setType("HAS_OPERATION")
                 .setStart(objectIdentifier)
                 .setEnd(operationGUID)
+                .addProperty("eapHash", sha1)
+                .addProperty("importedAt", time)
                 .build();
         model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), edge);
     }

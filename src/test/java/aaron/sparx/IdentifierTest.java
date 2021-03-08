@@ -4,6 +4,13 @@ import aaron.sparx.identifiers.ObjectGUID;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import javax.xml.bind.annotation.adapters.HexBinaryAdapter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.net.URL;
+import java.security.MessageDigest;
+
 public class IdentifierTest {
 
     @Test

@@ -1,8 +1,8 @@
 package aaron.sparx.processors;
 
+import aaron.model.AAroNNode;
 import aaron.model.Edge;
 import aaron.model.Model;
-import aaron.model.AAroNNode;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.*;
 import aaron.sparx.model.EADiagram;
@@ -12,12 +12,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class DiagramProcessor implements Processor {
+public class DiagramProcessor extends AbstractProcessor{
 
-    private final Model model;
 
-    public DiagramProcessor(final Model model) {
-        this.model = model;
+    public DiagramProcessor(String sha1, LocalDateTime time, Model model) {
+        super(sha1, time, model);
     }
 
     @Override
@@ -57,7 +56,6 @@ public class DiagramProcessor implements Processor {
         AAroNNode diagramNode = AAroNNode.builder()
                 .addLabel("Diagram")
                 .addLabel(diagramType)
-                .addLabel(mdgDiagramType)
                 .addProperty("diagramType", diagramType)
                 .addProperty("name", name)
                 .addProperty("version", version)
@@ -84,7 +82,13 @@ public class DiagramProcessor implements Processor {
                 .addProperty("tPos", tPos)
                 .addProperty("swimlanes", swimlanes)
                 .addProperty("styleEx", styleEx)
+                .addProperty("eapHash", sha1)
+                .addProperty("importedAt", time)
                 .build();
+
+        if (mdgDiagramType != null) {
+            diagramNode.addLabel(mdgDiagramType);
+        }
 
         DiagramId diagramIdentifier = new DiagramId(diagramId);
         ObjectGUID guidIdentifier = new ObjectGUID(eaGuid);
@@ -97,6 +101,8 @@ public class DiagramProcessor implements Processor {
                 .setType("CONTAINS")
                 .setStart(packageIdentifier)
                 .setEnd(diagramIdentifier)
+                .addProperty("eapHash", sha1)
+                .addProperty("importedAt", time)
                 .build();
         model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), containsEdge);
 
@@ -107,20 +113,25 @@ public class DiagramProcessor implements Processor {
                     .setType("HAS_PARENT")
                     .setStart(diagramIdentifier)
                     .setEnd(parentIdentifier)
+                    .addProperty("eapHash", sha1)
+                    .addProperty("importedAt", time)
                     .build();
             model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), parentEdge);
         }
     }
 
     private String getMDGDiagramType(final String styleEx) {
-        Map<String, String> styleProps = new HashMap<>();
-        String[] split = styleEx.split(";");
-        for (String s : split) {
-            String[] entry = s.split("=");
-            if (entry.length == 2) {
-                styleProps.put(entry[0], entry[1]);
+        if (styleEx != null) {
+            Map<String, String> styleProps = new HashMap<>();
+            String[] split = styleEx.split(";");
+            for (String s : split) {
+                String[] entry = s.split("=");
+                if (entry.length == 2) {
+                    styleProps.put(entry[0], entry[1]);
+                }
             }
+            return styleProps.get("MDGDgm");
         }
-        return styleProps.get("MDGDgm");
+        return null;
     }
 }

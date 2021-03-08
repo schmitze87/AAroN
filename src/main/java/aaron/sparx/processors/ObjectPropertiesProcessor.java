@@ -7,17 +7,17 @@ import aaron.sparx.identifiers.ObjectId;
 import aaron.sparx.identifiers.ObjectPropertiesGUID;
 import aaron.sparx.identifiers.ObjectPropertiesId;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import static aaron.sparx.model.EAObjectProperty.*;
 
-public class ObjectPropertiesProcessor implements Processor{
+public class ObjectPropertiesProcessor extends AbstractProcessor{
 
-    private final Model model;
     private final TaggedValueMode mode;
 
-    public ObjectPropertiesProcessor(final Model model, final TaggedValueMode mode) {
-        this.model = model;
+    public ObjectPropertiesProcessor(final String sha1, final LocalDateTime time, final Model model, final TaggedValueMode mode) {
+        super(sha1, time, model);
         this.mode = mode;
     }
 
@@ -34,6 +34,6 @@ public class ObjectPropertiesProcessor implements Processor{
         ObjectPropertiesGUID propertyGUID = new ObjectPropertiesGUID(eaGuid);
         ObjectId objectIdentifier = new ObjectId(objectId);
 
-        TaggedValueHelper.process(model, mode, property, "<memo>".equals(value) ? notes : value, propertyGUID, objectIdentifier);
+        TaggedValueHelper.process(sha1, time, model, mode, property, "<memo>".equals(value) ? notes : value, propertyGUID, objectIdentifier);
     }
 }

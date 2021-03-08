@@ -6,17 +6,17 @@ import aaron.sparx.TaggedValueMode;
 import aaron.sparx.identifiers.OperationId;
 import aaron.sparx.identifiers.OperationTagGUID;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import static aaron.sparx.model.EAOperationTag.*;
 
-public class OperationTagProcessor implements Processor{
+public class OperationTagProcessor extends AbstractProcessor{
 
-    private final Model model;
     private final TaggedValueMode mode;
 
-    public OperationTagProcessor(final Model model, final TaggedValueMode mode) {
-        this.model = model;
+    public OperationTagProcessor(final String sha1, final LocalDateTime time, final Model model, final TaggedValueMode mode) {
+        super(sha1, time, model);
         this.mode = mode;
     }
 
@@ -32,6 +32,6 @@ public class OperationTagProcessor implements Processor{
         OperationId operationId = new OperationId(elementId);
         OperationTagGUID operationTagGUID = new OperationTagGUID(eaGuid);
 
-        TaggedValueHelper.process(model, mode, property, "<memo>".equals(value) ? notes : value, operationTagGUID, operationId);
+        TaggedValueHelper.process(sha1, time, model, mode, property, "<memo>".equals(value) ? notes : value, operationTagGUID, operationId);
     }
 }

@@ -1,8 +1,8 @@
 package aaron.sparx.processors;
 
+import aaron.model.AAroNNode;
 import aaron.model.Edge;
 import aaron.model.Model;
-import aaron.model.AAroNNode;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.ConnectorGUID;
 import aaron.sparx.identifiers.ConnectorId;
@@ -11,14 +11,14 @@ import aaron.sparx.identifiers.ObjectId;
 import aaron.sparx.model.EAConnector;
 import org.apache.commons.lang3.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
-public class ConnectorProcessor implements Processor {
+public class ConnectorProcessor extends AbstractProcessor{
 
-    private final Model model;
 
-    public ConnectorProcessor(final Model model) {
-        this.model = model;
+    public ConnectorProcessor(String sha1, LocalDateTime time, Model model) {
+        super(sha1, time, model);
     }
 
     @Override
@@ -207,6 +207,9 @@ public class ConnectorProcessor implements Processor {
         edge.addProperty("sourceStyle", sourceStyle);
         edge.addProperty("destStyle", destStyle);
         edge.addProperty("eventFlags", eventFlags);
+
+        edge.addProperty("eapHash", sha1);
+        edge.addProperty("importedAt", time);
 
         ConnectorId connectorIdentifier = new ConnectorId(connectorId);
         ConnectorGUID connectorGUIDIdentifier = new ConnectorGUID(eaGuid);

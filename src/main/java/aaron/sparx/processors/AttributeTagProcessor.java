@@ -6,17 +6,17 @@ import aaron.sparx.TaggedValueMode;
 import aaron.sparx.identifiers.AttributeId;
 import aaron.sparx.identifiers.AttributeTagGUID;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 import static aaron.sparx.model.EAAttributeTag.*;
 
-public class AttributeTagProcessor implements Processor{
+public class AttributeTagProcessor extends AbstractProcessor{
 
-    private final Model model;
     private final TaggedValueMode mode;
 
-    public AttributeTagProcessor(final Model model, final TaggedValueMode mode) {
-        this.model = model;
+    public AttributeTagProcessor(String sha1, LocalDateTime time, Model model, TaggedValueMode mode) {
+        super(sha1, time, model);
         this.mode = mode;
     }
 
@@ -32,6 +32,6 @@ public class AttributeTagProcessor implements Processor{
         AttributeId attributeId = new AttributeId(elementId);
         AttributeTagGUID attributeTagGUID = new AttributeTagGUID(eaGuid);
 
-        TaggedValueHelper.process(model, mode, property, "<memo>".equals(value) ? notes : value, attributeTagGUID, attributeId);
+        TaggedValueHelper.process(sha1, time, model, mode, property, "<memo>".equals(value) ? notes : value, attributeTagGUID, attributeId);
     }
 }

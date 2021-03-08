@@ -1,47 +1,46 @@
 package aaron.sparx.processors;
 
+import aaron.model.AAroNNode;
 import aaron.model.Edge;
 import aaron.model.Model;
-import aaron.model.AAroNNode;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.ConnectorGUID;
 import aaron.sparx.identifiers.ObjectGUID;
 import aaron.sparx.model.EAObject;
-import aaron.sparx.model.EAXref;
 import org.apache.commons.lang3.StringUtils;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class XRefProcessor implements Processor{
+import static aaron.sparx.model.EAXref.*;
+
+public class XRefProcessor extends AbstractProcessor{
 
     private final static Pattern xrefStereotypePattern =
             Pattern.compile("@STEREO;Name=(?<Name>\\w+);(?:FQName=(?<FQName>(?<ns>[\\w\\d\\.-]+)::(?<s>[\\w\\d]+));)?@ENDSTEREO;|@STEREO;Name=(?<Name2>\\w+);GUID=(?<GUID>\\{[0-9A-Fa-f]{8}-(?:[0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}\\});@ENDSTEREO;");
 
-
-    private final Model model;
-
-    public XRefProcessor(final Model model) {
-        this.model = model;
+    public XRefProcessor(String sha1, LocalDateTime time, Model model) {
+        super(sha1, time, model);
     }
 
     @Override
     public <U extends Map<String, Object>> void process(U row) {
-        String xrefId = GUIDHelper.unwrapGuid(EAXref.XREF_ID.value(row));
-        String name = EAXref.NAME.value(row);
-        String type = EAXref.TYPE.value(row);
-        String visibility = EAXref.VISIBILITY.value(row);
-        String namespace = EAXref.NAMESPACE.value(row);
-        String requirement = EAXref.REQUIREMENT.value(row);
-        String constraint = EAXref.CONSTRAINT.value(row);
-        String behaviour = EAXref.BEHAVIOR.value(row);
-        String partition = EAXref.PARTITION.value(row);
-        String description = EAXref.DESCRIPTION.value(row);
-        String client = GUIDHelper.unwrapGuid(EAXref.CLIENT.value(row));
-        String supplier = EAXref.SUPPLIER.value(row);
-        String link = EAXref.LINK.value(row);
+        String xrefId = GUIDHelper.unwrapGuid(XREF_ID.value(row));
+        String name = NAME.value(row);
+        String type = TYPE.value(row);
+        String visibility = VISIBILITY.value(row);
+        String namespace = NAMESPACE.value(row);
+        String requirement = REQUIREMENT.value(row);
+        String constraint = CONSTRAINT.value(row);
+        String behaviour = BEHAVIOR.value(row);
+        String partition = PARTITION.value(row);
+        String description = DESCRIPTION.value(row);
+        String client = GUIDHelper.unwrapGuid(CLIENT.value(row));
+        String supplier = SUPPLIER.value(row);
+        String link = LINK.value(row);
 
         Type typeEnum = Type.getByName(type);
         Name nameEnum = Name.getByName(name);

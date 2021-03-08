@@ -6,7 +6,7 @@
 
     <groupId>schmitze87</groupId>
     <artifactId>AAroN</artifactId>
-    <version>2021.02</version>
+    <version>2021.03</version>
     <packaging>jar</packaging>
     <name>AAroN - Analyze Architecture on Neo4j</name>
 
@@ -40,12 +40,6 @@
             <groupId>com.healthmarketscience.jackcess</groupId>
             <artifactId>jackcess</artifactId>
             <version>3.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>RELEASE</version>
-            <scope>compile</scope>
         </dependency>
 
         <dependency>

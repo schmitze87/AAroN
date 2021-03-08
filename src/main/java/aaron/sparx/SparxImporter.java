@@ -13,6 +13,8 @@ import org.neo4j.procedure.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Stream;
@@ -28,7 +30,8 @@ public class SparxImporter {
 
     @Procedure(name = "aaron.import.sparxeap", mode = Mode.WRITE)
     @Description("Imports an Sparx Enterprise Architect Project (EAP) File")
-    public Stream<ProgressInfo> importEAP(@Name("eapFileName") String fileName) {
+    public Stream<ProgressInfo> importEAP(@Name("eapFileName") String fileName, @Name(value="config", defaultValue = "{}") Map<String, Object> configMap) {
+        Config config = Config.createFromMap(configMap);
         String importFolder;
         try (Transaction transaction = db.beginTx()) {
             importFolder = Util.getImportFolder(transaction);
@@ -38,7 +41,7 @@ public class SparxImporter {
             ProgressInfo progressInfo = new ProgressInfo(fileName, "file", "eap");
             progressInfo.batchSize = 1000;
             final ProgressReporter reporter = new ProgressReporter(null, new PrintWriter(System.out), progressInfo);
-            Converter converter = new SparxConverter();
+            Converter converter = new SparxConverter(config);
             Model model = null;
             try {
                 model = converter.convert(file);
@@ -59,4 +62,5 @@ public class SparxImporter {
         }
         return Stream.of(null);
     }
+
 }
