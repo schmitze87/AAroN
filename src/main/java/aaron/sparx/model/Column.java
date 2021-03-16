@@ -40,6 +40,9 @@ public class Column<T> {
                 return clazz.cast(BooleanUtils.toBooleanObject((String) o));
             }
         }
+        if (o instanceof Integer && clazz == Boolean.class) {
+            return clazz.cast(BooleanUtils.toBoolean((int)o));
+        }
         return clazz.cast(o);
     }
 
