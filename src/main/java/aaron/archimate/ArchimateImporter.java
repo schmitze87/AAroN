@@ -1,11 +1,13 @@
 package aaron.archimate;
 
-import aaron.apoc.result.ProgressInfo;
-import aaron.model.ModelProcessor;
 import aaron.Util;
-import aaron.model.Model;
 import aaron.apoc.export.util.ProgressReporter;
-import org.neo4j.graphdb.*;
+import aaron.apoc.result.ProgressInfo;
+import aaron.model.Model;
+import aaron.model.ModelProcessor;
+import org.neo4j.graphdb.GraphDatabaseService;
+import org.neo4j.graphdb.Transaction;
+import org.neo4j.logging.Log;
 import org.neo4j.procedure.*;
 
 import java.io.File;
@@ -18,6 +20,9 @@ public class ArchimateImporter {
 
     @Context
     public GraphDatabaseService db;
+
+    @Context
+    public Log log;
 
     public ArchimateImporter() {
 
@@ -47,9 +52,9 @@ public class ArchimateImporter {
             ProgressInfo info = future.get();
             return Stream.of(info);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.warn("Interrupted", e);
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            log.error("Could not process the results", e);
         }
         return Stream.of(null);
     }

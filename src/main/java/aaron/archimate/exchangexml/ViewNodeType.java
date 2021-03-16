@@ -8,13 +8,9 @@
 
 package aaron.archimate.exchangexml;
 
+import jakarta.xml.bind.annotation.*;
+
 import java.math.BigInteger;
-import jakarta.xml.bind.annotation.XmlAccessType;
-import jakarta.xml.bind.annotation.XmlAccessorType;
-import jakarta.xml.bind.annotation.XmlAttribute;
-import jakarta.xml.bind.annotation.XmlSchemaType;
-import jakarta.xml.bind.annotation.XmlSeeAlso;
-import jakarta.xml.bind.annotation.XmlType;
 
 
 /**

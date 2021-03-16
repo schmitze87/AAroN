@@ -8,12 +8,12 @@ import aaron.Util;
 import aaron.model.Model;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
+import org.neo4j.logging.Log;
 import org.neo4j.procedure.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -23,6 +23,9 @@ public class SparxImporter {
 
     @Context
     public GraphDatabaseService db;
+
+    @Context
+    public Log log;
 
     public SparxImporter() {
 
@@ -46,7 +49,7 @@ public class SparxImporter {
             try {
                 model = converter.convert(file);
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("IO Error", e);
             }
             ModelProcessor modelProcessor = new ModelProcessor(db, reporter);
             modelProcessor.process(model);
@@ -56,9 +59,9 @@ public class SparxImporter {
             ProgressInfo info = future.get();
             return Stream.of(info);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            log.warn("Interrupted", e);
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            log.error("Could not process the results", e);
         }
         return Stream.of(null);
     }
