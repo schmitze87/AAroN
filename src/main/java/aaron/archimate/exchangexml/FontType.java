@@ -8,13 +8,14 @@
 
 package aaron.archimate.exchangexml;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlType;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
