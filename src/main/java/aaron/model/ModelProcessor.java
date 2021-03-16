@@ -60,9 +60,10 @@ public class ModelProcessor {
         }
     }
 
-    private void processEdges(final Map<Identifier, Edge> edges) {
+    private void processEdges(final Map<Identifier, Edge> edgesMap) {
         try (BatchTransaction btx = new BatchTransaction(db, 1000, reporter)) {
-            edges.forEach((key, edge) -> {
+            List<Edge> edges = edgesMap.values().stream().distinct().collect(Collectors.toList());
+            edges.forEach(edge -> {
                 Transaction tx = btx.getTransaction();
                 Long startId = identifierToNeo4jId.get(edge.getStart());
                 Long endId = identifierToNeo4jId.get(edge.getEnd());
