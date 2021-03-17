@@ -1,7 +1,7 @@
 package aaron.model;
 
-import aaron.apoc.export.util.BatchTransaction;
-import aaron.apoc.export.util.ProgressReporter;
+import aaron.util.BatchTransaction;
+import aaron.util.ProgressReporter;
 import org.neo4j.graphdb.*;
 
 import java.util.*;

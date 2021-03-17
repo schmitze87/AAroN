@@ -1,6 +1,6 @@
-package aaron.apoc.export.util;
+package aaron.util;
 
-import aaron.apoc.result.ProgressInfo;
+import aaron.util.ProgressInfo;
 
 /**
  * This file was taken from APOC

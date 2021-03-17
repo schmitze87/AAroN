@@ -1,7 +1,7 @@
 package aaron.sparx;
 
-import aaron.apoc.export.util.ProgressReporter;
-import aaron.apoc.result.ProgressInfo;
+import aaron.util.ProgressReporter;
+import aaron.util.ProgressInfo;
 import aaron.Converter;
 import aaron.model.ModelProcessor;
 import aaron.Util;

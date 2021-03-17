@@ -1,6 +1,5 @@
-package aaron.apoc.export.util;
+package aaron.util;
 
-import aaron.apoc.result.ProgressInfo;
 import org.neo4j.graphdb.QueryStatistics;
 
 import java.io.PrintWriter;

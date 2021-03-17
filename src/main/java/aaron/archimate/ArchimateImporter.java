@@ -1,8 +1,8 @@
 package aaron.archimate;
 
 import aaron.Util;
-import aaron.apoc.export.util.ProgressReporter;
-import aaron.apoc.result.ProgressInfo;
+import aaron.util.ProgressReporter;
+import aaron.util.ProgressInfo;
 import aaron.model.Model;
 import aaron.model.ModelProcessor;
 import org.neo4j.graphdb.GraphDatabaseService;
