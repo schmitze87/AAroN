@@ -22,7 +22,7 @@ public class ConnectorTagProcessor extends  AbstractProcessor{
     }
 
     @Override
-    public <U extends Map<String, Object>> void process(U row) {
+    public void process(final Map<String, Object> row) {
         Integer propertyId = PROPERTY_ID.value(row);
         Integer elementId = ELEMENT_ID.value(row);
         String property = PROPERTY.value(row);

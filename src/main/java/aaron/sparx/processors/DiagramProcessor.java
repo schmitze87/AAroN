@@ -20,7 +20,7 @@ public class DiagramProcessor extends AbstractProcessor{
     }
 
     @Override
-    public <U extends Map<String, Object>> void process(U row) {
+    public void process(final Map<String, Object> row) {
         Integer diagramId = EADiagram.DIAGRAM_ID.value(row);
         Integer packageId = EADiagram.PACKAGE_ID.value(row);
         Integer parentId = EADiagram.PARENT_ID.value(row);

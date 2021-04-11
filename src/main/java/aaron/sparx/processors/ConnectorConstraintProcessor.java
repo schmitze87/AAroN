@@ -17,7 +17,7 @@ public class ConnectorConstraintProcessor extends AbstractProcessor{
     }
 
     @Override
-    public <U extends Map<String, Object>> void process(U row) {
+    public void process(final Map<String, Object> row) {
         Integer connectorId = CONNECTOR_ID.value(row);
         String constraint = CONSTRAINT.value(row);
         String constraintType = CONSTRAINT_TYPE.value(row);

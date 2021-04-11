@@ -2,6 +2,7 @@ package aaron.sparx;
 
 import aaron.Converter;
 import aaron.model.Model;
+import aaron.model.Processor;
 import aaron.sparx.model.*;
 import aaron.sparx.processors.*;
 import com.healthmarketscience.jackcess.Database;

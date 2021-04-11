@@ -27,7 +27,7 @@ public class XRefProcessor extends AbstractProcessor{
     }
 
     @Override
-    public <U extends Map<String, Object>> void process(U row) {
+    public void process(final Map<String, Object> row) {
         String xrefId = GUIDHelper.unwrapGuid(XREF_ID.value(row));
         String name = NAME.value(row);
         String type = TYPE.value(row);

@@ -4,6 +4,7 @@ import aaron.Converter;
 import aaron.archimate.exchangexml.*;
 import aaron.archimate.processors.*;
 import aaron.model.Model;
+import aaron.model.Processor;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;

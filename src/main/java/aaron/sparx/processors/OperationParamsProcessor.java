@@ -19,7 +19,7 @@ public class OperationParamsProcessor extends AbstractProcessor{
     }
 
     @Override
-    public <U extends Map<String, Object>> void process(U row) {
+    public void process(final Map<String, Object> row) {
         Integer operationId = OPERATION_ID.value(row);
         String name = NAME.value(row);
         String type = TYPE.value(row);

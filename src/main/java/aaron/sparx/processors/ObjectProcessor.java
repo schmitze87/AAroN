@@ -22,7 +22,7 @@ public class ObjectProcessor extends AbstractProcessor{
         super(sha1, time, model);
     }
 
-    public <U extends Map<String, Object>> void process(final U row) {
+    public void process(final Map<String, Object> row) {
         Integer objectId = OBJECT_ID.value(row);
         String objectType = OBJECT_TYPE.value(row);
         Integer diagramId = DIAGRAM_ID.value(row);

@@ -1,10 +1,12 @@
 package aaron.sparx.processors;
 
 import aaron.model.Model;
+import aaron.model.Processor;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 
-public abstract class AbstractProcessor implements Processor{
+public abstract class AbstractProcessor implements Processor<Map<String, Object>> {
 
     protected final Model model;
     protected final String sha1;

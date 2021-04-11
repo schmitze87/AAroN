@@ -20,7 +20,7 @@ public class PackageProcessor extends  AbstractProcessor{
     }
 
     @Override
-    public <U extends Map<String, Object>> void process(U row) {
+    public void process(final Map<String, Object> row) {
         String name = NAME.value(row);
         LocalDateTime createdOn = CREATED_ON.value(row);
         LocalDateTime modifiedOn = MODIFIED_ON.value(row);

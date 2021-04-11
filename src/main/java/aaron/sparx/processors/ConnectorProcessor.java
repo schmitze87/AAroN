@@ -22,7 +22,7 @@ public class ConnectorProcessor extends AbstractProcessor{
     }
 
     @Override
-    public <U extends Map<String, Object>> void process(U row) {
+    public void process(final Map<String, Object> row) {
         Integer connectorId = EAConnector.CONNECTOR_ID.value(row);
         String name = EAConnector.NAME.value(row);
         String direction = EAConnector.DIRECTION.value(row);

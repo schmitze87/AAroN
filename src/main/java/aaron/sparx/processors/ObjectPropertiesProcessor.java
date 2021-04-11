@@ -22,7 +22,7 @@ public class ObjectPropertiesProcessor extends AbstractProcessor{
     }
 
     @Override
-    public <U extends Map<String, Object>> void process(final U row) {
+    public void process(final Map<String, Object> row) {
         Integer propertyId = PROPERTY_ID.value(row);
         Integer objectId = OBJECT_ID.value(row);
         String property = PROPERTY.value(row);

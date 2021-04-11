@@ -4,7 +4,7 @@ import java.util.Map;
 
 public class Config {
 
-    private TaggedValueMode taggedValueMode;
+    private TaggedValueMode taggedValueMode = TaggedValueMode.AS_PROPERTY;
 
     public TaggedValueMode getTaggedValueMode() {
         return taggedValueMode;

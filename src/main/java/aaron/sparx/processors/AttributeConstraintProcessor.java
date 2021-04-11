@@ -22,7 +22,7 @@ public class AttributeConstraintProcessor extends AbstractProcessor{
     }
 
     @Override
-    public <U extends Map<String, Object>> void process(U row) {
+    public void process(final Map<String, Object> row) {
         Integer objectId = OBJECT_ID.value(row);
         String constraint = CONSTRAINT.value(row);
         String attributeName = ATT_NAME.value(row);

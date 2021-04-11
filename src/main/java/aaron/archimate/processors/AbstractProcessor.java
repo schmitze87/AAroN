@@ -2,10 +2,11 @@ package aaron.archimate.processors;
 
 import aaron.archimate.exchangexml.*;
 import aaron.model.Model;
+import aaron.model.Processor;
 
 import java.util.List;
 
-public abstract class AbstractProcessor<T> implements Processor<T>{
+public abstract class AbstractProcessor<T> implements Processor<T> {
 
     protected final Model model;
 
