@@ -1,7 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.model.AAroNNode;
-import aaron.model.Edge;
+import aaron.model.AAroNEdge;
 import aaron.model.Model;
 import aaron.sparx.identifiers.AttributeConstraint;
 import aaron.sparx.identifiers.AttributeId;
@@ -45,7 +45,7 @@ public class AttributeConstraintProcessor extends AbstractProcessor{
         AttributeConstraint identifier = new AttributeConstraint(new Tuple<>(constraint, attributeId));
         model.addNode(identifier, node);
 
-        Edge edge = Edge.builder()
+        AAroNEdge edge = AAroNEdge.builder()
                 .setType("HAS_CONSTRAINT")
                 .setStart(attributeId)
                 .setEnd(identifier)

@@ -4,14 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public class Edge extends WithProperties {
+public class AAroNEdge extends WithProperties {
 
     private String type;
     private Identifier start;
     private Identifier end;
     private Map<String, Object> properties;
 
-    private Edge() {
+    private AAroNEdge() {
         properties = new HashMap<>();
     }
 
@@ -52,7 +52,7 @@ public class Edge extends WithProperties {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Edge edge = (Edge) o;
+        AAroNEdge edge = (AAroNEdge) o;
         return type.equals(edge.type) && start.equals(edge.start) && end.equals(edge.end) && properties.equals(edge.properties);
     }
 
@@ -67,10 +67,10 @@ public class Edge extends WithProperties {
 
     public static class Builder {
 
-        private Edge edge;
+        private AAroNEdge edge;
 
         private Builder() {
-            edge = new Edge();
+            edge = new AAroNEdge();
         }
 
         public Builder setType(final String type) {
@@ -95,7 +95,7 @@ public class Edge extends WithProperties {
             return this;
         }
 
-        public Edge build() {
+        public AAroNEdge build() {
             return edge;
         }
     }

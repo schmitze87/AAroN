@@ -1,7 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.model.AAroNNode;
-import aaron.model.Edge;
+import aaron.model.AAroNEdge;
 import aaron.model.Model;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.*;
@@ -97,7 +97,7 @@ public class DiagramProcessor extends AbstractProcessor{
 
         //CONTAINS Edge
         PackageId packageIdentifier = new PackageId(packageId);
-        Edge containsEdge = Edge.builder()
+        AAroNEdge containsEdge = AAroNEdge.builder()
                 .setType("CONTAINS")
                 .setStart(packageIdentifier)
                 .setEnd(diagramIdentifier)
@@ -109,7 +109,7 @@ public class DiagramProcessor extends AbstractProcessor{
         if (parentId != null && parentId > 0) {
             ObjectId parentIdentifier = new ObjectId(parentId);
             //HAS_PARENT Edge
-            Edge parentEdge = Edge.builder()
+            AAroNEdge parentEdge = AAroNEdge.builder()
                     .setType("HAS_PARENT")
                     .setStart(diagramIdentifier)
                     .setEnd(parentIdentifier)

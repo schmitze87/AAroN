@@ -6,7 +6,7 @@ import java.util.Map;
 public class Model {
 
     private Map<Identifier, AAroNNode> nodes = new HashMap<>();
-    private Map<Identifier, Edge> edges = new HashMap<>();
+    private Map<Identifier, AAroNEdge> edges = new HashMap<>();
 
     public Model () {
 
@@ -24,15 +24,15 @@ public class Model {
         return nodes;
     }
 
-    public Map<Identifier, Edge> getEdges() {
+    public Map<Identifier, AAroNEdge> getEdges() {
         return edges;
     }
 
-    public Edge addEdge(final Identifier identifier, final Edge edge) {
+    public AAroNEdge addEdge(final Identifier identifier, final AAroNEdge edge) {
         return edges.put(identifier, edge);
     }
 
-    public Edge getEdge(final Identifier identifier) {
+    public AAroNEdge getEdge(final Identifier identifier) {
         return edges.get(identifier);
     }
 

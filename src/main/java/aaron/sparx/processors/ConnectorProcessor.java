@@ -1,7 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.model.AAroNNode;
-import aaron.model.Edge;
+import aaron.model.AAroNEdge;
 import aaron.model.Model;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.ConnectorGUID;
@@ -103,7 +103,7 @@ public class ConnectorProcessor extends AbstractProcessor{
         String destStyle = EAConnector.DEST_STYLE.value(row);
         String eventFlags = EAConnector.EVENT_FLAGS.value(row);
 
-        Edge edge = Edge.builder().build();
+        AAroNEdge edge = AAroNEdge.builder().build();
 
         //Set start and end of edge
         ObjectId start = new ObjectId(startObjectId);

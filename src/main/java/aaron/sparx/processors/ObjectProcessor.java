@@ -1,7 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.model.AAroNNode;
-import aaron.model.Edge;
+import aaron.model.AAroNEdge;
 import aaron.model.Model;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.ImplizitRelationId;
@@ -151,7 +151,7 @@ public class ObjectProcessor extends AbstractProcessor{
 
         //CONTAINS
         PackageId packageIdIdentifier = new PackageId(packageId);
-            Edge containsEdge = Edge.builder()
+            AAroNEdge containsEdge = AAroNEdge.builder()
                     .setStart(packageIdIdentifier)
                     .setEnd(objectIdentifier)
                     .setType("CONTAINS")
@@ -165,7 +165,7 @@ public class ObjectProcessor extends AbstractProcessor{
         if ("Action".equals(objectType)) {
             if (GUIDHelper.isEaGuid(pdata1)) {
                 ObjectGUID behaviourGUID = new ObjectGUID(GUIDHelper.unwrapGuid(pdata1));
-                Edge behaviourEdge = Edge.builder()
+                AAroNEdge behaviourEdge = AAroNEdge.builder()
                         .setStart(objectIdentifier)
                         .setEnd(behaviourGUID)
                         .setType("BEHAVIOUR")
@@ -181,7 +181,7 @@ public class ObjectProcessor extends AbstractProcessor{
         if ("Object".equals(objectType) || "Action".equals(objectType)) {
             if (GUIDHelper.isEaGuid(classifierGuid)) {
                 ObjectGUID classifierGUID = new ObjectGUID(GUIDHelper.unwrapGuid(classifierGuid));
-                Edge classifierEdge = Edge.builder()
+                AAroNEdge classifierEdge = AAroNEdge.builder()
                         .setStart(objectIdentifier)
                         .setEnd(classifierGUID)
                         .setType("CLASSIFIER")
@@ -197,7 +197,7 @@ public class ObjectProcessor extends AbstractProcessor{
         if ("Object".equals(objectType) || "Part".equals(objectType) || "Port".equals(objectType)) {
             if (GUIDHelper.isEaGuid(pdata1)) {
                 ObjectGUID instanceOfGUID = new ObjectGUID(GUIDHelper.unwrapGuid(pdata1));
-                Edge instanceOfEdge = Edge.builder()
+                AAroNEdge instanceOfEdge = AAroNEdge.builder()
                         .setStart(objectIdentifier)
                         .setEnd(instanceOfGUID)
                         .setType("INSTANCE_OF")
@@ -213,7 +213,7 @@ public class ObjectProcessor extends AbstractProcessor{
         if ("Part".equals(objectType) || "Port".equals(objectType)) {
             if (GUIDHelper.isEaGuid(pdata3)) {
                 ObjectGUID reusageGUID = new ObjectGUID(GUIDHelper.unwrapGuid(pdata3));
-                Edge reusageEdge = Edge.builder()
+                AAroNEdge reusageEdge = AAroNEdge.builder()
                         .setStart(objectIdentifier)
                         .setEnd(reusageGUID)
                         .setType("REUSAGE")
@@ -229,7 +229,7 @@ public class ObjectProcessor extends AbstractProcessor{
             ObjectId parentIdentifier = new ObjectId(parentId);
             //HAS_PORT
             if ("Port".equals(objectType)) {
-                Edge portEdge = Edge.builder()
+                AAroNEdge portEdge = AAroNEdge.builder()
                         .setStart(parentIdentifier)
                         .setEnd(objectIdentifier)
                         .setType("HAS_PORT")
@@ -242,7 +242,7 @@ public class ObjectProcessor extends AbstractProcessor{
 
             //HAS_PART
             if ("Part".equals(objectType)) {
-                Edge partEdge = Edge.builder()
+                AAroNEdge partEdge = AAroNEdge.builder()
                         .setStart(parentIdentifier)
                         .setEnd(objectIdentifier)
                         .setType("HAS_PART")
@@ -254,7 +254,7 @@ public class ObjectProcessor extends AbstractProcessor{
             }
 
             //EMBEDS
-            Edge embedsEdge = Edge.builder()
+            AAroNEdge embedsEdge = AAroNEdge.builder()
                     .setStart(parentIdentifier)
                     .setEnd(objectIdentifier)
                     .setType("EMBEDS")
@@ -265,7 +265,7 @@ public class ObjectProcessor extends AbstractProcessor{
             model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()),embedsEdge);
 
             //HAS_PARENT
-            Edge parentEdge = Edge.builder()
+            AAroNEdge parentEdge = AAroNEdge.builder()
                     .setStart(objectIdentifier)
                     .setEnd(parentIdentifier)
                     .setType("HAS_PARENT")

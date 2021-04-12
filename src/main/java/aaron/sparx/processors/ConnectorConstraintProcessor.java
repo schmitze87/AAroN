@@ -1,7 +1,6 @@
 package aaron.sparx.processors;
 
-import aaron.model.AAroNNode;
-import aaron.model.Edge;
+import aaron.model.AAroNEdge;
 import aaron.model.Model;
 import aaron.sparx.identifiers.ConnectorId;
 
@@ -34,7 +33,7 @@ public class ConnectorConstraintProcessor extends AbstractProcessor{
 //                .build();
 
         ConnectorId connectorIdentifier = new ConnectorId(connectorId);
-        Edge connectorEdge = model.getEdge(connectorIdentifier);
+        AAroNEdge connectorEdge = model.getEdge(connectorIdentifier);
         connectorEdge.addProperty("constraint_" + constraint, new String[]{notes, constraintType});
     }
 }

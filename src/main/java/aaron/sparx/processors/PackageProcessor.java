@@ -1,7 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.model.AAroNNode;
-import aaron.model.Edge;
+import aaron.model.AAroNEdge;
 import aaron.model.Model;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.ImplizitRelationId;
@@ -49,7 +49,7 @@ public class PackageProcessor extends  AbstractProcessor{
 
         if (parentId > 0) {
             PackageId parentPackageIdentifier = new PackageId(parentId);
-            Edge containsEdge = Edge.builder()
+            AAroNEdge containsEdge = AAroNEdge.builder()
                     .setStart(parentPackageIdentifier)
                     .setEnd(identifier)
                     .setType("CONTAINS")

@@ -26,7 +26,7 @@ public class TaggedValueHelper {
                 model.addNode(tagIdentifier, node);
 
                 //CONNECT WITH OBJECT
-                Edge edge = Edge.builder()
+                AAroNEdge edge = AAroNEdge.builder()
                         .setType("HAS_TAGGED_VALUE")
                         .setStart(taggedElementIdentifier)
                         .setEnd(tagIdentifier)

@@ -1,7 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.model.AAroNNode;
-import aaron.model.Edge;
+import aaron.model.AAroNEdge;
 import aaron.model.Model;
 import aaron.sparx.identifiers.ImplizitRelationId;
 import aaron.sparx.identifiers.ObjectConstraintId;
@@ -45,7 +45,7 @@ public class ObjectConstraintProcessor extends AbstractProcessor{
 
         model.addNode(objectConstraintId, node);
 
-        Edge edge = Edge.builder()
+        AAroNEdge edge = AAroNEdge.builder()
                 .setType("HAS_CONSTRAINT")
                 .setStart(objectIdentifier)
                 .setEnd(objectConstraintId)

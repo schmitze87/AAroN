@@ -1,7 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.model.AAroNNode;
-import aaron.model.Edge;
+import aaron.model.AAroNEdge;
 import aaron.model.Model;
 import aaron.sparx.identifiers.ImplizitRelationId;
 import aaron.sparx.identifiers.OperationId;
@@ -53,7 +53,7 @@ public class OperationParamsProcessor extends AbstractProcessor{
         model.addNode(operationParamGUID, node);
 
         OperationId operationIdentifier = new OperationId(operationId);
-        Edge edge = Edge.builder()
+        AAroNEdge edge = AAroNEdge.builder()
                 .setType("HAS_PARAM")
                 .setStart(operationIdentifier)
                 .setEnd(operationParamGUID)

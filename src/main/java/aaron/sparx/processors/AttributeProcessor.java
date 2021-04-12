@@ -1,7 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.model.AAroNNode;
-import aaron.model.Edge;
+import aaron.model.AAroNEdge;
 import aaron.model.Model;
 import aaron.sparx.identifiers.AttributeGUID;
 import aaron.sparx.identifiers.AttributeId;
@@ -92,7 +92,7 @@ public class AttributeProcessor extends AbstractProcessor{
         model.addNode(attributeGUID, node);
 
         ObjectId objectIdentifier = new ObjectId(objectId);
-        Edge objectEdge = Edge.builder()
+        AAroNEdge objectEdge = AAroNEdge.builder()
                 .setStart(objectIdentifier)
                 .setEnd(attributeGUID)
                 .setType("HAS_ATTRIBUTE")
@@ -104,7 +104,7 @@ public class AttributeProcessor extends AbstractProcessor{
         if (classifier != null && StringUtils.isNumeric(classifier)) {
             int classifierInt = Integer.parseInt(classifier);
             ObjectId classifierId = new ObjectId(classifierInt);
-            Edge classifierEdge = Edge.builder()
+            AAroNEdge classifierEdge = AAroNEdge.builder()
                     .setStart(attributeGUID)
                     .setEnd(classifierId)
                     .setType("INSTANCE_OF")

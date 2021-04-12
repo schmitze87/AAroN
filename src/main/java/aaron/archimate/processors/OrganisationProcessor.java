@@ -4,7 +4,7 @@ import aaron.archimate.exchangexml.OrganizationType;
 import aaron.archimate.exchangexml.ReferenceableType;
 import aaron.archimate.identifier.ArchiMateIdentifier;
 import aaron.model.AAroNNode;
-import aaron.model.Edge;
+import aaron.model.AAroNEdge;
 import aaron.model.Identifier;
 import aaron.model.Model;
 
@@ -39,7 +39,7 @@ public class OrganisationProcessor extends AbstractProcessor<OrganizationType>{
             model.addNode(identifier, node);
         }
         if (parentId != null) {
-            Edge containsEdge = Edge.builder()
+            AAroNEdge containsEdge = AAroNEdge.builder()
                     .setStart(parentId)
                     .setEnd(identifier)
                     .setType("CONTAINS")

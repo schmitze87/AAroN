@@ -1,7 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.model.AAroNNode;
-import aaron.model.Edge;
+import aaron.model.AAroNEdge;
 import aaron.model.Model;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.ConnectorGUID;
@@ -57,7 +57,7 @@ public class XRefProcessor extends AbstractProcessor{
                 break;
             case CONNECTOR_PROPERTY:
                 ConnectorGUID connectorGUID = new ConnectorGUID(client);
-                Edge edge = model.getEdge(connectorGUID);
+                AAroNEdge edge = model.getEdge(connectorGUID);
                 if (edge != null) {
                     if (nameEnum == Name.STEREOTYPES) {
                         SetFQStereotype(edge, description);
@@ -95,7 +95,7 @@ public class XRefProcessor extends AbstractProcessor{
         }
     }
 
-    private void SetFQStereotype(final Edge edge, final String description) {
+    private void SetFQStereotype(final AAroNEdge edge, final String description) {
         Matcher m = xrefStereotypePattern.matcher(description);
         if (m.matches()) {
             String stereotype = (String) edge.getProperties().get("stereotype");

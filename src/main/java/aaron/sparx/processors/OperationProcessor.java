@@ -1,7 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.model.AAroNNode;
-import aaron.model.Edge;
+import aaron.model.AAroNEdge;
 import aaron.model.Model;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.ImplizitRelationId;
@@ -90,7 +90,7 @@ public class OperationProcessor extends AbstractProcessor{
         //TODO: Classifier
 
         //RELATIONSHIP TO OBJECT
-        Edge edge = Edge.builder()
+        AAroNEdge edge = AAroNEdge.builder()
                 .setType("HAS_OPERATION")
                 .setStart(objectIdentifier)
                 .setEnd(operationGUID)
