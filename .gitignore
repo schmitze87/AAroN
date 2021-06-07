@@ -7,6 +7,9 @@
 # BlueJ files
 *.ctxt
 
+# IntelliJ Files
+*.iml
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
@@ -23,4 +26,7 @@
 hs_err_pid*
 /.idea/
 /target/
+AAroN-Core/target/
+AAroN-Plugin/target/
+AAroN-CLI/target/
 /dependency-reduced-pom.xml

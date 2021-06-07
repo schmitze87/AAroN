@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>AAroN</artifactId>
+        <groupId>schmitze87</groupId>
+        <version>2021.06</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>AAroN-Core</artifactId>
+
+    <properties>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <!-- This gives us the Procedure API our runtime code uses.
+                 We have a `provided` scope on it, because when this is
+                 deployed in a Neo4j Instance, the API will be provided
+                 by Neo4j. If you add non-Neo4j dependencies to this
+                 project, their scope should normally be `compile` -->
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j</artifactId>
+            <scope>provided</scope>
+        </dependency>
+
+        <!--TEST-->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>
