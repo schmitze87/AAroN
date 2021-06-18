@@ -48,7 +48,7 @@ CALL aaron.import.sparxeap("sample.eap", {taggedValues: 'NONE'});
 
 ## Copyright and Trademark hints
 
-**Neo4j®** and **Cypher®** are registered Trademarks owned by Neo4j, Inc. and its subsidiaries. <br>
+**Neo4j®** and **Cypher®** are registered Trademarks of Neo4j, Inc. <br>
 **ArchiMate®** and **The Open Group®** are registered trademark of The Open Group. <br>
 **UML®** and **Unified Modeling Language®** are registered trademarks and **BPMN™**, and **Business Process Modeling Notation™** are trademarks of the Object Management Group. <br>
 **Enterprise Architect** - Copyright © 1998 - 2021 Sparx Systems Pty. Ltd. All rights reserved.
