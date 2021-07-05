@@ -6,7 +6,7 @@
 
     <groupId>schmitze87</groupId>
     <artifactId>AAroN</artifactId>
-    <version>2021.06</version>
+    <version>2021.07</version>
     <modules>
         <module>AAroN-CLI</module>
         <module>AAroN-Plugin</module>
@@ -26,7 +26,7 @@
             <dependency>
                 <groupId>schmitze87</groupId>
                 <artifactId>AAroN-Core</artifactId>
-                <version>2021.06</version>
+                <version>${project.version}</version>
             </dependency>
             <dependency>
                 <groupId>jakarta.xml.bind</groupId>
