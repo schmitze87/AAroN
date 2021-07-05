@@ -32,7 +32,7 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _Model_QNAME = new QName("http://www.opengroup.org/xsd/archimate/3.0/", "aaron/model");
+    private final static QName _Model_QNAME = new QName("http://www.opengroup.org/xsd/archimate/3.0/", "model");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: aaron.archimate.exchangexml
@@ -929,7 +929,7 @@ public class ObjectFactory {
      * @return
      *     the new instance of {@link JAXBElement }{@code <}{@link ModelType }{@code >}
      */
-    @XmlElementDecl(namespace = "http://www.opengroup.org/xsd/archimate/3.0/", name = "aaron/model")
+    @XmlElementDecl(namespace = "http://www.opengroup.org/xsd/archimate/3.0/", name = "model")
     public JAXBElement<ModelType> createModel(ModelType value) {
         return new JAXBElement<ModelType>(_Model_QNAME, ModelType.class, null, value);
     }

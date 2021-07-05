@@ -48,9 +48,10 @@ public class ModelProcessor {
                 node.getLabels().forEach(label -> newNode.addLabel(Label.label(label)));
                 int props = 0;
                 for (Map.Entry<String, Property> prop : node.getProperties().entrySet()) {
-                    Property value = prop.getValue();
+                    Property property = prop.getValue();
+                    Object value = property.getValue();
                     if (value != null) {
-                        newNode.setProperty(prop.getKey(), value.getValue());
+                        newNode.setProperty(prop.getKey(), value);
                         props++;
                     }
                 }
@@ -78,9 +79,10 @@ public class ModelProcessor {
                 Relationship relationship = startNode.createRelationshipTo(endNode, RelationshipType.withName(edge.getType()));
                 int props = 0;
                 for (Map.Entry<String, Property> prop : edge.getProperties().entrySet()) {
-                    Property value = prop.getValue();
+                    Property property = prop.getValue();
+                    Object value = property.getValue();
                     if (value != null) {
-                        relationship.setProperty(prop.getKey(), value.getValue());
+                        relationship.setProperty(prop.getKey(), value);
                         props++;
                     }
                 }

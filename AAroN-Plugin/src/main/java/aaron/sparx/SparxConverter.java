@@ -5,13 +5,12 @@ import aaron.model.Model;
 import aaron.model.Processor;
 import aaron.sparx.model.*;
 import aaron.sparx.processors.*;
+import aaron.util.Util;
 import com.healthmarketscience.jackcess.Database;
 import com.healthmarketscience.jackcess.DatabaseBuilder;
-import jakarta.xml.bind.annotation.adapters.HexBinaryAdapter;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.security.MessageDigest;
 import java.time.LocalDateTime;
 import java.util.Map;
 
@@ -28,7 +27,7 @@ public class SparxConverter implements Converter {
         LocalDateTime now = LocalDateTime.now();
         String sha1 = null;
         try {
-             sha1 = createSHA1(file);
+             sha1 = Util.createSHA1(file);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -160,17 +159,4 @@ public class SparxConverter implements Converter {
         return (T) db.getTable(table.getTableName());
     }
 
-    private String createSHA1(File file) throws Exception {
-        MessageDigest digest = MessageDigest.getInstance("SHA-1");
-        InputStream fis = new FileInputStream(file);
-        int n = 0;
-        byte[] buffer = new byte[8192];
-        while (n != -1) {
-            n = fis.read(buffer);
-            if (n > 0) {
-                digest.update(buffer, 0, n);
-            }
-        }
-        return new HexBinaryAdapter().marshal(digest.digest());
-    }
 }

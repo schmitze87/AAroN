@@ -88,7 +88,7 @@ public class XRefProcessor extends AbstractProcessor{
     private void SetFQStereotype(final AAroNNode node, final String description) {
         Matcher m = xrefStereotypePattern.matcher(description);
         if (m.matches()) {
-            String stereotype = (String) node.getProperty(STRING, EAObject.STEREOTYPE.getName());
+            String stereotype = (String) node.getProperty(STRING, "stereotype");
             String xrefStereotype = m.group("Name");
             String xrefFQStereotype = m.group("FQName");
             if (StringUtils.equals(stereotype, xrefStereotype)) {

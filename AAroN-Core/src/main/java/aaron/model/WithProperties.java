@@ -26,7 +26,7 @@ public class WithProperties {
     }
 
     public <T, E extends PropertyType<T>> T getProperty(E type, final String name) {
-        Property property = properties.get("name");
+        Property property = properties.get(name);
         return type.cast(property.getValue());
     }
 }
