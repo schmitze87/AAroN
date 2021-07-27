@@ -58,6 +58,7 @@ public class ModelProcessor {
                 reporter.update(1, 0, props);
                 btx.increment();
             }
+            btx.commit();
         }
     }
 
@@ -90,6 +91,7 @@ public class ModelProcessor {
                 reporter.update(0, 1, props);
                 btx.increment();
             });
+            btx.commit();
         }
     }
 
