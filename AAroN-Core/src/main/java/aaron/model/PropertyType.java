@@ -29,7 +29,7 @@ public class PropertyType<E> {
 
     public static PropertyType[] TYPES = new PropertyType[]{STRING, STRING_ARRAY, INTEGER, INTEGER_ARRAY,
             BOOLEAN, BOOLEAN_ARRAY, LONG, LONG_ARRAY, SHORT, SHORT_ARRAY, DOUBLE, DOUBLE_ARRAY, FLOAT, FLOAT_ARRAY,
-            LOCALDATETIME, LOCALDATETIME_ARRAY};
+            LOCALDATETIME, LOCALDATETIME_ARRAY, POINT};
 
     private String csvValue;
     private Class<? extends E> clazz;
@@ -51,7 +51,7 @@ public class PropertyType<E> {
         return clazz.cast(value);
     }
 
-    public static class WGS84Point implements org.neo4j.graphdb.spatial.Point {
+    public static class WGS84Point implements Point {
 
         private final double lat, lon;
         private final Coordinate coordinate;
