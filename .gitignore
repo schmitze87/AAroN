@@ -30,3 +30,7 @@ AAroN-Core/target/
 AAroN-Plugin/target/
 AAroN-CLI/target/
 /dependency-reduced-pom.xml
+.settings/
+.project
+.classpath
+.factorypath
