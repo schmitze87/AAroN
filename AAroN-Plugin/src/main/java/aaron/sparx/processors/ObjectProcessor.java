@@ -235,6 +235,9 @@ public class ObjectProcessor extends AbstractProcessor{
                         .addProperty("eapHash", STRING, sha1)
                         .addProperty("importedAt", LOCALDATETIME, time)
                         .build();
+                if (StringUtils.isNotBlank(multiplicity)) {
+                    portEdge.addProperty("multiplicity", STRING, multiplicity);
+                }
                 model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), portEdge);
             }
 
@@ -248,6 +251,9 @@ public class ObjectProcessor extends AbstractProcessor{
                         .addProperty("eapHash", STRING, sha1)
                         .addProperty("importedAt", LOCALDATETIME, time)
                         .build();
+                if (StringUtils.isNotBlank(multiplicity)) {
+                    partEdge.addProperty("multiplicity", STRING, multiplicity);
+                }
                 model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()),partEdge);
             }
 
@@ -260,6 +266,9 @@ public class ObjectProcessor extends AbstractProcessor{
                     .addProperty("eapHash", STRING, sha1)
                     .addProperty("importedAt", LOCALDATETIME, time)
                     .build();
+            if (StringUtils.isNotBlank(multiplicity)) {
+                embedsEdge.addProperty("multiplicity", STRING, multiplicity);
+            }
             model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()),embedsEdge);
 
             //HAS_PARENT
