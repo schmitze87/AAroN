@@ -11,15 +11,6 @@ public class WithProperties {
         return properties;
     }
 
-//    public Object addProperty(final String name, final Object value) {
-//        if (value instanceof Collection) {
-//            Collection c = (Collection) value;
-//            return properties.put(name, c.toArray());
-//        } else {
-//            return properties.put(name, value);
-//        }
-//    }
-
     public <T>Property<T> addProperty(final String name, final PropertyType<T> type, final T value) {
         Property<T> property = new Property<>(type, value);
         return properties.put(name, property);
