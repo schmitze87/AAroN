@@ -59,7 +59,7 @@ public class PropertyType<E> {
         public WGS84Point(double lat, double lon) {
             this.lat = lat;
             this.lon = lon;
-            coordinate = new Coordinate(lat, lon);
+            coordinate = new Coordinate(lon, lat);
         }
 
         @Override

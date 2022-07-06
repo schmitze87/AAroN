@@ -2,7 +2,7 @@ package aaron.sparx.model;
 
 public interface EAObjectProperty {
 
-    String TABLE_NAME = "t_objectProperties";
+    String TABLE_NAME = "t_objectproperties";
 
     Column<Integer> PROPERTY_ID = new Column<>("PropertyID", Integer.class);
     Column<Integer> OBJECT_ID = new Column<>("Object_ID", Integer.class);

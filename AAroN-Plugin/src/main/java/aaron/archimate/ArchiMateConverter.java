@@ -23,14 +23,16 @@ public class ArchiMateConverter implements Converter {
     private final Map<String, Object> elementsMap;
     private final Map<String, Object> relationshipMaps;
     private final Model graphModel;
+    private final File file;
 
-    public ArchiMateConverter() {
+    public ArchiMateConverter(final File file) {
+        this.file = file;
         elementsMap = new HashMap<>();
         relationshipMaps = new HashMap<>();
         graphModel = new Model();
     }
 
-    public Model convert(final File file) {
+    public Model convert() {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(ModelType.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();

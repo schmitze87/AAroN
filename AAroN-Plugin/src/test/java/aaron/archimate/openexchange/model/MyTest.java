@@ -38,8 +38,8 @@ class MyTest {
         URL resource = ClassLoader.getSystemResource("archisurance.xml");
         File file = new File(resource.getFile());
         Assertions.assertNotNull(file);
-        ArchiMateConverter converter = new ArchiMateConverter();
-        Model graphModel = converter.convert(file);
+        ArchiMateConverter converter = new ArchiMateConverter(file);
+        Model graphModel = converter.convert();
         System.out.println(graphModel.toString());
     }
 

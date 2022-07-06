@@ -1,11 +1,11 @@
 package aaron.sparx;
 
-import aaron.util.ProgressReporter;
-import aaron.util.ProgressInfo;
 import aaron.model.Converter;
-import aaron.model.ModelProcessor;
-import aaron.util.Util;
 import aaron.model.Model;
+import aaron.model.ModelProcessor;
+import aaron.util.ProgressInfo;
+import aaron.util.ProgressReporter;
+import aaron.util.Util;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
 import org.neo4j.logging.Log;
@@ -44,10 +44,10 @@ public class SparxImporter {
             ProgressInfo progressInfo = new ProgressInfo(fileName, "file", "eap");
             progressInfo.batchSize = 1000;
             final ProgressReporter reporter = new ProgressReporter(null, new PrintWriter(System.out), progressInfo);
-            Converter converter = new SparxConverter(config);
+            Converter converter = new SparxJETConverter(config, file);
             Model model = null;
             try {
-                model = converter.convert(file);
+                model = converter.convert();
             } catch (IOException e) {
                 log.error("IO Error", e);
             }
@@ -63,7 +63,42 @@ public class SparxImporter {
         } catch (ExecutionException e) {
             log.error("Could not process the results", e);
         }
-        return Stream.of(null);
+        return Stream.empty();
+    }
+
+    @Procedure(name = "aaron.import.sparxMySQL", mode = Mode.WRITE)
+    @Description("Imports an Sparx Enterprise Architect MySQL Project")
+    public Stream<ProgressInfo> importMySQL(@Name("host") String host,
+                                            @Name("port") long port,
+                                            @Name("databaseName") String databaseName,
+                                            @Name("username") String username,
+                                            @Name("password") String password,
+                                            @Name(value="config", defaultValue = "{}") Map<String, Object> configMap) {
+        Config config = Config.createFromMap(configMap);
+        CompletableFuture<ProgressInfo> future = CompletableFuture.supplyAsync(() -> {
+            ProgressInfo progressInfo = new ProgressInfo(databaseName, host, "MySQL");
+            progressInfo.batchSize = 1000;
+            final ProgressReporter reporter = new ProgressReporter(null, new PrintWriter(System.out), progressInfo);
+            Converter converter = new SparxMySQLConverter(log, config, host, port, databaseName, username, password);
+            Model model = null;
+            try {
+                model = converter.convert();
+            } catch (IOException e) {
+                log.error("IO Error", e);
+            }
+            ModelProcessor modelProcessor = new ModelProcessor(db, reporter);
+            modelProcessor.process(model);
+            return reporter.getTotal();
+        });
+        try {
+            ProgressInfo info = future.get();
+            return Stream.of(info);
+        } catch (InterruptedException e) {
+            log.warn("Interrupted", e);
+        } catch (ExecutionException e) {
+            log.error("Could not process the results", e);
+        }
+        return Stream.empty();
     }
 
 }

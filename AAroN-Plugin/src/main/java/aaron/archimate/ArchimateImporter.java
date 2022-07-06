@@ -42,8 +42,8 @@ public class ArchimateImporter {
             ProgressInfo progressInfo = new ProgressInfo(fileName, "file", "xml");
             progressInfo.batchSize = 500;
             final ProgressReporter reporter = new ProgressReporter(null, new PrintWriter(System.out), progressInfo);
-            ArchiMateConverter converter = new ArchiMateConverter();
-            Model model = converter.convert(file);
+            ArchiMateConverter converter = new ArchiMateConverter(file);
+            Model model = converter.convert();
             ModelProcessor modelProcessor = new ModelProcessor(db, reporter);
             modelProcessor.process(model);
             return reporter.getTotal();
