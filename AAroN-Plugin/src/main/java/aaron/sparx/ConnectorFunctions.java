@@ -1,7 +1,10 @@
 package aaron.sparx;
 
 import org.neo4j.graphdb.*;
-import org.neo4j.procedure.*;
+import org.neo4j.procedure.Context;
+import org.neo4j.procedure.Description;
+import org.neo4j.procedure.Name;
+import org.neo4j.procedure.UserFunction;
 
 import java.util.Arrays;
 import java.util.Collections;

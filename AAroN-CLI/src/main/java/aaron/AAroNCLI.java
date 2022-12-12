@@ -3,6 +3,7 @@ package aaron;
 import aaron.model.Model;
 import aaron.sparx.Config;
 import aaron.sparx.SparxJETConverter;
+import aaron.export.AAroNCsvWriter;
 import org.neo4j.cli.ExecutionContext;
 import org.neo4j.configuration.connectors.BoltConnector;
 import org.neo4j.configuration.connectors.HttpConnector;
@@ -52,7 +53,7 @@ public class AAroNCLI implements Callable<Integer> {
         } );
     }
 
-    @CommandLine.Command(name = "create", mixinStandardHelpOptions = true, version = "2021.06")
+    @CommandLine.Command(name = "create", mixinStandardHelpOptions = true, version = "2022.12")
     static class Create implements Callable<Integer> {
 
         @CommandLine.Spec
@@ -97,7 +98,7 @@ public class AAroNCLI implements Callable<Integer> {
                     config.put("taggedValues", "AS_PROPERTY");
                     SparxJETConverter converter = new SparxJETConverter(Config.createFromMap(config), eapFile);
                     Model model = converter.convert();
-                    CSVWriter.write(model, nodesFile, edgesFile);
+                    AAroNCsvWriter.write(model, nodesFile, edgesFile);
 
                     ExecutionContext executionContext = new ExecutionContext(neo4jHome, neo4jConf);
                     CommandLine importCmd = new CommandLine(new ImportCommand(executionContext));
@@ -139,7 +140,7 @@ public class AAroNCLI implements Callable<Integer> {
         }
     }
 
-    @CommandLine.Command(name = "import", mixinStandardHelpOptions = true, version = "2021.06")
+    @CommandLine.Command(name = "import", mixinStandardHelpOptions = true, version = "2022.12")
     static class Import implements Callable<Integer> {
 
         @CommandLine.Spec
@@ -180,7 +181,7 @@ public class AAroNCLI implements Callable<Integer> {
                 SparxJETConverter converter = new SparxJETConverter(Config.createFromMap(config), eapFile);
                 try {
                     Model model = converter.convert();
-                    CSVWriter.write(model, nodesFile, edgesFile);
+                    AAroNCsvWriter.write(model, nodesFile, edgesFile);
                 } catch (IOException e) {
                     e.printStackTrace();
                     return 1;
