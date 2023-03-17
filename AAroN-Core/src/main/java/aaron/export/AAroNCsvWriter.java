@@ -1,27 +1,94 @@
 package aaron.export;
 
 import aaron.model.*;
-import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class AAroNCsvWriter {
 
-    private final static Logger LOG = LoggerFactory.getLogger(AAroNCsvWriter.class);
+    private static final Logger LOG = LoggerFactory.getLogger(AAroNCsvWriter.class);
+
+    private static final String COMMA = ",";
+    private static final String DEFAULT_SEPARATOR = COMMA;
+    private static final String DOUBLE_QUOTES = "\"";
+    private static final String EMBEDDED_DOUBLE_QUOTES = "\"\"";
+    private static final String NEW_LINE_UNIX = "\n";
+    private static final String NEW_LINE_WINDOWS = "\r\n";
+    private static final String EMPTY_STRING = "";
 
     private int nodeIdCounter;
-    private char delimiter = ',';
-    private char quote = '"';
 
     private AAroNCsvWriter() {
         nodeIdCounter = 0;
+    }
+
+    public String convertToCsvFormat(final String[] line) {
+        return convertToCsvFormat(line, DEFAULT_SEPARATOR);
+    }
+
+    public String convertToCsvFormat(final String[] line, final String separator) {
+        return convertToCsvFormat(line, separator, true);
+    }
+
+    // if quote = true, all fields are enclosed in double quotes
+    public String convertToCsvFormat(
+            final String[] line,
+            final String separator,
+            final boolean quote) {
+
+        return Stream.of(line)                              // convert String[] to stream
+                .map(l -> formatCsvField(l, quote))         // format CSV field
+                .collect(Collectors.joining(separator));    // join with a separator
+
+    }
+
+    // put your extra login here
+    private String formatCsvField(final String field, final boolean quote) {
+        String result = field;
+        if (result == null) {
+            return EMPTY_STRING;
+        }
+        if (result.contains(COMMA)
+                || result.contains(DOUBLE_QUOTES)
+                || result.contains(NEW_LINE_UNIX)
+                || result.contains(NEW_LINE_WINDOWS)) {
+            // if field contains double quotes, replace it with two double quotes \"\"
+            result = result.replace(DOUBLE_QUOTES, EMBEDDED_DOUBLE_QUOTES);
+
+            // must wrap by or enclosed with double quotes
+            result = DOUBLE_QUOTES + result + DOUBLE_QUOTES;
+        } else {
+            // should all fields enclosed in double quotes
+            if (quote) {
+                result = DOUBLE_QUOTES + result + DOUBLE_QUOTES;
+            }
+        }
+        return result;
+    }
+
+    // a standard FileWriter, CSV is a normal text file
+    private void writeToCsvFile(List<String[]> list, File file) throws IOException {
+        List<String> collect = list.stream()
+                .map(this::convertToCsvFormat)
+                .collect(Collectors.toList());
+        // CSV is a normal text file, need a writer
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
+            for (String line : collect) {
+                bw.write(line);
+                bw.newLine();
+            }
+        }
     }
 
     public static void write(final Model model, final File nodesFile, final File edgesFile) throws IOException {
@@ -34,73 +101,39 @@ public class AAroNCsvWriter {
             if (nodesFile.exists() && !nodesFile.canWrite()) {
                 LOG.error("can not write to nodes file. Check file permission");
             } else {
+                List<String[]> nodesData = new ArrayList<>();
                 model.getNodes().values().stream().forEach(n -> {
                             n.getProperties().entrySet().forEach(entry -> {
                                 nodeHeaders.add(new CSVHeader(entry.getKey(), entry.getValue()));
                             });
                         });
                 nodeCSVHeader = createNodeCSVHeader(nodeHeaders, model);
-                CSVFormat csvFormat = CSVFormat.Builder.create()
-                        .setDelimiter(writer.delimiter)
-                        .setQuote(writer.quote)
-                        .setRecordSeparator("\r\n")
-                        .setIgnoreEmptyLines(true)
-                        .setAllowDuplicateHeaderNames(false)
-                        .setAutoFlush(true)
-                        .setEscape('\\')
-                        .setHeader(Arrays.stream(nodeCSVHeader).map(CSVHeader::toString).toArray(String[]::new))
-                        .build();
-                CSVPrinter nodePrinter = csvFormat.print(nodesFile, StandardCharsets.UTF_8);
+                nodesData.add(Arrays.stream(nodeCSVHeader).map(CSVHeader::toString).toArray(String[]::new));
                 model.getNodes().values().stream().forEach(n -> {
-                    Object[] record = writer.createNodeRecord(nodeCSVHeader, n);
-                    try {
-                        nodePrinter.printRecord(record);
-                    } catch (IOException e) {
-                        LOG.error("Error writing record to file {}", nodesFile.getAbsolutePath());
-                        LOG.error("Record was: {}", record);
-                        LOG.error("For node {}", n);
-                        LOG.error("Exception", e);
-                        e.printStackTrace();
-                    }
+                    String[] record = writer.createNodeRecord(nodeCSVHeader, n);
+                    nodesData.add(record);
                 });
-                nodePrinter.close(true);
+                writer.writeToCsvFile(nodesData, nodesFile);
             }
         }
         if (edgesFile != null) {
             if (edgesFile.exists() && !edgesFile.canWrite()) {
                 LOG.error("can not write to edges file. Check file permission");
             } else {
+                List<String[]> edgesData = new ArrayList<>();
                 model.getEdges().values().stream().forEach(e -> {
                             e.getProperties().entrySet().forEach(entry -> {
                                 edgeHeaders.add(new CSVHeader(entry.getKey(), entry.getValue()));
                             });
                         });
-                edgeCSVHeader = createEdgeCSVHeader(nodeHeaders, model);
-                CSVFormat csvFormat = CSVFormat.Builder.create()
-                        .setDelimiter(writer.delimiter)
-                        .setQuote(writer.quote)
-                        .setRecordSeparator("\r\n")
-                        .setIgnoreEmptyLines(true)
-                        .setAllowDuplicateHeaderNames(false)
-                        .setAutoFlush(true)
-                        .setEscape('\\')
-                        .setHeader(Arrays.stream(edgeCSVHeader).map(CSVHeader::toString).toArray(String[]::new))
-                        .build();
-                CSVPrinter edgePrinter = csvFormat.print(edgesFile, StandardCharsets.UTF_8);
+                edgeCSVHeader = createEdgeCSVHeader(edgeHeaders, model);
+                edgesData.add(Arrays.stream(edgeCSVHeader).map(CSVHeader::toString).toArray(String[]::new));
                 model.getEdges().values().stream().forEach(edge -> {
-                    Object[] record = writer.createEdgeRecord(model, edgeCSVHeader, edge);
-                    try {
-                        if (record != null)
-                            edgePrinter.printRecord(record);
-                    } catch (IOException e) {
-                        LOG.error("Error writing record to file {}", edgesFile.getAbsolutePath());
-                        LOG.error("Record was: {}", record);
-                        LOG.error("For edge {}", edge);
-                        LOG.error("Exception", e);
-                        e.printStackTrace();
-                    }
+                    String[] record = writer.createEdgeRecord(model, edgeCSVHeader, edge);
+                    if (record != null)
+                        edgesData.add(record);
                 });
-                edgePrinter.close(true);
+                writer.writeToCsvFile(edgesData, edgesFile);
             }
         }
     }
@@ -144,16 +177,16 @@ public class AAroNCsvWriter {
         return header.toArray(new CSVHeader[header.size()]);
     }
 
-    private Object[] createNodeRecord(final CSVHeader[] headers, AAroNNode node) {
+    private String[] createNodeRecord(final CSVHeader[] headers, AAroNNode node) {
         List<String> record = new ArrayList<>();
         node.setId(this.nodeIdCounter++);
         record.add(Integer.toString(node.getId()));
-        record.add(node.getLabels().stream().collect(Collectors.joining(";")));
+        record.add(String.join(";", node.getLabels()));
         addPropertiesToNodeRecord(record, headers, node);
         return record.toArray(new String[0]);
     }
 
-    private Object[] createEdgeRecord(final Model model, final CSVHeader[] headers, final AAroNEdge edge) {
+    private String[] createEdgeRecord(final Model model, final CSVHeader[] headers, final AAroNEdge edge) {
         List<String> record = new ArrayList<>();
         AAroNNode startNode = model.getNode(edge.getStart());
         AAroNNode endNode = model.getNode(edge.getEnd());
@@ -188,6 +221,10 @@ public class AAroNCsvWriter {
                         Object[] objects = (Object[]) value;
                         String list = Arrays.stream(objects).map(Object::toString).collect(Collectors.joining(","));
                         record.add(list);
+                    } else if (value instanceof LocalDateTime) {
+                        LocalDateTime dateTime = (LocalDateTime) value;
+                        String format = dateTime.format(DateTimeFormatter.ISO_DATE_TIME);
+                        record.add(format);
                     } else {
                         record.add(value.toString());
                     }

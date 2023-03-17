@@ -1,8 +1,12 @@
-package aaron.sparx;
+package aaron.plugin.sparx;
 
 import aaron.model.Converter;
 import aaron.model.Model;
 import aaron.model.ModelProcessor;
+import aaron.sparx.Config;
+import aaron.sparx.SparxJETConverter;
+import aaron.sparx.SparxMySQLConverter;
+import aaron.sparx.SparxSQLiteConverter;
 import aaron.util.ProgressInfo;
 import aaron.util.ProgressReporter;
 import aaron.util.Util;

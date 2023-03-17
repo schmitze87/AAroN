@@ -6,7 +6,7 @@
 
     <groupId>schmitze87</groupId>
     <artifactId>aaron</artifactId>
-    <version>2022.12</version>
+    <version>4.4.16</version>
     <modules>
         <module>AAroN-CLI</module>
         <module>AAroN-Plugin</module>
@@ -17,10 +17,13 @@
     <name>AAroN - Analyze Architecture on Neo4j</name>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <java.version>11</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
+        <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <version.neo4j>4.4.16</version.neo4j>
     </properties>
 
 <!--    <repositories>-->
@@ -63,11 +66,6 @@
             </dependency>
             <dependency>
                 <groupId>org.apache.commons</groupId>
-                <artifactId>commons-csv</artifactId>
-                <version>1.9.0</version>
-            </dependency>
-            <dependency>
-                <groupId>org.apache.commons</groupId>
                 <artifactId>commons-configuration2</artifactId>
                 <version>2.8.0</version>
             </dependency>
@@ -95,8 +93,8 @@
             <!-- https://mvnrepository.com/artifact/org.firebirdsql.jdbc/jaybird -->
             <dependency>
                 <groupId>org.firebirdsql.jdbc</groupId>
-                <artifactId>jaybird-jdk18</artifactId>
-                <version>4.0.6.java8</version>
+                <artifactId>jaybird</artifactId>
+                <version>4.0.9.java11</version>
             </dependency>
             <!-- https://mvnrepository.com/artifact/org.firebirdsql.jdbc/fbclient -->
             <dependency>
@@ -107,9 +105,9 @@
             <!-- MySQL -->
             <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
             <dependency>
-                <groupId>mysql</groupId>
-                <artifactId>mysql-connector-java</artifactId>
-                <version>8.0.31</version>
+                <groupId>com.mysql</groupId>
+                <artifactId>mysql-connector-j</artifactId>
+                <version>8.0.32</version>
             </dependency>
             <!-- SQLite3 -->
             <!-- https://mvnrepository.com/artifact/org.xerial/sqlite-jdbc -->
@@ -128,7 +126,18 @@
                      project, their scope should normally be `compile` -->
                 <groupId>org.neo4j</groupId>
                 <artifactId>neo4j</artifactId>
-                <version>4.4.8</version>
+                <version>${version.neo4j}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.neo4j</groupId>
+                <artifactId>neo4j-graphdb-api</artifactId>
+                <version>${version.neo4j}</version>
+                <scope>provided</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.neo4j</groupId>
+                <artifactId>neo4j-import-tool</artifactId>
+                <version>${version.neo4j}</version>
             </dependency>
 
             <!--TEST-->
@@ -143,6 +152,10 @@
 
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.10.1</version>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>versions-maven-plugin</artifactId>

@@ -25,7 +25,7 @@ public class PropertyType<E> {
     public static PropertyType<Float[]> FLOAT_ARRAY = new PropertyType<>("float[]", Float[].class);
     public static PropertyType<LocalDateTime> LOCALDATETIME = new PropertyType<>("localdatetime", LocalDateTime.class);
     public static PropertyType<LocalDateTime[]> LOCALDATETIME_ARRAY = new PropertyType<>("localdatetime[]", LocalDateTime[].class);
-    public static PropertyType<Point> POINT = new PropertyType<Point>("point", WGS84Point.class);
+    public static PropertyType<Point> POINT = new PropertyType<>("point", WGS84Point.class);
 
     public static PropertyType[] TYPES = new PropertyType[]{STRING, STRING_ARRAY, INTEGER, INTEGER_ARRAY,
             BOOLEAN, BOOLEAN_ARRAY, LONG, LONG_ARRAY, SHORT, SHORT_ARRAY, DOUBLE, DOUBLE_ARRAY, FLOAT, FLOAT_ARRAY,

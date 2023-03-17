@@ -1,4 +1,4 @@
-package aaron.sparx;
+package aaron.plugin.sparx;
 
 import org.neo4j.graphdb.*;
 import org.neo4j.procedure.Context;

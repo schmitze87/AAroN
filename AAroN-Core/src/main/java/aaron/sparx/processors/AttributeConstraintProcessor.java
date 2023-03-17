@@ -17,7 +17,6 @@ import static aaron.model.PropertyType.LOCALDATETIME;
 import static aaron.model.PropertyType.STRING;
 import static aaron.sparx.model.EAAttributeConstraint.*;
 
-
 public class AttributeConstraintProcessor extends AbstractProcessor {
 
     public AttributeConstraintProcessor(final String sha1, final LocalDateTime time, final Model model, ImportConext context) {

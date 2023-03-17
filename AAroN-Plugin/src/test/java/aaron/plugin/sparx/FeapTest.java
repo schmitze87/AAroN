@@ -1,7 +1,6 @@
-package aaron.sparx;
+package aaron.plugin.sparx;
 
 import org.firebirdsql.jdbc.FBDriver;
-import org.firebirdsql.jdbc.FirebirdDriver;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

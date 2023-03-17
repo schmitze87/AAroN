@@ -5,16 +5,13 @@
     <parent>
         <groupId>schmitze87</groupId>
         <artifactId>aaron</artifactId>
-        <version>2022.12</version>
+        <version>4.4.16</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>aaron-cli</artifactId>
-
-    <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-    </properties>
+    <version>${project.parent.version}</version>
 
     <dependencies>
         <dependency>
@@ -41,6 +38,20 @@
             <artifactId>junit-jupiter</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-graphdb-api</artifactId>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-import-tool</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.neo4j</groupId>
+            <artifactId>neo4j-command-line</artifactId>
+            <version>${version.neo4j}</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -50,9 +61,6 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
                 <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.source}</target>
-                    <encoding>utf-8</encoding>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>info.picocli</groupId>

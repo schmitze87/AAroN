@@ -1,4 +1,4 @@
-package aaron.archimate.openexchange.model;
+package aaron.plugin.archimate.openexchange.model;
 
 import aaron.archimate.ArchiMateConverter;
 import aaron.archimate.exchangexml.ModelType;

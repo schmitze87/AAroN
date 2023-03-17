@@ -1,17 +1,18 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <parent>
-        <artifactId>aaron</artifactId>
         <groupId>schmitze87</groupId>
-        <version>2022.12</version>
+        <artifactId>aaron</artifactId>
+        <version>4.4.16</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
+
     <modelVersion>4.0.0</modelVersion>
     <artifactId>aaron-framework</artifactId>
     <dependencies>
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-graphdb-api</artifactId>
-            <version>4.4.8</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

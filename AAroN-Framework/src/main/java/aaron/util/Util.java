@@ -18,7 +18,7 @@ public class Util {
         Result result = t.execute("CALL dbms.listConfig() YIELD name, value \n"
                 + "WHERE name = 'dbms.directories.import' \n" +
                 "RETURN value;");
-        while (result.hasNext()) {
+        if (result.hasNext()) {
             Map<String, Object> next = result.next();
             Object value = next.get("value");
             path = value != null ? (String) value : "/import";

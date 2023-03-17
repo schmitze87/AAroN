@@ -1,0 +1,5 @@
+*.eap filter=lfs diff=lfs merge=lfs -text
+*.eapx filter=lfs diff=lfs merge=lfs -text
+*.qea filter=lfs diff=lfs merge=lfs -text
+*.qeax filter=lfs diff=lfs merge=lfs -text
+*.feap filter=lfs diff=lfs merge=lfs -text

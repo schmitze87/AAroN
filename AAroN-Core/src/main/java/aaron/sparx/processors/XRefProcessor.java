@@ -104,7 +104,7 @@ public class XRefProcessor extends AbstractProcessor {
             String xrefStereotype = m.group("Name");
             String xrefFQStereotype = m.group("FQName");
             if (StringUtils.equals(stereotype, xrefStereotype)) {
-                edge.addProperty("fqStereotype", STRING, xrefStereotype);
+                edge.addProperty("fqStereotype", STRING, xrefFQStereotype);
             }
         }
     }

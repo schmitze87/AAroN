@@ -1,5 +1,6 @@
-package aaron.archimate;
+package aaron.plugin.archimate;
 
+import aaron.archimate.ArchiMateConverter;
 import aaron.model.Model;
 import aaron.model.ModelProcessor;
 import aaron.util.ProgressInfo;
