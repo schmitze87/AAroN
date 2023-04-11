@@ -7,6 +7,7 @@ import aaron.model.Model;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.*;
 import aaron.sparx.model.EADiagram;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -89,7 +90,7 @@ public class DiagramProcessor extends AbstractProcessor {
                 .addProperty("importedAt", LOCALDATETIME, time)
                 .build();
 
-        if (mdgDiagramType != null) {
+        if (StringUtils.isNotBlank(mdgDiagramType)) {
             diagramNode.addLabel(mdgDiagramType);
         }
 

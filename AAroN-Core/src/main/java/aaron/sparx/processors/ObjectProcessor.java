@@ -89,9 +89,13 @@ public class ObjectProcessor extends AbstractProcessor {
         }
         if (node == null) {
             node = AAroNNode.builder().build();
+            if (StringUtils.isNotBlank(objectType)) {
+                node.addLabel(objectType);
+            }
         }
-        node.addLabel(objectType);
-        node.addLabel(stereotype);
+        if (StringUtils.isNotBlank(stereotype)) {
+            node.addLabel(stereotype);
+        }
         node.addProperty("objectType", STRING, objectType);
         node.addProperty("name", STRING, name);
         node.addProperty("alias", STRING, alias);
