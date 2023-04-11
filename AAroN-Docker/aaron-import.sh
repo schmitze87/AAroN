@@ -3,6 +3,13 @@
 #directory=$(dirname "$(readlink -f "$0")")
 #cd "$directory" || exit
 
+set -x
+
+function running_as_root
+{
+    test "$(id -u)" = "0"
+}
+
 function printNodes {
   for eapFile in "$@"
   do
@@ -48,19 +55,32 @@ if [[ -n "${eaFiles:-}" ]]; then
     edges+=("--relationships='/import/edges_$name.csv'")
   done
 
-  echo ${fileParams[*]}
+  echo "${fileParams[*]}"
 
-  aaron-cli convert ${fileParams[*]} -o /import/ &> /import/aaron.log
+  if running_as_root; then
+    aaron-cli convert ${fileParams[*]} -o /import/ &> /import/aaron.log
 
-  neo4j-admin import \
-  --database=aramis \
-  --input-encoding=UTF-8 \
-  --legacy-style-quoting=false \
-  --multiline-fields=true \
-  --ignore-extra-columns=true \
-  --ignore-empty-strings=false \
-  ${nodes[*]} \
-  ${edges[*]} &> /import/neo4j-admin.log
+    gosu neo4j:neo4j neo4j-admin import \
+                       --database=aramis \
+                       --input-encoding=UTF-8 \
+                       --legacy-style-quoting=false \
+                       --multiline-fields=true \
+                       --ignore-extra-columns=true \
+                       --ignore-empty-strings=false \
+                       ${nodes[*]} \
+                       ${edges[*]} &> /import/neo4j-admin.log
+  else
+    aaron-cli convert "${fileParams[*]}" -o /import/ &> /import/aaron.log
+    neo4j-admin import \
+        --database=aramis \
+        --input-encoding=UTF-8 \
+        --legacy-style-quoting=false \
+        --multiline-fields=true \
+        --ignore-extra-columns=true \
+        --ignore-empty-strings=false \
+        ${nodes[*]} \
+        ${edges[*]} &> /import/neo4j-admin.log
+  fi
 
   # Neo4j 5 Version
   #neo4j-admin database import full \
@@ -80,3 +100,5 @@ fi
 
 unset -f printNodes
 unset -f printEdges
+
+set +x
