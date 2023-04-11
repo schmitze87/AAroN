@@ -114,7 +114,7 @@
             <plugin>
                 <groupId>org.skife.maven</groupId>
                 <artifactId>really-executable-jar-maven-plugin</artifactId>
-                <version>1.5.0</version>
+                <version>2.1.1</version>
                 <configuration>
                     <!-- value of flags will be interpolated into the java invocation -->
                     <!-- as "java $flags -jar ..." -->
@@ -122,7 +122,7 @@
 
                     <!-- (optional) name for binary executable, if not set will just -->
                     <!-- make the regular jar artifact executable -->
-                    <programFile>aaron-cli</programFile>
+                    <programFile>../../AAroN-Docker/aaron-cli</programFile>
 
                     <!-- (optional) support other packaging formats than jar -->
                     <!-- <allowOtherTypes>true</allowOtherTypes> -->
