@@ -6,7 +6,7 @@
 
     <groupId>schmitze87</groupId>
     <artifactId>aaron</artifactId>
-    <version>4.4.19</version>
+    <version>5.6.0.0</version>
     <modules>
         <module>AAroN-CLI</module>
         <module>AAroN-Plugin</module>
@@ -17,13 +17,13 @@
     <name>AAroN - Analyze Architecture on Neo4j</name>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>17</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <version.neo4j>4.4.19</version.neo4j>
+        <version.neo4j>5.6.0</version.neo4j>
         <version.picocli>4.7.3</version.picocli>
     </properties>
 
@@ -142,6 +142,19 @@
             </dependency>
 
             <!--TEST-->
+            <dependency>
+                <groupId>org.neo4j.test</groupId>
+                <artifactId>neo4j-harness</artifactId>
+                <version>${version.neo4j}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.neo4j.driver</groupId>
+                <artifactId>neo4j-java-driver</artifactId>
+                <version>5.6.0</version>
+                <scope>test</scope>
+            </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
