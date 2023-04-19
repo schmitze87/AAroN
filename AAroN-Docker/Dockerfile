@@ -1,4 +1,4 @@
-FROM docker.io/library/neo4j:4.4.16-community
+FROM docker.io/library/neo4j:5.6.0-community
 
 RUN set -eux \
     && DEBIAN_FRONTEND=noninteractive apt-get update \

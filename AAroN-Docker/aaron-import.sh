@@ -60,40 +60,31 @@ if [[ -n "${eaFiles:-}" ]]; then
   if running_as_root; then
     aaron-cli convert ${fileParams[*]} -o /import/ &> /import/aaron.log
 
-    gosu neo4j:neo4j neo4j-admin import \
-                       --database=aramis \
+    gosu neo4j:neo4j neo4j-admin database import full \
                        --input-encoding=UTF-8 \
                        --legacy-style-quoting=false \
                        --multiline-fields=true \
                        --ignore-extra-columns=true \
                        --ignore-empty-strings=false \
+                       --overwrite-destination=true \
                        ${nodes[*]} \
-                       ${edges[*]} &> /import/neo4j-admin.log
+                       ${edges[*]} \
+                       --verbose
+                       neo4j &> /import/neo4j-admin.log
   else
-    aaron-cli convert "${fileParams[*]}" -o /import/ &> /import/aaron.log
-    neo4j-admin import \
-        --database=aramis \
-        --input-encoding=UTF-8 \
-        --legacy-style-quoting=false \
-        --multiline-fields=true \
-        --ignore-extra-columns=true \
-        --ignore-empty-strings=false \
-        ${nodes[*]} \
-        ${edges[*]} &> /import/neo4j-admin.log
+    aaron-cli convert ${fileParams[*]} -o /import/ &> /import/aaron.log
+    neo4j-admin database import full \
+      --input-encoding=UTF-8 \
+      --legacy-style-quoting=false \
+      --multiline-fields=true \
+      --ignore-extra-columns=true \
+      --ignore-empty-strings=false \
+      --overwrite-destination=true \
+      ${nodes[*]} \
+      ${edges[*]} \
+      --verbose
+      neo4j &> /import/neo4j-admin.log
   fi
-
-  # Neo4j 5 Version
-  #neo4j-admin database import full \
-  #--input-encoding=UTF-8 \
-  #--legacy-style-quoting=false \
-  #--multiline-fields=true \
-  #--ignore-extra-columns=true \
-  #--ignore-empty-strings=false \
-  #--overwrite-destination=true \
-  #${nodes[*]} \
-  #${edges[*]} \
-  #--verbose
-  #aramis
 else
   echo "no architecture files to import"
 fi
