@@ -43,7 +43,7 @@ nodes=()
 edges=()
 eaFiles=()
 
-mapfile -t -d " " eaFiles < <(find /import/ -iregex '.*\.\(eapx\|eap\|qea\|qeax\)')
+mapfile -t eaFiles < <(find /import/ -iregex '.*\.\(eapx\|eap\|qea\|qeax\)')
 if [[ -n "${eaFiles:-}" ]]; then
   for eaFile in $eaFiles
   do
