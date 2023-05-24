@@ -219,7 +219,7 @@ public class AAroNCsvWriter {
                 } else {
                     if (value.getClass().isArray()) {
                         Object[] objects = (Object[]) value;
-                        String list = Arrays.stream(objects).map(Object::toString).collect(Collectors.joining(","));
+                        String list = Arrays.stream(objects).filter(Objects::nonNull).map(Object::toString).collect(Collectors.joining(","));
                         record.add(list);
                     } else if (value instanceof LocalDateTime) {
                         LocalDateTime dateTime = (LocalDateTime) value;
