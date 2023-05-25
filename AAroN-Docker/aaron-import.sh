@@ -38,28 +38,22 @@ function deleteCSV {
 export -f printNodes
 export -f printEdges
 
-fileParams=()
 nodes=()
 edges=()
 eaFiles=()
 
 mapfile -t eaFiles < <(find /import/ -iregex '.*\.\(eapx\|eap\|qea\|qeax\)')
 if [[ -n "${eaFiles:-}" ]]; then
-  for eaFile in $eaFiles
-  do
-  #  echo $eaFile
+  for eaFile in "${eaFiles[@]}"; do
     file=$(readlink -f "$eaFile")
-    fileParams+=("-f $file")
     name=$(basename "$file")
-    nodes+=("--nodes='/import/nodes_$name.csv'")
-    edges+=("--relationships='/import/edges_$name.csv'")
+    nodes=("${nodes[@]}" "--nodes='/import/nodes_$name.csv'")
+    edges=("${edges[@]}" "--relationships='/import/edges_$name.csv'")
   done
 
-  echo "${fileParams[*]}"
-
+  echo "${eaFiles[@]}"
+  aaron-cli convert -o /import/ "${eaFiles[@]/#/-f}" &> /import/aaron.log
   if running_as_root; then
-    aaron-cli convert ${fileParams[*]} -o /import/ &> /import/aaron.log
-
     gosu neo4j:neo4j neo4j-admin database import full \
                        --input-encoding=UTF-8 \
                        --legacy-style-quoting=false \
@@ -67,12 +61,11 @@ if [[ -n "${eaFiles:-}" ]]; then
                        --ignore-extra-columns=true \
                        --ignore-empty-strings=false \
                        --overwrite-destination=true \
-                       ${nodes[*]} \
-                       ${edges[*]} \
+                       "${nodes[@]}" \
+                       "${edges[@]}" \
                        --verbose
                        neo4j &> /import/neo4j-admin.log
   else
-    aaron-cli convert ${fileParams[*]} -o /import/ &> /import/aaron.log
     neo4j-admin database import full \
       --input-encoding=UTF-8 \
       --legacy-style-quoting=false \
@@ -80,8 +73,8 @@ if [[ -n "${eaFiles:-}" ]]; then
       --ignore-extra-columns=true \
       --ignore-empty-strings=false \
       --overwrite-destination=true \
-      ${nodes[*]} \
-      ${edges[*]} \
+      "${nodes[@]}" \
+      "${edges[@]}" \
       --verbose
       neo4j &> /import/neo4j-admin.log
   fi
