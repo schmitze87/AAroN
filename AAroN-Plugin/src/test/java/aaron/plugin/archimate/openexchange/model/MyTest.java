@@ -43,4 +43,14 @@ class MyTest {
         System.out.println(graphModel.toString());
     }
 
+    @Test
+    void thirdTest() {
+        URL resource = ClassLoader.getSystemResource("aaron-test.xml");
+        File file = new File(resource.getFile());
+        Assertions.assertNotNull(file);
+        ArchiMateConverter converter = new ArchiMateConverter(file);
+        Model graphModel = converter.convert();
+        System.out.println(graphModel.toString());
+    }
+
 }
