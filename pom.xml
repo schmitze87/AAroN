@@ -6,7 +6,7 @@
 
     <groupId>schmitze87</groupId>
     <artifactId>aaron</artifactId>
-    <version>5.6.0.0</version>
+    <version>5.8.0.0</version>
     <modules>
         <module>AAroN-CLI</module>
         <module>AAroN-Plugin</module>
@@ -23,8 +23,8 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <version.neo4j>5.6.0</version.neo4j>
-        <version.picocli>4.7.3</version.picocli>
+        <version.neo4j>5.8.0</version.neo4j>
+        <version.picocli>4.7.4</version.picocli>
     </properties>
 
 <!--    <repositories>-->
@@ -115,7 +115,7 @@
             <dependency>
                 <groupId>org.xerial</groupId>
                 <artifactId>sqlite-jdbc</artifactId>
-                <version>3.41.2.1</version>
+                <version>3.42.0.0</version>
             </dependency>
 
 
@@ -152,13 +152,13 @@
             <dependency>
                 <groupId>org.neo4j.driver</groupId>
                 <artifactId>neo4j-java-driver</artifactId>
-                <version>5.6.0</version>
+                <version>5.9.0</version>
                 <scope>test</scope>
             </dependency>
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter</artifactId>
-                <version>5.9.2</version>
+                <version>5.9.3</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
