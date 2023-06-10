@@ -46,8 +46,8 @@ public class DiagramProcessor extends AbstractProcessor<Diagram> {
         if (viewNode instanceof Element element) {
             Object elementRef = element.getElementRef();
             ArchiMateIdentifier elementIdentifier = null;
-            if (elementRef instanceof DataObject dataObject) {
-                elementIdentifier = new ArchiMateIdentifier(dataObject.getIdentifier());
+            if (elementRef instanceof ReferenceableType reference) {
+                elementIdentifier = new ArchiMateIdentifier(reference.getIdentifier());
                 AAroNEdge edge = AAroNEdge.builder()
                         .setStart(diagramIdentifier)
                         .setEnd(elementIdentifier)
