@@ -6,7 +6,7 @@
 
     <groupId>schmitze87</groupId>
     <artifactId>aaron</artifactId>
-    <version>5.8.0.0</version>
+    <version>5.8.0.1</version>
     <modules>
         <module>AAroN-CLI</module>
         <module>AAroN-Plugin</module>
