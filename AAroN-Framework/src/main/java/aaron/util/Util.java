@@ -35,7 +35,7 @@ public class Util {
         dos.writeLong(timestamp.getEpochSecond());
         dos.flush();
         digest.update(bos.toByteArray());
-        return HexString.encodeHexString(digest.digest());
+        return HexString.encodeHexString(digest.digest()).toLowerCase();
     }
 
     public static String createSHA1(File file) throws Exception {
@@ -49,7 +49,7 @@ public class Util {
                 digest.update(buffer, 0, n);
             }
         }
-        return HexString.encodeHexString(digest.digest());
+        return HexString.encodeHexString(digest.digest()).toLowerCase();
     }
 
     public static String createSHA256(File file) throws Exception {
@@ -63,6 +63,6 @@ public class Util {
                 digest.update(buffer, 0, n);
             }
         }
-        return HexString.encodeHexString(digest.digest());
+        return HexString.encodeHexString(digest.digest()).toLowerCase();
     }
 }
