@@ -53,85 +53,85 @@ public abstract class AbstractSparxConverter implements Converter {
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processPackages(
             final String sha1, final LocalDateTime time, final T table) {
-        Processor processor = new PackageProcessor(sha1, time, model, context);
+        Processor<Map<String, Object>> processor = new PackageProcessor(sha1, time, model, context);
         table.forEach(processor::process);
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processObjects(
             final String sha1, final LocalDateTime time, final T table) {
-        Processor processor = new ObjectProcessor(sha1, time, model, context);
+        Processor<Map<String, Object>> processor = new ObjectProcessor(sha1, time, model, context);
         table.forEach(processor::process);
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processConnectors(
             final String sha1, final LocalDateTime time, final T table) {
-        Processor processor = new ConnectorProcessor(sha1, time, model, context);
+        Processor<Map<String, Object>> processor = new ConnectorProcessor(sha1, time, model, context);
         table.forEach(processor::process);
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processConnectorTags(
             final String sha1, final LocalDateTime time, final T table) {
-        Processor processor = new ConnectorTagProcessor(sha1, time, model, context);
+        Processor<Map<String, Object>> processor = new ConnectorTagProcessor(sha1, time, model, context);
         table.forEach(processor::process);
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processDiagrams(
             final String sha1, final LocalDateTime time, final T table) {
-        Processor processor = new DiagramProcessor(sha1, time, model, context);
+        Processor<Map<String, Object>> processor = new DiagramProcessor(sha1, time, model, context);
         table.forEach(processor::process);
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processDiagramObjects(
             final String sha1, final LocalDateTime time, final T table) {
-        Processor processor = new DiagramObjectsProcessor(sha1, time, model, context);
+        Processor<Map<String, Object>> processor = new DiagramObjectsProcessor(sha1, time, model, context);
         table.forEach(processor::process);
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processDiagramLinks(
             final String sha1, final LocalDateTime time, final T table) {
-        Processor processor = new DiagramLinksProcessor(sha1, time, model, context);
+        Processor<Map<String, Object>> processor = new DiagramLinksProcessor(sha1, time, model, context);
         table.forEach(processor::process);
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processXRefs(
             final String sha1, final LocalDateTime time, final T table) {
-        Processor processor = new XRefProcessor(sha1, time, model, context);
+        Processor<Map<String, Object>> processor = new XRefProcessor(sha1, time, model, context);
         table.forEach(processor::process);
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processObjectProperties(
             final String sha1, final LocalDateTime time, final T table) {
-        Processor processor = new ObjectPropertiesProcessor(sha1, time, model, context, config.getTaggedValueMode());
+        Processor<Map<String, Object>> processor = new ObjectPropertiesProcessor(sha1, time, model, context, config.getTaggedValueMode());
         table.forEach(processor::process);
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processOperations(
             final String sha1, final LocalDateTime time, final T table) {
-        Processor processor = new OperationProcessor(sha1, time, model, context);
+        Processor<Map<String, Object>> processor = new OperationProcessor(sha1, time, model, context);
         table.forEach(processor::process);
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processOperationTags(
             final String sha1, final LocalDateTime time, final T table) {
-        Processor processor = new OperationTagProcessor(sha1, time, model, context, config.getTaggedValueMode());
+        Processor<Map<String, Object>> processor = new OperationTagProcessor(sha1, time, model, context, config.getTaggedValueMode());
         table.forEach(processor::process);
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processOperationParams(
             final String sha1, final LocalDateTime time, final T table) {
-        Processor processor = new OperationParamsProcessor(sha1, time, model, context);
+        Processor<Map<String, Object>> processor = new OperationParamsProcessor(sha1, time, model, context);
         table.forEach(processor::process);
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processAttributes(
             final String sha1, final LocalDateTime time, final T table) {
-        Processor processor = new AttributeProcessor(sha1, time, model, context);
+        Processor<Map<String, Object>> processor = new AttributeProcessor(sha1, time, model, context);
         table.forEach(processor::process);
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processAttributeTags(
             final String sha1, final LocalDateTime time, final T table) {
-        Processor processor = new AttributeTagProcessor(sha1, time, model, context, config.getTaggedValueMode());
+        Processor<Map<String, Object>> processor = new AttributeTagProcessor(sha1, time, model, context, config.getTaggedValueMode());
         table.forEach(processor::process);
     }
 

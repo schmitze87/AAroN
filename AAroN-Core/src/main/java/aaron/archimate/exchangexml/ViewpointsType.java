@@ -68,7 +68,7 @@ public class ViewpointsType {
      */
     public List<ViewpointType> getViewpoint() {
         if (viewpoint == null) {
-            viewpoint = new ArrayList<ViewpointType>();
+            viewpoint = new ArrayList<>();
         }
         return this.viewpoint;
     }

@@ -80,7 +80,7 @@ public class OrganizationType {
     @XmlSchemaType(name = "ID")
     protected String identifier;
     @XmlAnyAttribute
-    private Map<QName, String> otherAttributes = new HashMap<QName, String>();
+    private Map<QName, String> otherAttributes = new HashMap<>();
 
     /**
      * Gets the value of the labelGroup property.
@@ -104,7 +104,7 @@ public class OrganizationType {
      */
     public List<LangStringType> getLabelGroup() {
         if (labelGroup == null) {
-            labelGroup = new ArrayList<LangStringType>();
+            labelGroup = new ArrayList<>();
         }
         return this.labelGroup;
     }
@@ -131,7 +131,7 @@ public class OrganizationType {
      */
     public List<PreservedLangStringType> getDocumentationGroup() {
         if (documentationGroup == null) {
-            documentationGroup = new ArrayList<PreservedLangStringType>();
+            documentationGroup = new ArrayList<>();
         }
         return this.documentationGroup;
     }
@@ -158,7 +158,7 @@ public class OrganizationType {
      */
     public List<OrganizationType> getItem() {
         if (item == null) {
-            item = new ArrayList<OrganizationType>();
+            item = new ArrayList<>();
         }
         return this.item;
     }
@@ -185,7 +185,7 @@ public class OrganizationType {
      */
     public List<Object> getAny() {
         if (any == null) {
-            any = new ArrayList<Object>();
+            any = new ArrayList<>();
         }
         return this.any;
     }

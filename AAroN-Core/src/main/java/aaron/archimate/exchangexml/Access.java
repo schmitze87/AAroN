@@ -13,6 +13,8 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlType;
 
+import java.util.Objects;
+
 
 /**
  * <p>Java-Klasse für Access complex type.
@@ -45,11 +47,7 @@ public class Access
      * {@link AccessTypeEnum }
      */
     public AccessTypeEnum getAccessType() {
-        if (accessType == null) {
-            return AccessTypeEnum.ACCESS;
-        } else {
-            return accessType;
-        }
+        return Objects.requireNonNullElse(accessType, AccessTypeEnum.ACCESS);
     }
 
     /**

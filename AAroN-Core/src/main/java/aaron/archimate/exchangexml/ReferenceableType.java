@@ -66,7 +66,7 @@ public abstract class ReferenceableType {
     @XmlSchemaType(name = "ID")
     protected String identifier;
     @XmlAnyAttribute
-    private Map<QName, String> otherAttributes = new HashMap<QName, String>();
+    private Map<QName, String> otherAttributes = new HashMap<>();
 
     /**
      * Gets the value of the nameGroup property.
@@ -90,7 +90,7 @@ public abstract class ReferenceableType {
      */
     public List<LangStringType> getNameGroup() {
         if (nameGroup == null) {
-            nameGroup = new ArrayList<LangStringType>();
+            nameGroup = new ArrayList<>();
         }
         return this.nameGroup;
     }
@@ -117,7 +117,7 @@ public abstract class ReferenceableType {
      */
     public List<PreservedLangStringType> getDocumentation() {
         if (documentation == null) {
-            documentation = new ArrayList<PreservedLangStringType>();
+            documentation = new ArrayList<>();
         }
         return this.documentation;
     }
@@ -144,7 +144,7 @@ public abstract class ReferenceableType {
      */
     public List<Object> getAny() {
         if (any == null) {
-            any = new ArrayList<Object>();
+            any = new ArrayList<>();
         }
         return this.any;
     }

@@ -106,7 +106,7 @@ public class ViewpointType
      */
     public List<ConcernType> getConcern() {
         if (concern == null) {
-            concern = new ArrayList<ConcernType>();
+            concern = new ArrayList<>();
         }
         return this.concern;
     }
@@ -133,7 +133,7 @@ public class ViewpointType
      */
     public List<ViewpointPurposeEnum> getViewpointPurpose() {
         if (viewpointPurpose == null) {
-            viewpointPurpose = new ArrayList<ViewpointPurposeEnum>();
+            viewpointPurpose = new ArrayList<>();
         }
         return this.viewpointPurpose;
     }
@@ -160,7 +160,7 @@ public class ViewpointType
      */
     public List<ViewpointContentEnum> getViewpointContent() {
         if (viewpointContent == null) {
-            viewpointContent = new ArrayList<ViewpointContentEnum>();
+            viewpointContent = new ArrayList<>();
         }
         return this.viewpointContent;
     }
@@ -187,7 +187,7 @@ public class ViewpointType
      */
     public List<AllowedElementTypeType> getAllowedElementType() {
         if (allowedElementType == null) {
-            allowedElementType = new ArrayList<AllowedElementTypeType>();
+            allowedElementType = new ArrayList<>();
         }
         return this.allowedElementType;
     }
@@ -214,7 +214,7 @@ public class ViewpointType
      */
     public List<AllowedRelationshipTypeType> getAllowedRelationshipType() {
         if (allowedRelationshipType == null) {
-            allowedRelationshipType = new ArrayList<AllowedRelationshipTypeType>();
+            allowedRelationshipType = new ArrayList<>();
         }
         return this.allowedRelationshipType;
     }
@@ -241,7 +241,7 @@ public class ViewpointType
      */
     public List<ModelingNoteType> getModelingNote() {
         if (modelingNote == null) {
-            modelingNote = new ArrayList<ModelingNoteType>();
+            modelingNote = new ArrayList<>();
         }
         return this.modelingNote;
     }

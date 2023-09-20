@@ -817,7 +817,7 @@ public class ObjectFactory {
      */
     @XmlElementDecl(namespace = "http://www.opengroup.org/xsd/archimate/3.0/", name = "model")
     public JAXBElement<ModelType> createModel(ModelType value) {
-        return new JAXBElement<ModelType>(_Model_QNAME, ModelType.class, null, value);
+        return new JAXBElement<>(_Model_QNAME, ModelType.class, null, value);
     }
 
 }

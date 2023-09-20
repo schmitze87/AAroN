@@ -68,7 +68,7 @@ public class ElementsType {
      */
     public List<ElementType> getElement() {
         if (element == null) {
-            element = new ArrayList<ElementType>();
+            element = new ArrayList<>();
         }
         return this.element;
     }

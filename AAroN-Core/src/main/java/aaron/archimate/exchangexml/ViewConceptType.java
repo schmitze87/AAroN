@@ -69,7 +69,7 @@ public abstract class ViewConceptType {
     @XmlSchemaType(name = "ID")
     protected String identifier;
     @XmlAnyAttribute
-    private Map<QName, String> otherAttributes = new HashMap<QName, String>();
+    private Map<QName, String> otherAttributes = new HashMap<>();
 
     /**
      * Gets the value of the labelGroup property.
@@ -93,7 +93,7 @@ public abstract class ViewConceptType {
      */
     public List<LangStringType> getLabelGroup() {
         if (labelGroup == null) {
-            labelGroup = new ArrayList<LangStringType>();
+            labelGroup = new ArrayList<>();
         }
         return this.labelGroup;
     }
@@ -120,7 +120,7 @@ public abstract class ViewConceptType {
      */
     public List<PreservedLangStringType> getDocumentationGroup() {
         if (documentationGroup == null) {
-            documentationGroup = new ArrayList<PreservedLangStringType>();
+            documentationGroup = new ArrayList<>();
         }
         return this.documentationGroup;
     }
@@ -167,7 +167,7 @@ public abstract class ViewConceptType {
      */
     public List<ReferenceType> getViewRef() {
         if (viewRef == null) {
-            viewRef = new ArrayList<ReferenceType>();
+            viewRef = new ArrayList<>();
         }
         return this.viewRef;
     }

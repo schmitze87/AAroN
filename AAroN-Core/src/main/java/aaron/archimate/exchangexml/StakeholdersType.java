@@ -68,7 +68,7 @@ public class StakeholdersType {
      */
     public List<StakeholderType> getStakeholder() {
         if (stakeholder == null) {
-            stakeholder = new ArrayList<StakeholderType>();
+            stakeholder = new ArrayList<>();
         }
         return this.stakeholder;
     }

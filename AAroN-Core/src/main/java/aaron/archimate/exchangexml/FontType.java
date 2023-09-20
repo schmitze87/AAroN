@@ -137,7 +137,7 @@ public class FontType {
      */
     public List<FontStyleEnum> getStyle() {
         if (style == null) {
-            style = new ArrayList<FontStyleEnum>();
+            style = new ArrayList<>();
         }
         return this.style;
     }

@@ -68,7 +68,7 @@ public class PropertiesType {
      */
     public List<PropertyType> getProperty() {
         if (property == null) {
-            property = new ArrayList<PropertyType>();
+            property = new ArrayList<>();
         }
         return this.property;
     }

@@ -168,7 +168,7 @@ public class OriginalModelType
      */
     public List<OrganizationsType> getOrganizations() {
         if (organizations == null) {
-            organizations = new ArrayList<OrganizationsType>();
+            organizations = new ArrayList<>();
         }
         return this.organizations;
     }
