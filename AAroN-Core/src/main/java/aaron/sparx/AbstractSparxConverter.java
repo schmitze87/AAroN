@@ -87,6 +87,12 @@ public abstract class AbstractSparxConverter implements Converter {
         table.forEach(processor::process);
     }
 
+    protected <T extends Iterable<U>, U extends Map<String, Object>> void processDiagramLinks(
+            final String sha1, final LocalDateTime time, final T table) {
+        Processor processor = new DiagramLinksProcessor(sha1, time, model, context);
+        table.forEach(processor::process);
+    }
+
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processXRefs(
             final String sha1, final LocalDateTime time, final T table) {
         Processor processor = new XRefProcessor(sha1, time, model, context);

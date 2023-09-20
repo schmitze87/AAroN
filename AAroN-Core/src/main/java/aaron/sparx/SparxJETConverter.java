@@ -38,6 +38,7 @@ public class SparxJETConverter extends AbstractSparxConverter {
 
         processDiagrams(sha1, now, db.getTable(EADiagram.TABLE_NAME));
         processDiagramObjects(sha1, now, db.getTable(EADiagramObject.TABLE_NAME));
+        processDiagramLinks(sha1, now, db.getTable(EADiagramLink.TABLE_NAME));
 
         processObjects(sha1, now, db.getTable(EAObject.TABLE_NAME));
         processObjectProperties(sha1, now, db.getTable(EAObjectProperty.TABLE_NAME));
