@@ -4,8 +4,8 @@ import aaron.model.ImportConext;
 import aaron.model.Model;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.TaggedValueMode;
-import aaron.sparx.identifiers.AttributeId;
 import aaron.sparx.identifiers.AttributeTagGUID;
+import aaron.sparx.identifiers.ConnectorId;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -31,7 +31,7 @@ public class ConnectorTagProcessor extends AbstractProcessor {
         String notes = NOTES.value(row);
         String eaGuid = GUIDHelper.unwrapGuid(EA_GUID.value(row));
 
-        AttributeId connectorId = new AttributeId(elementId);
+        ConnectorId connectorId = new ConnectorId(elementId);
         AttributeTagGUID connectorTagGUID = new AttributeTagGUID(eaGuid);
 
         TaggedValueHelper.process(sha1, time, model, mode, property, "<memo>".equals(value) ? notes : value, connectorTagGUID, connectorId);
