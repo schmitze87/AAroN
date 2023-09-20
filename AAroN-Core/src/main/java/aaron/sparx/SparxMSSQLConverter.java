@@ -3,8 +3,6 @@ package aaron.sparx;
 import aaron.model.Model;
 import aaron.sparx.model.*;
 import aaron.util.Util;
-import com.microsoft.sqlserver.jdbc.ISQLServerConnection;
-import com.microsoft.sqlserver.jdbc.SQLServerConnection;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
