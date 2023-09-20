@@ -45,10 +45,6 @@
             <groupId>org.firebirdsql.jdbc</groupId>
             <artifactId>jaybird</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.firebirdsql.jdbc</groupId>
-            <artifactId>fbclient</artifactId>
-        </dependency>
 
         <!-- MySQL -->
         <dependency>
