@@ -4,8 +4,8 @@ import aaron.model.ImportConext;
 import aaron.model.Model;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.TaggedValueMode;
-import aaron.sparx.identifiers.AttributeId;
 import aaron.sparx.identifiers.AttributeTagGUID;
+import aaron.sparx.identifiers.ObjectId;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -30,9 +30,9 @@ public class AttributeTagProcessor extends AbstractProcessor {
         String notes = NOTES.value(row);
         String eaGuid = GUIDHelper.unwrapGuid(EA_GUID.value(row));
 
-        AttributeId attributeId = new AttributeId(elementId);
+        ObjectId elementIdentifier = new ObjectId(elementId);
         AttributeTagGUID attributeTagGUID = new AttributeTagGUID(eaGuid);
 
-        TaggedValueHelper.process(sha1, time, model, mode, property, "<memo>".equals(value) ? notes : value, attributeTagGUID, attributeId);
+        TaggedValueHelper.process(sha1, time, model, mode, property, "<memo>".equals(value) ? notes : value, attributeTagGUID, elementIdentifier);
     }
 }
