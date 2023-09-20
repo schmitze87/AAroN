@@ -3,10 +3,7 @@ package aaron.plugin.sparx;
 import aaron.model.Converter;
 import aaron.model.Model;
 import aaron.model.ModelProcessor;
-import aaron.sparx.Config;
-import aaron.sparx.SparxJETConverter;
-import aaron.sparx.SparxMySQLConverter;
-import aaron.sparx.SparxSQLiteConverter;
+import aaron.sparx.*;
 import aaron.util.ProgressInfo;
 import aaron.util.ProgressReporter;
 import aaron.util.Util;
@@ -105,6 +102,42 @@ public class SparxImporter {
             progressInfo.batchSize = 1000;
             final ProgressReporter reporter = new ProgressReporter(null, new PrintWriter(System.out), progressInfo);
             Converter converter = new SparxMySQLConverter(config, host, port, databaseName, username, password);
+            Model model = null;
+            try {
+                model = converter.convert();
+            } catch (IOException e) {
+                log.error("IO Error", e);
+            }
+            ModelProcessor modelProcessor = new ModelProcessor(db, reporter);
+            modelProcessor.process(model);
+            return reporter.getTotal();
+        });
+        try {
+            ProgressInfo info = future.get();
+            return Stream.of(info);
+        } catch (InterruptedException e) {
+            log.warn("Interrupted", e);
+        } catch (ExecutionException e) {
+            log.error("Could not process the results", e);
+        }
+        return Stream.empty();
+    }
+
+    @Procedure(name = "aaron.import.sparxMSSQL", mode = Mode.WRITE)
+    @Description("Imports an Sparx Enterprise Architect MSSQL Project")
+    public Stream<ProgressInfo> importMSSQL(@Name("host") String host,
+                                            @Name("port") long port,
+                                            @Name("databaseName") String databaseName,
+                                            @Name("username") String username,
+                                            @Name(value = "password") String password,
+                                            @Name(value = "instance", defaultValue = "") String instance,
+                                            @Name(value = "config", defaultValue = "{}") Map<String, Object> configMap) {
+        Config config = Config.createFromMap(configMap);
+        CompletableFuture<ProgressInfo> future = CompletableFuture.supplyAsync(() -> {
+            ProgressInfo progressInfo = new ProgressInfo(databaseName, host, "MSSQL");
+            progressInfo.batchSize = 1000;
+            final ProgressReporter reporter = new ProgressReporter(null, new PrintWriter(System.out), progressInfo);
+            Converter converter = new SparxMSSQLConverter(config, host, instance, port, databaseName, username, password);
             Model model = null;
             try {
                 model = converter.convert();
