@@ -58,6 +58,12 @@
             <artifactId>sqlite-jdbc</artifactId>
         </dependency>
 
+        <!-- MSSQL -->
+        <dependency>
+            <groupId>com.microsoft.sqlserver</groupId>
+            <artifactId>mssql-jdbc</artifactId>
+        </dependency>
+
 <!--        <dependency>-->
 <!--            &lt;!&ndash; This gives us the Procedure API our runtime code uses.-->
 <!--                 We have a `provided` scope on it, because when this is-->
