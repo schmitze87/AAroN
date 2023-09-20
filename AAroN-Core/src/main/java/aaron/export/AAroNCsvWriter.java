@@ -102,16 +102,12 @@ public class AAroNCsvWriter {
                 LOG.error("can not write to nodes file. Check file permission");
             } else {
                 List<String[]> nodesData = new ArrayList<>();
-                model.getNodes().values().stream().forEach(n -> {
-                            n.getProperties().entrySet().forEach(entry -> {
-                                nodeHeaders.add(new CSVHeader(entry.getKey(), entry.getValue()));
-                            });
-                        });
+                model.getNodes().values().stream().forEach(n -> n.getProperties().entrySet().forEach(entry -> nodeHeaders.add(new CSVHeader(entry.getKey(), entry.getValue()))));
                 nodeCSVHeader = createNodeCSVHeader(nodeHeaders, model);
                 nodesData.add(Arrays.stream(nodeCSVHeader).map(CSVHeader::toString).toArray(String[]::new));
                 model.getNodes().values().stream().forEach(n -> {
-                    String[] record = writer.createNodeRecord(nodeCSVHeader, n);
-                    nodesData.add(record);
+                    String[] nodeRrecord = writer.createNodeRecord(nodeCSVHeader, n);
+                    nodesData.add(nodeRrecord);
                 });
                 writer.writeToCsvFile(nodesData, nodesFile);
             }
@@ -121,17 +117,13 @@ public class AAroNCsvWriter {
                 LOG.error("can not write to edges file. Check file permission");
             } else {
                 List<String[]> edgesData = new ArrayList<>();
-                model.getEdges().values().stream().forEach(e -> {
-                            e.getProperties().entrySet().forEach(entry -> {
-                                edgeHeaders.add(new CSVHeader(entry.getKey(), entry.getValue()));
-                            });
-                        });
+                model.getEdges().values().stream().forEach(e -> e.getProperties().entrySet().forEach(entry -> edgeHeaders.add(new CSVHeader(entry.getKey(), entry.getValue()))));
                 edgeCSVHeader = createEdgeCSVHeader(edgeHeaders, model);
                 edgesData.add(Arrays.stream(edgeCSVHeader).map(CSVHeader::toString).toArray(String[]::new));
                 model.getEdges().values().stream().forEach(edge -> {
-                    String[] record = writer.createEdgeRecord(model, edgeCSVHeader, edge);
-                    if (record != null)
-                        edgesData.add(record);
+                    String[] edgeRecord = writer.createEdgeRecord(model, edgeCSVHeader, edge);
+                    if (edgeRecord != null)
+                        edgesData.add(edgeRecord);
                 });
                 writer.writeToCsvFile(edgesData, edgesFile);
             }
@@ -178,81 +170,88 @@ public class AAroNCsvWriter {
     }
 
     private String[] createNodeRecord(final CSVHeader[] headers, AAroNNode node) {
-        List<String> record = new ArrayList<>();
+        List<String> csvRecord = new ArrayList<>();
         node.setId(this.nodeIdCounter++);
-        record.add(Integer.toString(node.getId()));
-        record.add(String.join(";", node.getLabels()));
-        addPropertiesToNodeRecord(record, headers, node);
-        return record.toArray(new String[0]);
+        csvRecord.add(Integer.toString(node.getId()));
+        csvRecord.add(String.join(";", node.getLabels()));
+        addPropertiesToNodeRecord(csvRecord, headers, node);
+        return csvRecord.toArray(new String[0]);
     }
 
     private String[] createEdgeRecord(final Model model, final CSVHeader[] headers, final AAroNEdge edge) {
-        List<String> record = new ArrayList<>();
+        List<String> csvRecord = new ArrayList<>();
         AAroNNode startNode = model.getNode(edge.getStart());
         AAroNNode endNode = model.getNode(edge.getEnd());
 
         if(startNode != null && startNode.getId() != null && endNode != null && endNode.getId() != null) {
-            record.add(String.valueOf(startNode.getId()));
-            record.add(edge.getType());
-            record.add(String.valueOf(endNode.getId()));
-            addPropertiesToEdgeRecord(record, headers, edge);
-            return record.toArray(new String[0]);
+            csvRecord.add(String.valueOf(startNode.getId()));
+            csvRecord.add(edge.getType());
+            csvRecord.add(String.valueOf(endNode.getId()));
+            addPropertiesToEdgeRecord(csvRecord, headers, edge);
+            return csvRecord.toArray(new String[0]);
         }
         return null;
     }
 
-    private void addPropertiesToNodeRecord(final List<String> record, final CSVHeader[] headers, final WithProperties withProperties) {
-        addPropertiesToRecord(record, headers, withProperties, 2);
+    private void addPropertiesToNodeRecord(final List<String> csvRecord, final CSVHeader[] headers, final WithProperties withProperties) {
+        addPropertiesToRecord(csvRecord, headers, withProperties, 2);
     }
 
-    private void addPropertiesToEdgeRecord(final List<String> record, final CSVHeader[] headers, final WithProperties withProperties) {
-        addPropertiesToRecord(record, headers, withProperties, 3);
+    private void addPropertiesToEdgeRecord(final List<String> csvRecord, final CSVHeader[] headers, final WithProperties withProperties) {
+        addPropertiesToRecord(csvRecord, headers, withProperties, 3);
     }
 
-    private void addPropertiesToRecord(final List<String> record, final CSVHeader[] headers, final WithProperties withProperties, int skip) {
+    private void addPropertiesToRecord(final List<String> csvRecord, final CSVHeader[] headers, final WithProperties withProperties, int skip) {
         Arrays.stream(headers).skip(skip).forEach(h -> {
             Property property = withProperties.getProperties().get(h.name);
             if (property != null) {
                 Object value = property.getValue();
                 if (value == null) {
-                    record.add(null);
+                    csvRecord.add(null);
                 } else {
                     if (value.getClass().isArray()) {
                         Object[] objects = (Object[]) value;
                         String list = Arrays.stream(objects).filter(Objects::nonNull).map(Object::toString).collect(Collectors.joining(","));
-                        record.add(list);
+                        csvRecord.add(list);
                     } else if (value instanceof LocalDateTime) {
                         LocalDateTime dateTime = (LocalDateTime) value;
                         String format = dateTime.format(DateTimeFormatter.ISO_DATE_TIME);
-                        record.add(format);
+                        csvRecord.add(format);
                     } else {
-                        record.add(value.toString());
+                        csvRecord.add(value.toString());
                     }
                 }
             } else {
-                record.add(null);
+                csvRecord.add(null);
             }
         });
     }
 
     private static void addPropertiesForHeader(final List<CSVHeader> header, final Set<CSVHeader> headerSet) {
         if (headerSet != null) {
-            headerSet.stream().forEach(csvHeader -> {
-                header.add(csvHeader);
-            });
+            headerSet.stream().forEach(header::add);
         }
     }
 
     private static class CSVHeader {
-        public String name;
-        public String type;
+
+        private final String name;
+        private final String type;
 
         CSVHeader(String name, String type) {
             this.name = name;
             this.type = type;
         }
 
-        CSVHeader(String name, Property property) {
+        public String getName() {
+            return name;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        CSVHeader(String name, Property<?> property) {
             this.name = name;
             this.type = property.getType().getCsvValue();
         }

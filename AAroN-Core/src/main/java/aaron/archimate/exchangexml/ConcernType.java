@@ -75,7 +75,7 @@ public class ConcernType {
      */
     public List<LangStringType> getLabelGroup() {
         if (labelGroup == null) {
-            labelGroup = new ArrayList<LangStringType>();
+            labelGroup = new ArrayList<>();
         }
         return this.labelGroup;
     }
@@ -102,7 +102,7 @@ public class ConcernType {
      */
     public List<PreservedLangStringType> getDocumentationGroup() {
         if (documentationGroup == null) {
-            documentationGroup = new ArrayList<PreservedLangStringType>();
+            documentationGroup = new ArrayList<>();
         }
         return this.documentationGroup;
     }

@@ -63,9 +63,7 @@ public class SparxMySQLConverter extends AbstractSparxConverter {
 
             handleTable(sha1, now, connection, this::processXRefs, "SELECT * FROM " + EAXref.TABLE_NAME);
             return model;
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (NoSuchAlgorithmException e) {
+        } catch (SQLException | NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }

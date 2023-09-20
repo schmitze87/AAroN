@@ -70,7 +70,7 @@ public class PropertyType {
      */
     public List<LangStringType> getValue() {
         if (value == null) {
-            value = new ArrayList<LangStringType>();
+            value = new ArrayList<>();
         }
         return this.value;
     }

@@ -112,7 +112,7 @@ public abstract class ConnectionType
      */
     public List<LocationType> getBendpoint() {
         if (bendpoint == null) {
-            bendpoint = new ArrayList<LocationType>();
+            bendpoint = new ArrayList<>();
         }
         return this.bendpoint;
     }

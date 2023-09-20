@@ -68,7 +68,7 @@ public class DiagramsType {
      */
     public List<Diagram> getView() {
         if (view == null) {
-            view = new ArrayList<Diagram>();
+            view = new ArrayList<>();
         }
         return this.view;
     }

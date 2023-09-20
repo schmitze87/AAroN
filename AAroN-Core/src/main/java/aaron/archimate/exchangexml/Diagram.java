@@ -71,7 +71,7 @@ public class Diagram
      */
     public List<ViewNodeType> getNode() {
         if (node == null) {
-            node = new ArrayList<ViewNodeType>();
+            node = new ArrayList<>();
         }
         return this.node;
     }
@@ -98,7 +98,7 @@ public class Diagram
      */
     public List<ConnectionType> getConnection() {
         if (connection == null) {
-            connection = new ArrayList<ConnectionType>();
+            connection = new ArrayList<>();
         }
         return this.connection;
     }

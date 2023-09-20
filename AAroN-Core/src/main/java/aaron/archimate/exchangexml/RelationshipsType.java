@@ -68,7 +68,7 @@ public class RelationshipsType {
      */
     public List<RelationshipType> getRelationship() {
         if (relationship == null) {
-            relationship = new ArrayList<RelationshipType>();
+            relationship = new ArrayList<>();
         }
         return this.relationship;
     }

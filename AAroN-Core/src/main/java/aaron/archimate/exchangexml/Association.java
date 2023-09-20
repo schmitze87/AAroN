@@ -13,6 +13,8 @@ import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlAttribute;
 import jakarta.xml.bind.annotation.XmlType;
 
+import java.util.Objects;
+
 
 /**
  * <p>Java-Klasse für Association complex type.
@@ -45,11 +47,7 @@ public class Association
      * {@link Boolean }
      */
     public boolean isIsDirected() {
-        if (isDirected == null) {
-            return false;
-        } else {
-            return isDirected;
-        }
+        return Objects.requireNonNullElse(isDirected, false);
     }
 
     /**

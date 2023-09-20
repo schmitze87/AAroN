@@ -68,7 +68,7 @@ public class PropertyDefinitionsType {
      */
     public List<PropertyDefinitionType> getPropertyDefinition() {
         if (propertyDefinition == null) {
-            propertyDefinition = new ArrayList<PropertyDefinitionType>();
+            propertyDefinition = new ArrayList<>();
         }
         return this.propertyDefinition;
     }

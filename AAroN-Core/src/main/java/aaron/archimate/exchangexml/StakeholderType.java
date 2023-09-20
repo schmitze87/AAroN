@@ -65,7 +65,7 @@ public class StakeholderType {
      */
     public List<LangStringType> getLabelGroup() {
         if (labelGroup == null) {
-            labelGroup = new ArrayList<LangStringType>();
+            labelGroup = new ArrayList<>();
         }
         return this.labelGroup;
     }

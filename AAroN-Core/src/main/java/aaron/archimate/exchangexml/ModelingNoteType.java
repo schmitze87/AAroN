@@ -69,7 +69,7 @@ public class ModelingNoteType {
      */
     public List<PreservedLangStringType> getDocumentationGroup() {
         if (documentationGroup == null) {
-            documentationGroup = new ArrayList<PreservedLangStringType>();
+            documentationGroup = new ArrayList<>();
         }
         return this.documentationGroup;
     }

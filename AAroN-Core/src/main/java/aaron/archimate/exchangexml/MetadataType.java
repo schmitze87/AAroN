@@ -118,7 +118,7 @@ public class MetadataType {
      */
     public List<Object> getAny() {
         if (any == null) {
-            any = new ArrayList<Object>();
+            any = new ArrayList<>();
         }
         return this.any;
     }
@@ -145,7 +145,7 @@ public class MetadataType {
      */
     public List<SchemaInfoType> getSchemaInfo() {
         if (schemaInfo == null) {
-            schemaInfo = new ArrayList<SchemaInfoType>();
+            schemaInfo = new ArrayList<>();
         }
         return this.schemaInfo;
     }

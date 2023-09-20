@@ -27,8 +27,8 @@ public class RelationshipProcessor extends AbstractProcessor<RelationshipType> {
         String type = relationshipType.getClass().getSimpleName();
         PropertiesType properties = relationshipType.getProperties();
 
-        Identifier start = new ArchiMateIdentifier(source.getIdentifier());
-        Identifier end = new ArchiMateIdentifier(target.getIdentifier());
+        Identifier<String> start = new ArchiMateIdentifier(source.getIdentifier());
+        Identifier<String> end = new ArchiMateIdentifier(target.getIdentifier());
 
         AAroNEdge.Builder builder = AAroNEdge.builder();
         builder.setType(type);

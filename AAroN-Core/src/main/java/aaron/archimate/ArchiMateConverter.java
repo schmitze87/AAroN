@@ -9,26 +9,20 @@ import aaron.model.Converter;
 import aaron.model.Model;
 import aaron.model.Processor;
 import jakarta.xml.bind.JAXBContext;
-import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 
+import javax.xml.transform.stream.StreamSource;
 import java.io.File;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ArchiMateConverter implements Converter {
 
-    private final Map<String, Object> elementsMap;
-    private final Map<String, Object> relationshipMaps;
     private final Model graphModel;
     private final File file;
 
     public ArchiMateConverter(final File file) {
         this.file = file;
-        elementsMap = new HashMap<>();
-        relationshipMaps = new HashMap<>();
         graphModel = new Model();
     }
 
@@ -36,8 +30,7 @@ public class ArchiMateConverter implements Converter {
         try {
             JAXBContext jaxbContext = JAXBContext.newInstance(ModelType.class);
             Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
-            JAXBElement o = (JAXBElement) unmarshaller.unmarshal(file);
-            ModelType model = (ModelType) o.getValue();
+            ModelType model = unmarshaller.unmarshal(new StreamSource(file), ModelType.class).getValue();
             processElements(model.getElements());
             processRelationships(model.getRelationships());
             processOrganisations(model.getOrganizations());
@@ -53,7 +46,7 @@ public class ArchiMateConverter implements Converter {
         if (views != null) {
             DiagramsType diagrams = views.getDiagrams();
             if (diagrams != null) {
-                Processor processor = new DiagramProcessor(graphModel);
+                Processor<Diagram> processor = new DiagramProcessor(graphModel);
                 List<Diagram> diagramList = diagrams.getView();
                 for (Diagram d : diagramList) {
                     processor.process(d);
@@ -64,7 +57,7 @@ public class ArchiMateConverter implements Converter {
 
     private void processElements(final ElementsType elementsType) {
         if (elementsType != null) {
-            Processor elementProcessor = new ElementProcessor(graphModel);
+            Processor<ElementType> elementProcessor = new ElementProcessor(graphModel);
             List<ElementType> elementTypeList = elementsType.getElement();
             for (ElementType elementType : elementTypeList) {
                 elementProcessor.process(elementType);
@@ -74,7 +67,7 @@ public class ArchiMateConverter implements Converter {
 
     private void processRelationships(final RelationshipsType relationshipsType) {
         if (relationshipsType != null) {
-            Processor relationshipProcessor = new RelationshipProcessor(graphModel);
+            Processor<RelationshipType> relationshipProcessor = new RelationshipProcessor(graphModel);
             List<RelationshipType> relationshipTypes = relationshipsType.getRelationship();
             for (RelationshipType relationshipType : relationshipTypes) {
                 relationshipProcessor.process(relationshipType);
@@ -85,7 +78,7 @@ public class ArchiMateConverter implements Converter {
     private void processOrganisations(final List<OrganizationsType> organizations) {
         if (organizations != null && !organizations.isEmpty()) {
             for (OrganizationsType organizationsType : organizations) {
-                Processor processor = new OrganisationProcessor(graphModel);
+                Processor<OrganizationType> processor = new OrganisationProcessor(graphModel);
                 List<OrganizationType> itemList = organizationsType.getItem();
                 for (OrganizationType organizationType : itemList) {
                     processor.process(organizationType);

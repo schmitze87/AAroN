@@ -68,7 +68,7 @@ public class OrganizationsType {
      */
     public List<OrganizationType> getItem() {
         if (item == null) {
-            item = new ArrayList<OrganizationType>();
+            item = new ArrayList<>();
         }
         return this.item;
     }

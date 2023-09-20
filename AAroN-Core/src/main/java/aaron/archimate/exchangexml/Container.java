@@ -72,7 +72,7 @@ public class Container
      */
     public List<ViewNodeType> getNode() {
         if (node == null) {
-            node = new ArrayList<ViewNodeType>();
+            node = new ArrayList<>();
         }
         return this.node;
     }
