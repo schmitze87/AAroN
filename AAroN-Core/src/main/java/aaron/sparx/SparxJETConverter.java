@@ -37,8 +37,6 @@ public class SparxJETConverter extends AbstractSparxConverter {
         processPackages(sha1, now, db.getTable(EAPackage.TABLE_NAME));
 
         processDiagrams(sha1, now, db.getTable(EADiagram.TABLE_NAME));
-        processDiagramObjects(sha1, now, db.getTable(EADiagramObject.TABLE_NAME));
-        processDiagramLinks(sha1, now, db.getTable(EADiagramLink.TABLE_NAME));
 
         processObjects(sha1, now, db.getTable(EAObject.TABLE_NAME));
         processObjectProperties(sha1, now, db.getTable(EAObjectProperty.TABLE_NAME));
@@ -47,6 +45,9 @@ public class SparxJETConverter extends AbstractSparxConverter {
         processConnectors(sha1, now, db.getTable(EAConnector.TABLE_NAME));
         processConnectorTags(sha1, now, db.getTable(EAConnectorTag.TABLE_NAME));
         processConnectorConstraints(sha1, now, db.getTable(EAConnectorConstraint.TABLE_NAME));
+
+        processDiagramObjects(sha1, now, db.getTable(EADiagramObject.TABLE_NAME));
+        processDiagramLinks(sha1, now, db.getTable(EADiagramLink.TABLE_NAME));
 
         processOperations(sha1, now, db.getTable(EAOperation.TABLE_NAME));
         processOperationTags(sha1, now, db.getTable(EAOperationTag.TABLE_NAME));

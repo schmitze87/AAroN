@@ -39,8 +39,8 @@ public class SparxMSSQLConverter extends AbstractSparxConverter {
     public Model convert() throws IOException {
         LocalDateTime now = LocalDateTime.now();
         //jdbc:sqlserver://[serverName[\instanceName][:portNumber]][;property=value[;property=value]]
-        String url = "jdbc:sqlserver://serverName=" + host + (StringUtils.isNotBlank(instance) ? "\\" +instance : ";") + ";port=" + port + ";encrypt:true" + ";trustServerCertificate=true" + ";databaseName=" + databaseName + ";username=" + username + ";password={" + password + "};";
-        try (Connection connection = DriverManager.getConnection(url)) {
+        String url = "jdbc:sqlserver://" + host + (StringUtils.isNotBlank(instance) ? "\\" +instance : "") + ":" + port + ";encrypt=true" + ";trustServerCertificate=true" + ";databaseName=" + databaseName + ";integratedSecurity=true;authentication=NotSpecified;authenticationScheme=ntlm";
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
             String sha1 = Util.createSHA1(url, now.toInstant(ZoneOffset.UTC));
 
             handleTable(sha1, now, connection, this::processSystem, "SELECT * FROM " + EASystem.TABLE_NAME);
@@ -48,8 +48,6 @@ public class SparxMSSQLConverter extends AbstractSparxConverter {
             handleTable(sha1, now, connection, this::processPackages, "SELECT * FROM " + EAPackage.TABLE_NAME);
 
             handleTable(sha1, now, connection, this::processDiagrams, "SELECT * FROM " + EADiagram.TABLE_NAME);
-            handleTable(sha1, now, connection, this::processDiagramObjects, "SELECT * FROM " + EADiagramObject.TABLE_NAME);
-            handleTable(sha1, now, connection, this::processDiagramLinks, "SELECT * FROM " + EADiagramLink.TABLE_NAME);
 
             handleTable(sha1, now, connection, this::processObjects, "SELECT * FROM " + EAObject.TABLE_NAME);
             handleTable(sha1, now, connection, this::processObjectProperties, "SELECT * FROM " + EAObjectProperty.TABLE_NAME);
@@ -58,6 +56,9 @@ public class SparxMSSQLConverter extends AbstractSparxConverter {
             handleTable(sha1, now, connection, this::processConnectors, "SELECT * FROM " + EAConnector.TABLE_NAME);
             handleTable(sha1, now, connection, this::processConnectorTags, "SELECT * FROM " + EAConnectorTag.TABLE_NAME);
             handleTable(sha1, now, connection, this::processConnectorConstraints, "SELECT * FROM " + EAConnectorConstraint.TABLE_NAME);
+
+            handleTable(sha1, now, connection, this::processDiagramObjects, "SELECT * FROM " + EADiagramObject.TABLE_NAME);
+            handleTable(sha1, now, connection, this::processDiagramLinks, "SELECT * FROM " + EADiagramLink.TABLE_NAME);
 
             handleTable(sha1, now, connection, this::processOperations, "SELECT * FROM " + EAOperation.TABLE_NAME);
             handleTable(sha1, now, connection, this::processOperationTags, "SELECT * FROM " + EAOperationTag.TABLE_NAME);
