@@ -108,7 +108,7 @@ public class DiagramProcessor extends AbstractProcessor {
                 .addProperty("eapHash", STRING, sha1)
                 .addProperty("importedAt", LOCALDATETIME, time)
                 .build();
-        model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), containsEdge);
+        model.addEdge(new ImplizitRelationId(), containsEdge);
 
         if (parentId != null && parentId > 0) {
             ObjectId parentIdentifier = new ObjectId(parentId);

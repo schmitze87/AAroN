@@ -51,7 +51,7 @@ public class DiagramLinksProcessor extends AbstractProcessor{
                         .addProperty("diagramGuid", STRING, diagramGuid)
                         .addProperty("hidden", BOOLEAN, hidden)
                         .build();
-                model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), diagramlinkEdge);
+                model.addEdge(new ImplizitRelationId(), diagramlinkEdge);
             }
         }
     }
