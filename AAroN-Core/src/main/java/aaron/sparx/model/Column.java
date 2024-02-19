@@ -3,10 +3,9 @@ package aaron.sparx.model;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.Date;
 import java.util.Map;
 
@@ -43,7 +42,16 @@ public class Column<T> {
                 }
             }
             if (clazz == LocalDateTime.class) {
-                return (T) LocalDateTime.parse(s, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                try {
+                    return (T) LocalDateTime.parse(s, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                } catch (DateTimeParseException e1) {
+                    var localDate = LocalDate.parse(s, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+                    try {
+                        return (T) LocalDateTime.of(localDate, LocalTime.MIDNIGHT);
+                    } catch (DateTimeParseException e2) {
+                        return (T) LocalDateTime.now();
+                    }
+                }
             }
         }
         if (o instanceof Integer && clazz == Boolean.class) {
