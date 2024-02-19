@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
-@CommandLine.Command(name = "aaron", footer = "Copyright(c) 2023 Markus Schmitz", mixinStandardHelpOptions = true, version = "2021.06", subcommands = {
+@CommandLine.Command(name = "aaron", footer = "Copyright(c) 2024 Markus Schmitz", mixinStandardHelpOptions = true, version = "2024.06", subcommands = {
         AAroNCLI.Convert.class
 })
 public class AAroNCLI implements Callable<Integer> {
@@ -33,7 +33,7 @@ public class AAroNCLI implements Callable<Integer> {
         System.exit(exitCode);
     }
 
-    @CommandLine.Command(name = "convert", mixinStandardHelpOptions = true, version = "2022.12")
+    @CommandLine.Command(name = "convert", mixinStandardHelpOptions = true, version = "2024.01")
     static class Convert implements Callable<Integer> {
 
         @CommandLine.Spec
