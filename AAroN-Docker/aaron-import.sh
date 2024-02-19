@@ -35,6 +35,10 @@ function deleteCSV {
   done
 }
 
+if [ -d "data/databases/aramis" ]; then
+  return
+fi
+
 export -f printNodes
 export -f printEdges
 
