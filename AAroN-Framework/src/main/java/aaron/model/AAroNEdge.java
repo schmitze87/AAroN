@@ -50,6 +50,7 @@ public class AAroNEdge extends WithProperties {
         return this.addProperty(name, type, value);
     }
 
+    @Override
     public Map<String, Property> getProperties() {
         return properties;
     }
