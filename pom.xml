@@ -23,7 +23,7 @@
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <version.neo4j>5.8.0</version.neo4j>
+        <version.neo4j>5.16.0</version.neo4j>
         <version.picocli>4.7.4</version.picocli>
     </properties>
 
