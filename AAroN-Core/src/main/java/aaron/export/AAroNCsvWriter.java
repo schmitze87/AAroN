@@ -102,10 +102,10 @@ public class AAroNCsvWriter {
                 LOG.error("can not write to nodes file. Check file permission");
             } else {
                 List<String[]> nodesData = new ArrayList<>();
-                model.getNodes().values().stream().forEach(n -> n.getProperties().entrySet().forEach(entry -> nodeHeaders.add(new CSVHeader(entry.getKey(), entry.getValue()))));
+                model.getNodes().values().stream().distinct().forEach(n -> n.getProperties().entrySet().forEach(entry -> nodeHeaders.add(new CSVHeader(entry.getKey(), entry.getValue()))));
                 nodeCSVHeader = createNodeCSVHeader(nodeHeaders, model);
                 nodesData.add(Arrays.stream(nodeCSVHeader).map(CSVHeader::toString).toArray(String[]::new));
-                model.getNodes().values().stream().forEach(n -> {
+                model.getNodes().values().stream().distinct().forEach(n -> {
                     String[] nodeRrecord = writer.createNodeRecord(nodeCSVHeader, n);
                     nodesData.add(nodeRrecord);
                 });
@@ -117,10 +117,10 @@ public class AAroNCsvWriter {
                 LOG.error("can not write to edges file. Check file permission");
             } else {
                 List<String[]> edgesData = new ArrayList<>();
-                model.getEdges().values().stream().forEach(e -> e.getProperties().entrySet().forEach(entry -> edgeHeaders.add(new CSVHeader(entry.getKey(), entry.getValue()))));
+                model.getEdges().values().stream().distinct().forEach(e -> e.getProperties().entrySet().forEach(entry -> edgeHeaders.add(new CSVHeader(entry.getKey(), entry.getValue()))));
                 edgeCSVHeader = createEdgeCSVHeader(edgeHeaders, model);
                 edgesData.add(Arrays.stream(edgeCSVHeader).map(CSVHeader::toString).toArray(String[]::new));
-                model.getEdges().values().stream().forEach(edge -> {
+                model.getEdges().values().stream().distinct().forEach(edge -> {
                     String[] edgeRecord = writer.createEdgeRecord(model, edgeCSVHeader, edge);
                     if (edgeRecord != null)
                         edgesData.add(edgeRecord);
