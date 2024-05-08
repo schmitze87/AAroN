@@ -28,6 +28,7 @@ public class SparxSQLiteConverter extends AbstractSparxConverter {
         String sha1 = null;
         try {
             sha1 = Util.createSHA256(qeaFile);
+            context.setFileHash(sha1);
         } catch (Exception e) {
             e.printStackTrace();
         }

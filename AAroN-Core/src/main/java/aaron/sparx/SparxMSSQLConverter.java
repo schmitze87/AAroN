@@ -40,6 +40,7 @@ public class SparxMSSQLConverter extends AbstractSparxConverter {
         String url = "jdbc:sqlserver://" + host + (StringUtils.isNotBlank(instance) ? "\\" +instance : "") + ":" + port + ";encrypt=true" + ";trustServerCertificate=true" + ";databaseName=" + databaseName + ";integratedSecurity=true;authentication=NotSpecified;authenticationScheme=ntlm";
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             String sha1 = Util.createSHA1(url, now.toInstant(ZoneOffset.UTC));
+            context.setFileHash(sha1);
 
             handleTable(sha1, now, connection, this::processSystem, "SELECT * FROM " + EASystem.TABLE_NAME);
 

@@ -36,6 +36,7 @@ public class SparxMySQLConverter extends AbstractSparxConverter {
         String url = "jdbc:mysql://" + host + ":" + port + "/" + databaseName + "?user=" + username + "&password=" + password;
         try (Connection connection = DriverManager.getConnection(url)) {
             String sha1 = Util.createSHA1(url, now.toInstant(ZoneOffset.UTC));
+            context.setFileHash(sha1);
 
             handleTable(sha1, now, connection, this::processSystem, "SELECT * FROM " + EASystem.TABLE_NAME);
 
