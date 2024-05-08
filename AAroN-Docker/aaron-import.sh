@@ -58,7 +58,7 @@ if [[ -n "${eaFiles:-}" ]]; then
   echo "${eaFiles[@]}"
   aaron-cli convert -o /import/ "${eaFiles[@]/#/-f}" &> /import/aaron.log
   if running_as_root; then
-    gosu neo4j:neo4j neo4j-admin import \
+    su-exec neo4j:neo4j neo4j-admin import \
                        --database=aramis \
                        --input-encoding=UTF-8 \
                        --legacy-style-quoting=false \
