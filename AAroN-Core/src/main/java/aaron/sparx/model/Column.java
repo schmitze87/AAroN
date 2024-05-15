@@ -3,10 +3,13 @@ package aaron.sparx.model;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import javax.swing.text.DateFormatter;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public class Column<T> {
@@ -42,15 +45,14 @@ public class Column<T> {
                 }
             }
             if (clazz == LocalDateTime.class) {
-                try {
-                    return (T) LocalDateTime.parse(s, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-                } catch (DateTimeParseException e1) {
-                    var localDate = LocalDate.parse(s, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-                    try {
-                        return (T) LocalDateTime.of(localDate, LocalTime.MIDNIGHT);
-                    } catch (DateTimeParseException e2) {
-                        return (T) LocalDateTime.now();
-                    }
+                var dateTime = tryGetDateTime(s);
+                if (dateTime == null) {
+                    dateTime = tryGetDate(s);
+                }
+                if (dateTime == null) {
+                    return (T) LocalDateTime.now();
+                } else {
+                    return (T) dateTime;
                 }
             }
         }
@@ -60,4 +62,30 @@ public class Column<T> {
         return clazz.cast(o);
     }
 
+    private T tryGetDateTime(String dateStr) {
+        List<String> dateTimeFormats = Arrays.asList("yyyy-MM-dd HH:mm:ss", "dd.MM.yyyy HH:mm", "MM/dd/yyyy HH:mm:ss");
+        for (String dateTimeFormat : dateTimeFormats) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateTimeFormat);
+            try {
+                return (T) LocalDateTime.parse(dateStr, formatter);
+            } catch (DateTimeParseException e) {
+                // Parsing fehlgeschlagen, probiere das nächste Format
+            }
+        }
+        return null; // Keines der Formate passte
+    }
+
+    private T tryGetDate(String dateStr) {
+        List<String> dateFormats = Arrays.asList("yyyy-MM-dd", "dd.MM.yyyy", "MM/dd/yyyy");
+        for (String dateFormat : dateFormats) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern(dateFormat);
+            try {
+                var localDate = LocalDate.parse(dateStr, formatter);
+                return (T) LocalDateTime.of(localDate, LocalTime.MIDNIGHT);
+            } catch (DateTimeParseException e) {
+                // Parsing fehlgeschlagen, probiere das nächste Format
+            }
+        }
+        return null; // Keines der Formate passte
+    }
 }
