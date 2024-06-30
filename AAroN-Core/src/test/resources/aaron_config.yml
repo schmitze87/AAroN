@@ -1,0 +1,5 @@
+taggedValueMode: AS_PROPERTY
+taggedValueMode2: AS_PROPERTY
+filesToImport:
+  - bla
+  - blupp
