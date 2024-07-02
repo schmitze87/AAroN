@@ -6,6 +6,9 @@ import aaron.sparx.AbstractSparxConverter;
 import aaron.sparx.Config;
 import aaron.sparx.SparxJETConverter;
 import aaron.sparx.SparxSQLiteConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.apache.commons.io.comparator.PathFileComparator;
 import picocli.CommandLine;
 
@@ -111,10 +114,10 @@ public class AAroNCLI implements Callable<Integer> {
         }
 
         private List<File> determineFilesToImport(Config config, File directory) throws IOException {
-            if (!config.getFilesToImport().isEmpty()) {
+            if (!config.getFilesToConvert().isEmpty()) {
                 // Online import specified files
                 List<File> fileList = new ArrayList<>();
-                config.getFilesToImport().forEach(fileName -> {
+                config.getFilesToConvert().forEach(fileName -> {
                     System.out.println("Filename: " + fileName);
                     File file = new File(fileName);
                     if (file.isAbsolute() && file.exists()) {
@@ -151,10 +154,11 @@ public class AAroNCLI implements Callable<Integer> {
             }
         }
 
-        private void convert(List<File> fileList, Config config) throws AAroNConversionException {
+        private void convert(List<File> fileList, Config config) throws AAroNConversionException, IOException {
+            AAronCLIOutput output = new AAronCLIOutput();
+            Path outputPath = outputDir.toPath();
             for (File eapFile : fileList) {
                 var eapFileName = eapFile.getName();
-                Path outputPath = outputDir.toPath();
                 File nodesFile = outputPath.resolve("nodes_" + eapFileName + ".csv").toFile();
                 File edgesFile = outputPath.resolve("edges_" + eapFileName + ".csv").toFile();
                 AbstractSparxConverter converter = null;
@@ -172,10 +176,17 @@ public class AAroNCLI implements Callable<Integer> {
                     } else {
                         throw new AAroNConversionException();
                     }
+                    output.getNodesToImport().add(nodesFile.getAbsoluteFile().toString());
+                    output.getEdgesToImport().add(edgesFile.getAbsoluteFile().toString());
                 } catch (IOException e) {
                     throw new AAroNConversionException(e);
                 }
             }
+            ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+            ObjectWriter objectWriter = mapper.writerWithDefaultPrettyPrinter();
+            File outputFile = outputPath.resolve("aaron_output.yml").toFile();
+            objectWriter.writeValue(outputFile, output);
+
         }
 
         @Override

@@ -1,29 +1,10 @@
 #!/bin/bash
 
-#directory=$(dirname "$(readlink -f "$0")")
-#cd "$directory" || exit
-
 set -x
 
 function running_as_root
 {
     test "$(id -u)" = "0"
-}
-
-function printNodes {
-  for eapFile in "$@"
-  do
-    file=$(basename "$(readlink -f "$eapFile")")
-    echo -n "--nodes='/import/nodes_$file.csv' "
-  done
-}
-
-function printEdges {
-  for eapFile in "$@"
-  do
-    file=$(basename "$(readlink -f "$eapFile")")
-    echo -n "--relationships='/import/edges_$file.csv' "
-  done
 }
 
 function deleteCSV {
@@ -39,45 +20,47 @@ if [ -d "data/databases/aramis" ]; then
   return
 fi
 
-export -f printNodes
-export -f printEdges
+# Datei und Pfad zur YAML-Datei
+aaron_output="/import/aaron_output.yml"
+
+aaron-cli convert -o /import/ -d /import/ &> $aaron_output
+
+# Extrahiere die Liste mit yq und speichere sie in einem Array
+mapfile -t nodesToImport < <(yq '.nodesToImport[]' "$aaron_output")
+mapfile -t edgesToImport < <(yq '.edgesToImport[]' "$aaron_output")
 
 nodes=()
 edges=()
-eaFiles=()
 
-mapfile -t eaFiles < <(find /import/ -iregex '.*\.\(eapx\|eap\|qea\|qeax\)')
-if [[ -n "${eaFiles:-}" ]]; then
-  for eaFile in "${eaFiles[@]}"; do
-    file=$(readlink -f "$eaFile")
-    name=$(basename "$file")
-    nodes=("${nodes[@]}" "--nodes='/import/nodes_$name.csv'")
-    edges=("${edges[@]}" "--relationships='/import/edges_$name.csv'")
-  done
+# Iteriere durch das Array und gebe jeden Eintrag mit echo aus
+for entry in "${nodesToImport[@]}"; do
+  nodes=("${nodes[@]}" "--nodes='$entry'")
+done
+for entry in "${edgesToImport[@]}"; do
+  edges=("${edges[@]}" "--relationships='$entry'")
+done
 
-  echo "${eaFiles[@]}"
-  aaron-cli convert -o /import/ "${eaFiles[@]/#/-f}" &> /import/aaron.log
-  if running_as_root; then
-    su-exec neo4j:neo4j neo4j-admin import \
-                       --database=aramis \
-                       --input-encoding=UTF-8 \
-                       --legacy-style-quoting=false \
-                       --multiline-fields=true \
-                       --ignore-extra-columns=true \
-                       --ignore-empty-strings=false \
-                       "${nodes[@]}" \
-                       "${edges[@]}" &> /import/neo4j-admin.log
-  else
-    neo4j-admin import \
-        --database=aramis \
-        --input-encoding=UTF-8 \
-        --legacy-style-quoting=false \
-        --multiline-fields=true \
-        --ignore-extra-columns=true \
-        --ignore-empty-strings=false \
-        "${nodes[@]}" \
-        "${edges[@]}" &> /import/neo4j-admin.log
-  fi
+if running_as_root; then
+  su-exec neo4j:neo4j neo4j-admin import \
+                     --database=aramis \
+                     --input-encoding=UTF-8 \
+                     --legacy-style-quoting=false \
+                     --multiline-fields=true \
+                     --ignore-extra-columns=true \
+                     --ignore-empty-strings=false \
+                     "${nodes[@]}" \
+                     "${edges[@]}" &> /import/neo4j-admin.log
+else
+  neo4j-admin import \
+      --database=aramis \
+      --input-encoding=UTF-8 \
+      --legacy-style-quoting=false \
+      --multiline-fields=true \
+      --ignore-extra-columns=true \
+      --ignore-empty-strings=false \
+      "${nodes[@]}" \
+      "${edges[@]}" &> /import/neo4j-admin.log
+fi
 
   # Neo4j 5 Version
   #neo4j-admin database import full \
@@ -91,11 +74,5 @@ if [[ -n "${eaFiles:-}" ]]; then
   #${edges[*]} \
   #--verbose
   #aramis
-else
-  echo "no architecture files to import"
-fi
-
-unset -f printNodes
-unset -f printEdges
 
 set +x

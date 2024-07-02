@@ -22,6 +22,6 @@ public class ConfigTest {
         Config config = mapper.readValue(new File("src/test/resources/aaron_config.yml"), Config.class);
         Assertions.assertNotNull(config);
         Assertions.assertEquals(TaggedValueMode.AS_PROPERTY, config.getTaggedValueMode());
-        Assertions.assertTrue(List.of("bla", "blupp").containsAll(config.getFilesToImport()));
+        Assertions.assertTrue(List.of("bla", "blupp").containsAll(config.getFilesToConvert()));
     }
 }

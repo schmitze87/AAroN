@@ -13,18 +13,18 @@ import java.util.Map;
 public class Config {
 
     private TaggedValueMode taggedValueMode = TaggedValueMode.AS_PROPERTY;
-    private List<String> filesToImport = new ArrayList<>();
+    private List<String> filesToConvert = new ArrayList<>();
 
     public TaggedValueMode getTaggedValueMode() {
         return taggedValueMode;
     }
 
-    public List<String> getFilesToImport() {
-        return filesToImport;
+    public List<String> getFilesToConvert() {
+        return filesToConvert;
     }
 
-    public void setFilesToImport(List<String> filesToImport) {
-        this.filesToImport = filesToImport;
+    public void setFilesToConvert(List<String> filesToConvert) {
+        this.filesToConvert = filesToConvert;
     }
 
     public static Config createFromMap(final Map<String, Object> map) {

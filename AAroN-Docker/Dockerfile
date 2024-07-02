@@ -1,10 +1,13 @@
-FROM docker.io/library/neo4j:4.4.32-community
+FROM docker.io/library/neo4j:4.4.34-community
 
 RUN set -eux \
     && DEBIAN_FRONTEND=noninteractive apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
     && DEBIAN_FRONTEND=noninteractive apt-get install -y locales \
     && rm -rf /var/lib/apt/lists/*
+
+RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq \
+    && chmod +x /usr/bin/yq
 
 COPY aaron-cli aaron-import.sh /usr/bin/
 
