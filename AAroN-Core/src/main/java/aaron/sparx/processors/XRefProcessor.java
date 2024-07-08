@@ -64,11 +64,11 @@ public class XRefProcessor extends AbstractProcessor {
                     if (nameEnum == Name.STEREOTYPES) {
                         SetFQStereotype(edge, description);
                     }
-                    if (nameEnum == Name.MOF_PROPERTIES && behaviourEnum == BEHAVIOUR.CONVEYED) {
+                    if (nameEnum == Name.MOF_PROPERTIES && behaviourEnum == BEHAVIOUR.CONVEYED && description != null) {
                         String[] collect = Arrays.stream(description.split(",")).map(GUIDHelper::unwrapGuid).toArray(String[]::new);
                         edge.addProperty("conveyed", STRING_ARRAY, collect);
                     }
-                    if (nameEnum == Name.MOF_PROPERTIES && behaviourEnum == BEHAVIOUR.ABSTRACTION) {
+                    if (nameEnum == Name.MOF_PROPERTIES && behaviourEnum == BEHAVIOUR.ABSTRACTION && description != null) {
                         String[] collect = Arrays.stream(description.split(",")).map(GUIDHelper::unwrapGuid).toArray(String[]::new);
                         edge.addProperty("informationFlowsRealized", STRING_ARRAY, collect);
                     }
