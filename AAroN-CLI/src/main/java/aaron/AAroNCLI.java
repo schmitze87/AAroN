@@ -102,7 +102,7 @@ public class AAroNCLI implements Callable<Integer> {
             if (importArg != null && importArg.directory != null) {
                 Optional<Path> configInDirectory = findConfigInDirectory(importArg.directory);
                 if (configInDirectory.isPresent()) {
-                    config = Config.loadFromYAML(configFile);
+                    config = Config.loadFromYAML(configInDirectory.get().toFile());
                     return config;
                 }
             }
