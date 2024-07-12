@@ -17,14 +17,14 @@
     <name>AAroN - Analyze Architecture on Neo4j</name>
 
     <properties>
-        <revision>4.4.34</revision>
+        <revision>4.4.35</revision>
         <java.version>11</java.version>
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <maven.compiler.release>${java.version}</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <version.neo4j>4.4.34</version.neo4j>
+        <version.neo4j>4.4.35</version.neo4j>
         <version.picocli>4.7.6</version.picocli>
     </properties>
 
