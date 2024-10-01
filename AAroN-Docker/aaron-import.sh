@@ -34,32 +34,36 @@ edges=()
 
 # Iteriere durch das Array und gebe jeden Eintrag mit echo aus
 for entry in "${nodesToImport[@]}"; do
-  nodes=("${nodes[@]}" "--nodes='$entry'")
+  nodes+=("--nodes='$(printf '%q' "$entry")'")
 done
 for entry in "${edgesToImport[@]}"; do
-  edges=("${edges[@]}" "--relationships='$entry'")
+  edges+=("--relationships='$(printf '%q' "$entry")'")
 done
 
-if running_as_root; then
-  su-exec neo4j:neo4j neo4j-admin import \
-                     --database=aramis \
-                     --input-encoding=UTF-8 \
-                     --legacy-style-quoting=false \
-                     --multiline-fields=true \
-                     --ignore-extra-columns=true \
-                     --ignore-empty-strings=false \
-                     "${nodes[@]}" \
-                     "${edges[@]}" &> /import/neo4j-admin.log
+if [[ -n "${nodes:-}" ]]; then
+  if running_as_root; then
+    su-exec neo4j:neo4j neo4j-admin import \
+                       --database=aramis \
+                       --input-encoding=UTF-8 \
+                       --legacy-style-quoting=false \
+                       --multiline-fields=true \
+                       --ignore-extra-columns=true \
+                       --ignore-empty-strings=false \
+                       "${nodes[@]}" \
+                       "${edges[@]}" &> /import/neo4j-admin.log
+  else
+    neo4j-admin import \
+        --database=aramis \
+        --input-encoding=UTF-8 \
+        --legacy-style-quoting=false \
+        --multiline-fields=true \
+        --ignore-extra-columns=true \
+        --ignore-empty-strings=false \
+        "${nodes[@]}" \
+        "${edges[@]}" &> /import/neo4j-admin.log
+  fi
 else
-  neo4j-admin import \
-      --database=aramis \
-      --input-encoding=UTF-8 \
-      --legacy-style-quoting=false \
-      --multiline-fields=true \
-      --ignore-extra-columns=true \
-      --ignore-empty-strings=false \
-      "${nodes[@]}" \
-      "${edges[@]}" &> /import/neo4j-admin.log
+  echo "no architecture files to import"
 fi
 
   # Neo4j 5 Version

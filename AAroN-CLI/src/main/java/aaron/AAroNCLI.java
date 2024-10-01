@@ -9,6 +9,7 @@ import aaron.sparx.SparxSQLiteConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
+import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import org.apache.commons.io.comparator.PathFileComparator;
 import picocli.CommandLine;
 
@@ -182,7 +183,7 @@ public class AAroNCLI implements Callable<Integer> {
                     throw new AAroNConversionException(e);
                 }
             }
-            ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
+            ObjectMapper mapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.SPLIT_LINES));
             ObjectWriter objectWriter = mapper.writerWithDefaultPrettyPrinter();
             File outputFile = outputPath.resolve("aaron_output.yml").toFile();
             objectWriter.writeValue(outputFile, output);
