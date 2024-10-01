@@ -16,6 +16,6 @@ RUN chmod +x /usr/bin/aaron-cli && chmod +x /usr/bin/aaron-import.sh
 RUN localedef -i de_DE -f UTF-8 de_DE.UTF-8
 RUN echo "LANG=\"C.UTF-8\"" > /etc/locale.conf
 RUN ln -s -f /usr/share/zoneinfo/CET /etc/localtime
-ENV LANG C.UTF-8
+ENV LANG=C.UTF-8
 #ENV LANGUAGE de_DE.UTF-8
-ENV LC_ALL C.UTF-8
+ENV LC_ALL=C.UTF-8
