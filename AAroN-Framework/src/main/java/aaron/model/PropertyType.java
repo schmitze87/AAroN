@@ -1,11 +1,11 @@
 package aaron.model;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.neo4j.graphdb.spatial.CRS;
 import org.neo4j.graphdb.spatial.Coordinate;
 import org.neo4j.graphdb.spatial.Point;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 public class PropertyType<E> {
 
@@ -25,7 +25,7 @@ public class PropertyType<E> {
     public static PropertyType<Float[]> FLOAT_ARRAY = new PropertyType<>("float[]", Float[].class);
     public static PropertyType<LocalDateTime> LOCALDATETIME = new PropertyType<>("localdatetime", LocalDateTime.class);
     public static PropertyType<LocalDateTime[]> LOCALDATETIME_ARRAY = new PropertyType<>("localdatetime[]", LocalDateTime[].class);
-    public static PropertyType<Point> POINT = new PropertyType<>("point", WGS84Point.class);
+    public static PropertyType<Point> POINT = new PropertyType<>("point{crs:WGS-84}", Point.class);
 
     public static PropertyType[] TYPES = new PropertyType[]{STRING, STRING_ARRAY, INTEGER, INTEGER_ARRAY,
             BOOLEAN, BOOLEAN_ARRAY, LONG, LONG_ARRAY, SHORT, SHORT_ARRAY, DOUBLE, DOUBLE_ARRAY, FLOAT, FLOAT_ARRAY,
@@ -53,13 +53,31 @@ public class PropertyType<E> {
 
     public static class WGS84Point implements Point {
 
-        private final double lat, lon;
-        private final Coordinate coordinate;
+        Coordinate coordinate;
+        CRS csr = new CRS() {
+            @Override
+            public int getCode() {
+                return 4326;
+            }
 
-        public WGS84Point(double lat, double lon) {
-            this.lat = lat;
-            this.lon = lon;
-            coordinate = new Coordinate(lon, lat);
+            @Override
+            public String getType() {
+                return "WGS-84";
+            }
+
+            @Override
+            public String getHref() {
+                return "https://spatialreference.org/ref/epsg/4326/";
+            }
+        };
+
+        public WGS84Point(double latitude, double longitude) {
+            this.coordinate = new Coordinate(longitude, latitude);
+        }
+
+        @Override
+        public Coordinate getCoordinate() {
+            return coordinate;
         }
 
         @Override
@@ -69,22 +87,7 @@ public class PropertyType<E> {
 
         @Override
         public CRS getCRS() {
-            return new CRS() {
-                @Override
-                public int getCode() {
-                    return 4326;
-                }
-
-                @Override
-                public String getType() {
-                    return "WGS-84";
-                }
-
-                @Override
-                public String getHref() {
-                    return "http://spatialreference.org/ref/epsg/4326/";
-                }
-            };
+            return csr;
         }
     }
 }

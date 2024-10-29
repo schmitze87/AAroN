@@ -17,7 +17,7 @@ public class Util {
     public static String getImportFolder(Transaction t) {
         String path = "/import";
         Result result = t.execute("CALL dbms.listConfig() YIELD name, value \n"
-                + "WHERE name = 'dbms.directories.import' \n" +
+                + "WHERE name = 'dbms.directories.import' OR name = 'server.directories.import' \n" +
                 "RETURN value;");
         if (result.hasNext()) {
             Map<String, Object> next = result.next();

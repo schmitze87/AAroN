@@ -3,13 +3,12 @@
     <parent>
         <groupId>schmitze87</groupId>
         <artifactId>aaron</artifactId>
-        <version>${revision}</version>
+        <version>5.24.2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>aaron-framework</artifactId>
-    <version>${revision}</version>
 
     <dependencies>
         <dependency>
@@ -17,5 +16,11 @@
             <artifactId>neo4j-graphdb-api</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.neo4j.driver</groupId>
+            <artifactId>neo4j-java-driver</artifactId>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
+
 </project>

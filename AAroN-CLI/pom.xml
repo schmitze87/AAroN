@@ -5,19 +5,17 @@
     <parent>
         <groupId>schmitze87</groupId>
         <artifactId>aaron</artifactId>
-        <version>${revision}</version>
+        <version>5.24.2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>aaron-cli</artifactId>
-    <version>${revision}</version>
 
     <dependencies>
         <dependency>
             <groupId>schmitze87</groupId>
             <artifactId>aaron-core</artifactId>
-            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>info.picocli</groupId>
@@ -32,12 +30,6 @@
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j</artifactId>
         </dependency>
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-graphdb-api</artifactId>
@@ -50,7 +42,12 @@
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-command-line</artifactId>
-            <version>${version.neo4j}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
@@ -120,6 +117,7 @@
 
                     <!-- (optional) name for binary executable, if not set will just -->
                     <!-- make the regular jar artifact executable -->
+<!--                    <classifier>${version.neo4j}</classifier>-->
                     <programFile>../../AAroN-Docker/aaron-cli</programFile>
 
                     <!-- (optional) support other packaging formats than jar -->
@@ -133,7 +131,6 @@
                     <!-- exec java " + flags + " -jar "$0" "$@" -->
                     <!-- <scriptFile>src/packaging/someScript.extension</scriptFile> -->
                 </configuration>
-
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -145,5 +142,24 @@
             </plugin>
         </plugins>
     </build>
+
+<!--    <profiles>-->
+<!--        <profile>-->
+<!--            <id>neo4jv4</id>-->
+<!--            <properties>-->
+<!--                <version.neo4j>4.4.37</version.neo4j>-->
+<!--                <java.version>11</java.version>-->
+<!--                <revision>${version.neo4j}</revision>-->
+<!--            </properties>-->
+<!--        </profile>-->
+<!--        <profile>-->
+<!--            <id>neo4jv5</id>-->
+<!--            <properties>-->
+<!--                <version.neo4j>5.23.0</version.neo4j>-->
+<!--                <java.version>17</java.version>-->
+<!--                <revision>${version.neo4j}</revision>-->
+<!--            </properties>-->
+<!--        </profile>-->
+<!--    </profiles>-->
 
 </project>

@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -x
-
 function running_as_root
 {
     test "$(id -u)" = "0"
@@ -16,6 +14,39 @@ function deleteCSV {
   done
 }
 
+function run_import {
+    local import_command="neo4j-admin"
+
+    if [[ $neo4j_version =~ 5 ]]; then
+        import_command+=" database import full"
+    else
+        import_command+=" import --database=aramis"
+    fi
+
+    if running_as_root; then
+        su-exec neo4j:neo4j $import_command \
+            --input-encoding=UTF-8 \
+            --legacy-style-quoting=false \
+            --multiline-fields=true \
+            --ignore-extra-columns=true \
+            --ignore-empty-strings=false \
+            --overwrite-destination=true \
+            "${nodes[@]}" \
+            "${edges[@]}" &> /import/neo4j-admin.log
+    else
+        $import_command \
+            --input-encoding=UTF-8 \
+            --legacy-style-quoting=false \
+            --multiline-fields=true \
+            --ignore-extra-columns=true \
+            --ignore-empty-strings=false \
+            --overwrite-destination=true \
+            "${nodes[@]}" \
+            "${edges[@]}" &> /import/neo4j-admin.log
+    fi
+}
+
+set -x
 if [ -d "data/databases/aramis" ]; then
   return
 fi
@@ -40,43 +71,12 @@ for entry in "${edgesToImport[@]}"; do
   edges+=("--relationships='$(printf '%q' "$entry")'")
 done
 
-if [[ -n "${nodes:-}" ]]; then
-  if running_as_root; then
-    su-exec neo4j:neo4j neo4j-admin import \
-                       --database=aramis \
-                       --input-encoding=UTF-8 \
-                       --legacy-style-quoting=false \
-                       --multiline-fields=true \
-                       --ignore-extra-columns=true \
-                       --ignore-empty-strings=false \
-                       "${nodes[@]}" \
-                       "${edges[@]}" &> /import/neo4j-admin.log
-  else
-    neo4j-admin import \
-        --database=aramis \
-        --input-encoding=UTF-8 \
-        --legacy-style-quoting=false \
-        --multiline-fields=true \
-        --ignore-extra-columns=true \
-        --ignore-empty-strings=false \
-        "${nodes[@]}" \
-        "${edges[@]}" &> /import/neo4j-admin.log
-  fi
-else
-  echo "no architecture files to import"
-fi
+neo4j_version=$(neo4j --version)
 
-  # Neo4j 5 Version
-  #neo4j-admin database import full \
-  #--input-encoding=UTF-8 \
-  #--legacy-style-quoting=false \
-  #--multiline-fields=true \
-  #--ignore-extra-columns=true \
-  #--ignore-empty-strings=false \
-  #--overwrite-destination=true \
-  #${nodes[*]} \
-  #${edges[*]} \
-  #--verbose
-  #aramis
+if [[ -n "${nodes:-}" ]]; then
+    run_import
+else
+    echo "no architecture files to import"
+fi
 
 set +x
