@@ -3,7 +3,7 @@
     <parent>
         <groupId>schmitze87</groupId>
         <artifactId>aaron</artifactId>
-        <version>5.24.2-SNAPSHOT</version>
+        <version>5.25.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 

@@ -1,4 +1,5 @@
-FROM docker.io/library/neo4j:5.24.2-community
+ARG NEO4J_VERSION=community
+FROM docker.io/library/neo4j:${NEO4J_VERSION}
 
 RUN set -eux \
     && DEBIAN_FRONTEND=noninteractive apt-get update \
@@ -17,5 +18,8 @@ RUN localedef -i de_DE -f UTF-8 de_DE.UTF-8
 RUN echo "LANG=\"C.UTF-8\"" > /etc/locale.conf
 RUN ln -s -f /usr/share/zoneinfo/CET /etc/localtime
 ENV LANG=C.UTF-8
-#ENV LANGUAGE de_DE.UTF-8
 ENV LC_ALL=C.UTF-8
+ENV NEO4J_initial_dbms_default__database=neo4j
+ENV NEO4J_dbms_usage__report_enabled=false
+ENV NEO4J_dbms_db_timezone=SYSTEM
+ENV EXTENSION_SCRIPT=/usr/bin/aaron-import.sh

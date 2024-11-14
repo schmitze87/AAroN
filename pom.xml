@@ -6,7 +6,7 @@
 
     <groupId>schmitze87</groupId>
     <artifactId>aaron</artifactId>
-    <version>5.24.2-SNAPSHOT</version>
+    <version>5.25.1-SNAPSHOT</version>
     <modules>
         <module>AAroN-CLI</module>
         <module>AAroN-Plugin</module>
@@ -17,7 +17,8 @@
     <name>AAroN - Analyze Architecture on Neo4j</name>
 
     <properties>
-        <version.neo4j>5.24.2</version.neo4j>
+        <revision>5.25.1-SNAPSHOT</revision>
+        <version.neo4j>5.25.1</version.neo4j>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <maven.compiler.release>17</maven.compiler.release>
@@ -175,7 +176,7 @@
             <dependency>
                 <groupId>org.neo4j.driver</groupId>
                 <artifactId>neo4j-java-driver</artifactId>
-                <version>5.25.0</version>
+                <version>5.26.3</version>
                 <scope>test</scope>
             </dependency>
 
