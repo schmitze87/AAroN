@@ -229,18 +229,38 @@ public class AAroNCsvWriter {
 
     private static void addPropertiesForHeader(final List<CSVHeader> header, final Set<CSVHeader> headerSet) {
         if (headerSet != null) {
-            headerSet.stream().forEach(header::add);
+            header.addAll(headerSet);
         }
     }
 
     private static class CSVHeader {
 
+        private final String rawName;
         private final String name;
         private final String type;
 
         CSVHeader(String name, String type) {
-            this.name = name;
+            this.rawName = name;
             this.type = type;
+            this.name = createName(name);
+        }
+
+        CSVHeader(String name, Property<?> property) {
+            this.rawName = name;
+            this.type = property.getType().getCsvValue();
+            this.name = createName(name);
+        }
+
+        private static String createName(final String value) {
+            if (value == null) {
+                return null;
+            } else {
+                return value
+                        .replace('(', '[')
+                        .replace(')', ']')
+                        .replace('{', '[')
+                        .replace('}', ']');
+            }
         }
 
         public String getName() {
@@ -249,11 +269,6 @@ public class AAroNCsvWriter {
 
         public String getType() {
             return type;
-        }
-
-        CSVHeader(String name, Property<?> property) {
-            this.name = name;
-            this.type = property.getType().getCsvValue();
         }
 
         @Override
