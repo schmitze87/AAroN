@@ -36,3 +36,5 @@ AAroN-CLI/target/
 .factorypath
 AAroN-Framework/target
 /AAroN-Docker/aaron-cli
+
+.gitconfig
