@@ -255,11 +255,13 @@ public class AAroNCsvWriter {
             if (value == null) {
                 return null;
             } else {
-                return value
-                        .replace('(', '[')
-                        .replace(')', ']')
-                        .replace('{', '[')
-                        .replace('}', ']');
+                // with neo4j 4 this fix is not necessary
+//                return value
+//                        .replace('(', '[')
+//                        .replace(')', ']')
+//                        .replace('{', '[')
+//                        .replace('}', ']');
+                return value;
             }
         }
 
