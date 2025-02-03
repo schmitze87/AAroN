@@ -109,9 +109,9 @@ public class ConnectorProcessor extends AbstractProcessor {
         AAroNEdge edge = AAroNEdge.builder().build();
 
         //Set start and end of edge
-        ObjectId start = new ObjectId(startObjectId);
-        ObjectId end = new ObjectId(endObjectId);
-        if (start != null && end != null) {
+        if (startObjectId != null && endObjectId != null) {
+            ObjectId start = new ObjectId(startObjectId);
+            ObjectId end = new ObjectId(endObjectId);
             edge.setStart(start);
             edge.setEnd(end);
         } else {
@@ -123,8 +123,10 @@ public class ConnectorProcessor extends AbstractProcessor {
         //set edge type
         if (StringUtils.isNotBlank(stereotype)) {
             edge.setType(stereotype);
-        } else {
+        } else if (StringUtils.isNotBlank(connectorType)){
             edge.setType(connectorType);
+        } else {
+            return;
         }
 
         //Set properties
