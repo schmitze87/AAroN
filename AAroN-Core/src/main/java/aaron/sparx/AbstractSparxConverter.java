@@ -167,7 +167,8 @@ public abstract class AbstractSparxConverter implements Converter {
         while (rs.next()) {
             Map<String, Object> rowData = new HashMap<>();
             for (int i = 1; i <= columnCount; i++) {
-                rowData.put(metaData.getColumnName(i), rs.getObject(i));
+                // toLowerCase to handle case insensitivity of column names in different DB schema
+                rowData.put(metaData.getColumnName(i).toLowerCase(), rs.getObject(i));
             }
             queryData.add(rowData);
         }
