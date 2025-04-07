@@ -26,7 +26,8 @@ public class Column<T> {
     }
 
     public <U extends Map<String, Object>> T value(final U map) {
-        Object o = map.get(name);
+        // toLowerCase to handle case insensitivity of column names in different DB schema
+        Object o = map.get(name.toLowerCase());
         if (o instanceof Date) {
             Date date = (Date) o;
             LocalDateTime localDateTime = Instant.ofEpochMilli(date.getTime())
