@@ -8,10 +8,7 @@ import aaron.sparx.processors.*;
 
 import java.sql.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public abstract class AbstractSparxConverter implements Converter {
 
@@ -168,7 +165,7 @@ public abstract class AbstractSparxConverter implements Converter {
             Map<String, Object> rowData = new HashMap<>();
             for (int i = 1; i <= columnCount; i++) {
                 // toLowerCase to handle case insensitivity of column names in different DB schema
-                rowData.put(metaData.getColumnName(i).toLowerCase(), rs.getObject(i));
+                rowData.put(metaData.getColumnName(i).toLowerCase(Locale.ROOT), rs.getObject(i));
             }
             queryData.add(rowData);
         }

@@ -6,10 +6,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Column<T> {
 
@@ -27,7 +24,7 @@ public class Column<T> {
 
     public <U extends Map<String, Object>> T value(final U map) {
         // toLowerCase to handle case insensitivity of column names in different DB schema
-        Object o = map.get(name.toLowerCase());
+        Object o = map.get(name.toLowerCase(Locale.ROOT));
         if (o instanceof Date) {
             Date date = (Date) o;
             LocalDateTime localDateTime = Instant.ofEpochMilli(date.getTime())

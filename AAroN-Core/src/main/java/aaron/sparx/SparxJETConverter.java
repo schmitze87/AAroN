@@ -5,12 +5,13 @@ import aaron.sparx.model.*;
 import aaron.util.Util;
 import com.healthmarketscience.jackcess.Database;
 import com.healthmarketscience.jackcess.DatabaseBuilder;
+import com.healthmarketscience.jackcess.Table;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.time.LocalDateTime;
-import java.util.Map;
+import java.util.*;
 
 public class SparxJETConverter extends AbstractSparxConverter {
 
@@ -19,6 +20,20 @@ public class SparxJETConverter extends AbstractSparxConverter {
     public SparxJETConverter(final Config config, final File file) {
         super(new Model(), config);
         this.file = file;
+    }
+
+    private void iterateJETTable(final String sha1, final LocalDateTime time, ProcessInterface processInterface, Table table) {
+        List<Map<String, Object>> list = new ArrayList<>();
+        table.forEach(row -> {
+            Map<String, Object> rowMap = new HashMap<>();
+            row.entrySet().forEach(entry -> {
+                String key = entry.getKey().toLowerCase(Locale.ROOT);
+                Object value = entry.getValue();
+                rowMap.put(key, value);
+                list.add(rowMap);
+            });
+        });
+        processInterface.process(sha1, time, list);
     }
 
     public Model convert() throws IOException {
@@ -31,31 +46,35 @@ public class SparxJETConverter extends AbstractSparxConverter {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         Database db = fixCharEncoding(DatabaseBuilder.open(file));
-        processSystem(sha1, now, db.getTable(EASystem.TABLE_NAME));
 
-        processPackages(sha1, now, db.getTable(EAPackage.TABLE_NAME));
+        iterateJETTable(sha1, now, this::processSystem, db.getTable(EASystem.TABLE_NAME));
 
-        processDiagrams(sha1, now, db.getTable(EADiagram.TABLE_NAME));
+        iterateJETTable(sha1, now, this::processSystem, db.getTable(EASystem.TABLE_NAME));
 
-        processObjects(sha1, now, db.getTable(EAObject.TABLE_NAME));
-        processObjectProperties(sha1, now, db.getTable(EAObjectProperty.TABLE_NAME));
-        processObjectConstraints(sha1, now, db.getTable(EAObjectConstraint.TABLE_NAME));
+        iterateJETTable(sha1, now, this::processPackages, db.getTable(EAPackage.TABLE_NAME));
 
-        processConnectors(sha1, now, db.getTable(EAConnector.TABLE_NAME));
-        processConnectorTags(sha1, now, db.getTable(EAConnectorTag.TABLE_NAME));
-        processConnectorConstraints(sha1, now, db.getTable(EAConnectorConstraint.TABLE_NAME));
+        iterateJETTable(sha1, now, this::processDiagrams, db.getTable(EADiagram.TABLE_NAME));
 
-        processDiagramObjects(sha1, now, db.getTable(EADiagramObject.TABLE_NAME));
-        processDiagramLinks(sha1, now, db.getTable(EADiagramLink.TABLE_NAME));
+        iterateJETTable(sha1, now, this::processObjects, db.getTable(EAObject.TABLE_NAME));
+        iterateJETTable(sha1, now, this::processObjectProperties, db.getTable(EAObjectProperty.TABLE_NAME));
+        iterateJETTable(sha1, now, this::processObjectConstraints, db.getTable(EAObjectConstraint.TABLE_NAME));
 
-        processOperations(sha1, now, db.getTable(EAOperation.TABLE_NAME));
-        processOperationTags(sha1, now, db.getTable(EAOperationTag.TABLE_NAME));
-        processOperationParams(sha1, now, db.getTable(EAOperationParams.TABLE_NAME));
+        iterateJETTable(sha1, now, this::processConnectors, db.getTable(EAConnector.TABLE_NAME));
+        iterateJETTable(sha1, now, this::processConnectorTags, db.getTable(EAConnectorTag.TABLE_NAME));
+        iterateJETTable(sha1, now, this::processConnectorConstraints, db.getTable(EAConnectorConstraint.TABLE_NAME));
 
-        processAttributes(sha1, now, db.getTable(EAAttribute.TABLE_NAME));
-        processAttributeTags(sha1, now, db.getTable(EAAttributeTag.TABLE_NAME));
-        processAttributeConstraints(sha1, now, db.getTable(EAAttributeConstraint.TABLE_NAME));
+        iterateJETTable(sha1, now, this::processDiagramObjects, db.getTable(EADiagramObject.TABLE_NAME));
+        iterateJETTable(sha1, now, this::processDiagramLinks, db.getTable(EADiagramLink.TABLE_NAME));
+
+        iterateJETTable(sha1, now, this::processOperations, db.getTable(EAOperation.TABLE_NAME));
+        iterateJETTable(sha1, now, this::processOperationTags, db.getTable(EAOperationTag.TABLE_NAME));
+        iterateJETTable(sha1, now, this::processOperationParams, db.getTable(EAOperationParams.TABLE_NAME));
+
+        iterateJETTable(sha1, now, this::processAttributes, db.getTable(EAAttribute.TABLE_NAME));
+        iterateJETTable(sha1, now, this::processAttributeTags, db.getTable(EAAttributeTag.TABLE_NAME));
+        iterateJETTable(sha1, now, this::processAttributeConstraints, db.getTable(EAAttributeConstraint.TABLE_NAME));
 
         processXRefs(sha1, now, db.getTable(EAXref.TABLE_NAME));
         return model;
