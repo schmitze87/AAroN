@@ -1,11 +1,9 @@
 package aaron;
 
 import aaron.export.AAroNCsvWriter;
+import aaron.model.Converter;
 import aaron.model.Model;
-import aaron.sparx.AbstractSparxConverter;
-import aaron.sparx.Config;
-import aaron.sparx.SparxJETConverter;
-import aaron.sparx.SparxSQLiteConverter;
+import aaron.sparx.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -162,14 +160,7 @@ public class AAroNCLI implements Callable<Integer> {
                 var eapFileName = eapFile.getName();
                 File nodesFile = outputPath.resolve("nodes_" + eapFileName + ".csv").toFile();
                 File edgesFile = outputPath.resolve("edges_" + eapFileName + ".csv").toFile();
-                AbstractSparxConverter converter = null;
-                String lowerCaseName = eapFileName.toLowerCase();
-                if (lowerCaseName.endsWith("eap") || lowerCaseName.endsWith("eapx")) {
-                    converter = new SparxJETConverter(config, eapFile);
-                }
-                if (lowerCaseName.endsWith("qea") || lowerCaseName.endsWith("qeax")) {
-                    converter = new SparxSQLiteConverter(config, eapFile);
-                }
+                Converter converter = getSparxConverter(config, eapFile);
                 try {
                     if (converter != null) {
                         Model model = converter.convert();
@@ -207,5 +198,21 @@ public class AAroNCLI implements Callable<Integer> {
             }
             return 0;
         }
+    }
+
+    private static AbstractSparxConverter getSparxConverter(Config config, File eapFile) {
+        AbstractSparxConverter converter = null;
+        var eapFileName = eapFile.getName();
+        String lowerCaseName = eapFileName.toLowerCase();
+        if (lowerCaseName.endsWith(".eap") || lowerCaseName.endsWith(".eapx")) {
+            converter = new SparxJETConverter(config, eapFile);
+        }
+        if (lowerCaseName.endsWith(".qea") || lowerCaseName.endsWith(".qeax")) {
+            converter = new SparxSQLiteConverter(config, eapFile);
+        }
+        if (lowerCaseName.endsWith(".feap")) {
+            converter = new SparxFirebirdConverter(config, eapFile);
+        }
+        return converter;
     }
 }
