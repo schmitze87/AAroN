@@ -17,7 +17,7 @@ To import an ArchiMate® Open Exchange Format file use the following procedure:
 CALL aaron.import.archiexchange("sample1.xml");
 ```
 
-### Sparx EAP/EAPX-File
+### Sparx EAP/EAPX/QEA/QEAX-Files
 To import a Sparx EAP/EAPX-File use the following procedure:
 
 ```
@@ -45,6 +45,13 @@ This one does not create TaggedValues at all:
 ```
 CALL aaron.import.sparxeap("sample.eap", {taggedValues: 'NONE'});
 ```
+
+### Sparx FEAP-Files
+If you want to import Sparx Firebird based FEAP-Files into your graphdatabase you first need to make the Firebird embedded drives available for aaron. 
+The easiest way to do so is to put the needed binaries in the PATH.
+Unfortunately the database Firebird version Sparx uses for FEAP-Files is quit old and based on Firebird 2.5 (internal db version or format is 11.2). You can download the required Binaries from the Firebird Homepage [here](https://www.firebirdsql.org/en/firebird-2-5/). 
+
+You only need the embedded version of the server.
 
 ## Copyright and Trademark hints
 
