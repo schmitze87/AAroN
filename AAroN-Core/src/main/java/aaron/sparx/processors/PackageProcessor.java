@@ -50,7 +50,7 @@ public class PackageProcessor extends AbstractProcessor {
 
         model.addNode(identifier, node);
 
-        if (parentId == 0) {
+        if (parentId == null || parentId == 0) {
             ProjectGUID projectGUIDIdentifier = new ProjectGUID(context.getProjectGuid());
             AAroNEdge containsEdge = AAroNEdge.builder()
                     .setStart(projectGUIDIdentifier)
