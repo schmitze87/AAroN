@@ -61,6 +61,8 @@ public class SparxImporter {
                 case "QEA":
                     converter = new SparxSQLiteConverter(config, file);
                     break;
+                case "FEAP":
+                    converter = new SparxFirebirdConverter(config, file);
             }
             Model model = null;
             if (converter == null) {

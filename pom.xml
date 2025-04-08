@@ -103,20 +103,9 @@
             <dependency>
                 <groupId>org.firebirdsql.jdbc</groupId>
                 <artifactId>jaybird</artifactId>
-                <version>5.0.6.java11</version>
+                <version>5.0.7.java11</version>
             </dependency>
-<!--            &lt;!&ndash; https://mvnrepository.com/artifact/org.firebirdsql.jdbc/jaybird &ndash;&gt;-->
-<!--            <dependency>-->
-<!--                <groupId>org.firebirdsql.jdbc</groupId>-->
-<!--                <artifactId>jaybird</artifactId>-->
-<!--                <version>4.0.9.java11</version>-->
-<!--            </dependency>-->
-<!--            &lt;!&ndash; https://mvnrepository.com/artifact/org.firebirdsql.jdbc/fbclient &ndash;&gt;-->
-<!--            <dependency>-->
-<!--                <groupId>org.firebirdsql.jdbc</groupId>-->
-<!--                <artifactId>fbclient</artifactId>-->
-<!--                <version>4.0.0.0</version>-->
-<!--            </dependency>-->
+
             <!-- MySQL -->
             <!-- https://mvnrepository.com/artifact/com.mysql/mysql-connector-j -->
             <dependency>
