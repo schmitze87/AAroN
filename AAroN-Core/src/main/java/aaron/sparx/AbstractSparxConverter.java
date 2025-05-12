@@ -9,6 +9,9 @@ import aaron.sparx.processors.*;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Stream;
+
+import static java.util.stream.Stream.generate;
 
 public abstract class AbstractSparxConverter implements Converter {
 
@@ -157,19 +160,51 @@ public abstract class AbstractSparxConverter implements Converter {
         }
     }
 
-    List<Map<String, Object>> handleResultSet(ResultSet rs) throws SQLException {
-        ResultSetMetaData metaData = rs.getMetaData();
-        int columnCount = metaData.getColumnCount();
-        List<Map<String, Object>> queryData = new ArrayList<>();
-        while (rs.next()) {
+    Iterable<Map<String, Object>> handleResultSet(ResultSet rs) throws SQLException {
+        return new SparxTableIterator(rs);
+    }
+
+    public class SparxTableIterator implements Iterator<Map<String, Object>>, Iterable<Map<String, Object>> {
+
+        ResultSet rs;
+        ResultSetMetaData metaData;
+        int columnCount;
+        int index = 0;
+
+        public SparxTableIterator(ResultSet rs) throws SQLException {
+            this.rs = rs;
+            this. metaData = rs.getMetaData();
+            this. columnCount = metaData.getColumnCount();
+        }
+
+        @Override
+        public boolean hasNext() {
+            try {
+                return rs.next();
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @Override
+        public Map<String, Object> next() {
             Map<String, Object> rowData = new HashMap<>();
             for (int i = 1; i <= columnCount; i++) {
                 // toLowerCase to handle case insensitivity of column names in different DB schema
-                rowData.put(metaData.getColumnName(i).toLowerCase(Locale.ROOT), rs.getObject(i));
+                try {
+                    rowData.put(metaData.getColumnName(i).toLowerCase(Locale.ROOT), rs.getObject(i));
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
             }
-            queryData.add(rowData);
+            index++;
+            return rowData;
         }
-        return queryData;
+
+        @Override
+        public Iterator<Map<String, Object>> iterator() {
+            return this;
+        }
     }
 
     @FunctionalInterface

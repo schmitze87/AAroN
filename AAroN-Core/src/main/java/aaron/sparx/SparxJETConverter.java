@@ -23,17 +23,18 @@ public class SparxJETConverter extends AbstractSparxConverter {
     }
 
     private void iterateJETTable(final String sha1, final LocalDateTime time, ProcessInterface processInterface, Table table) {
-        List<Map<String, Object>> list = new ArrayList<>();
         table.forEach(row -> {
+            List<Map<String, Object>> list = new ArrayList<>(1);
             Map<String, Object> rowMap = new HashMap<>();
             row.entrySet().forEach(entry -> {
                 String key = entry.getKey().toLowerCase(Locale.ROOT);
                 Object value = entry.getValue();
                 rowMap.put(key, value);
-                list.add(rowMap);
             });
+            list.add(rowMap);
+            processInterface.process(sha1, time, list);
         });
-        processInterface.process(sha1, time, list);
+        System.gc();
     }
 
     public Model convert() throws IOException {
