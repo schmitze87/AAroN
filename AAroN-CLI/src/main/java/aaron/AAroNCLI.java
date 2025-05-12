@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 })
 public class AAroNCLI implements Callable<Integer> {
 
-    private static final Pattern sparxFilePattern = Pattern.compile(".*\\.(eapx|eap|qea|qeax)");
+    private static final Pattern sparxFilePattern = Pattern.compile(".*\\.(eapx|eap|qea|qeax|feap)");
 
     @Override
     public Integer call() {
