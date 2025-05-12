@@ -5,7 +5,7 @@
     <parent>
         <groupId>schmitze87</groupId>
         <artifactId>aaron</artifactId>
-        <version>4.4.40</version>
+        <version>4.4.42</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -77,6 +77,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <configuration>
+<!--                    <outputDirectory>../AAroN-Docker/</outputDirectory>-->
+                    <outputFile>../AAroN-Docker/aaron-cli.jar</outputFile>
                     <transformers>
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ApacheLicenseResourceTransformer"/>
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
@@ -107,39 +109,39 @@
                 </executions>
             </plugin>
             <!-- now make the jar chmod +x style executable -->
-            <plugin>
-                <groupId>org.skife.maven</groupId>
-                <artifactId>really-executable-jar-maven-plugin</artifactId>
-                <configuration>
-                    <!-- value of flags will be interpolated into the java invocation -->
-                    <!-- as "java $flags -jar ..." -->
-                    <!--                    <flags>-Xmx1G</flags>-->
+<!--            <plugin>-->
+<!--                <groupId>org.skife.maven</groupId>-->
+<!--                <artifactId>really-executable-jar-maven-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    &lt;!&ndash; value of flags will be interpolated into the java invocation &ndash;&gt;-->
+<!--                    &lt;!&ndash; as "java $flags -jar ..." &ndash;&gt;-->
+<!--&lt;!&ndash;                    <flags>&#45;&#45;XX:InitialRAMPercentage=80 -XX:MaxRAMPercentage=80</flags>&ndash;&gt;-->
 
-                    <!-- (optional) name for binary executable, if not set will just -->
-                    <!-- make the regular jar artifact executable -->
-<!--                    <classifier>${version.neo4j}</classifier>-->
-                    <programFile>../../AAroN-Docker/aaron-cli</programFile>
+<!--                    &lt;!&ndash; (optional) name for binary executable, if not set will just &ndash;&gt;-->
+<!--                    &lt;!&ndash; make the regular jar artifact executable &ndash;&gt;-->
+<!--&lt;!&ndash;                    <classifier>${version.neo4j}</classifier>&ndash;&gt;-->
+<!--                    <programFile>../../AAroN-Docker/aaron-cli</programFile>-->
 
-                    <!-- (optional) support other packaging formats than jar -->
-                    <!-- <allowOtherTypes>true</allowOtherTypes> -->
+<!--                    &lt;!&ndash; (optional) support other packaging formats than jar &ndash;&gt;-->
+<!--                    &lt;!&ndash; <allowOtherTypes>true</allowOtherTypes> &ndash;&gt;-->
 
-                    <!-- (optional) name for a file that will define what script gets -->
-                    <!-- embedded into the executable jar.  This can be used to -->
-                    <!-- override the default startup script which is -->
-                    <!-- `#!/bin/sh -->
-                    <!--            -->
-                    <!-- exec java " + flags + " -jar "$0" "$@" -->
-                    <!-- <scriptFile>src/packaging/someScript.extension</scriptFile> -->
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>really-executable-jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+<!--                    &lt;!&ndash; (optional) name for a file that will define what script gets &ndash;&gt;-->
+<!--                    &lt;!&ndash; embedded into the executable jar.  This can be used to &ndash;&gt;-->
+<!--                    &lt;!&ndash; override the default startup script which is &ndash;&gt;-->
+<!--                    &lt;!&ndash; `#!/bin/sh &ndash;&gt;-->
+<!--                    &lt;!&ndash;            &ndash;&gt;-->
+<!--                    &lt;!&ndash; exec java " + flags + " -jar "$0" "$@" &ndash;&gt;-->
+<!--                    &lt;!&ndash; <scriptFile>src/packaging/someScript.extension</scriptFile> &ndash;&gt;-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>really-executable-jar</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 
