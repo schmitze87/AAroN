@@ -87,9 +87,10 @@ fi
 #fi
 
 aaron_output="/import/aaron_output.yml"
+aaron_output_log="/import/aaron_output.log"
 
 if [ -d "/import/" ]; then
-  aaron-cli convert -o /import/ -d /import/ &> $aaron_output
+  java -XX:InitialRAMPercentage=20 -XX:MaxRAMPercentage=80 -Djna.library.path="/opt/firebird/" -jar /usr/bin/aaron-cli.jar convert -o /import/ -d /import/ &> $aaron_output_log
 fi
 
 if [ -f "${aaron_output}" ]; then
