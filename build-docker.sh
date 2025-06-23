@@ -3,7 +3,7 @@
 directory=$(dirname "$(readlink -f "$0")")
 cd "$directory" || exit
 
-cd ./AAroN-Docker
+cd ./AAroN-Docker || exit
 
 echo "Build AAroN Container Image"
 

@@ -6,7 +6,7 @@
 
     <groupId>schmitze87</groupId>
     <artifactId>aaron</artifactId>
-    <version>4.4.42</version>
+    <version>4.4.44</version>
     <modules>
         <module>AAroN-CLI</module>
         <module>AAroN-Plugin</module>
@@ -17,7 +17,7 @@
     <name>AAroN - Analyze Architecture on Neo4j</name>
 
     <properties>
-        <version.neo4j>4.4.42</version.neo4j>
+        <version.neo4j>4.4.44</version.neo4j>
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <maven.compiler.release>11</maven.compiler.release>
@@ -31,19 +31,19 @@
         <developerConnection>scm:git:https://github.com/schmitze87/AAroN.git</developerConnection>
     </scm>
 
-<!--    <repositories>-->
-<!--        <repository>-->
-<!--            <id>github</id>-->
-<!--            <url>https://maven.pkg.github.com/schmitze87/AAroN</url>-->
-<!--            <snapshots>-->
-<!--                <enabled>true</enabled>-->
-<!--            </snapshots>-->
-<!--        </repository>-->
-<!--    </repositories>-->
+    <repositories>
+        <repository>
+            <id>github-aaron</id>
+            <url>https://maven.pkg.github.com/schmitze87/AAroN</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 
     <distributionManagement>
         <repository>
-            <id>github</id>
+            <id>github-aaron</id>
             <name>AAroN</name>
             <url>https://maven.pkg.github.com/schmitze87/aaron</url>
             <uniqueVersion>false</uniqueVersion>
@@ -161,12 +161,12 @@
                 <version>${version.neo4j}</version>
             </dependency>
 
-            <dependency>
-                <groupId>org.neo4j.driver</groupId>
-                <artifactId>neo4j-java-driver</artifactId>
-                <version>5.28.4</version>
-                <scope>test</scope>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.neo4j.driver</groupId>-->
+<!--                <artifactId>neo4j-java-driver</artifactId>-->
+<!--                <version>5.28.4</version>-->
+<!--                <scope>test</scope>-->
+<!--            </dependency>-->
 
             <!--TEST-->
             <dependency>
