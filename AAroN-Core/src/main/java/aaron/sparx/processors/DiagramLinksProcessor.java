@@ -55,7 +55,7 @@ public class DiagramLinksProcessor extends AbstractProcessor{
                         .build();
                 model.addEdge(new ImplizitRelationId(), diagramlinkEdge);
             } else {
-
+                logger.warn("Could not add DiagramLink with diagramId:'{}' and connectorId: '{}'.", diagramId, connectorId);
             }
         }
     }

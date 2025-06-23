@@ -22,8 +22,18 @@ public class Neo4jLogger implements Logger {
     }
 
     @Override
+    public void debug(String message, Object... argument) {
+        neo4jLogger.debug(message, argument);
+    }
+
+    @Override
     public void info(String message) {
         neo4jLogger.info(message);
+    }
+
+    @Override
+    public void info(String message, Object... argument) {
+        neo4jLogger.info(message, argument);
     }
 
     @Override
@@ -42,6 +52,11 @@ public class Neo4jLogger implements Logger {
     }
 
     @Override
+    public void warn(String message, Object... argument) {
+        neo4jLogger.warn(message, argument);
+    }
+
+    @Override
     public void error(String message) {
         neo4jLogger.error(message);
     }
@@ -49,6 +64,11 @@ public class Neo4jLogger implements Logger {
     @Override
     public void error(String message, Throwable throwable) {
         neo4jLogger.error(message, throwable);
+    }
+
+    @Override
+    public void error(String message, Object... argument) {
+        neo4jLogger.error(message, argument);
     }
 
 }

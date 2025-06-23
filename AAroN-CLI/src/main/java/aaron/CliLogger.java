@@ -21,6 +21,11 @@ public class CliLogger implements Logger {
     }
 
     @Override
+    public void debug(String message, Object... argument) {
+        logger.debug(message, argument);
+    }
+
+    @Override
     public void info(String s) {
         logger.info(s);
     }
@@ -28,6 +33,11 @@ public class CliLogger implements Logger {
     @Override
     public void info(String s, Throwable throwable) {
         logger.info(s, throwable);
+    }
+
+    @Override
+    public void info(String message, Object... argument) {
+        logger.info(message, argument);
     }
 
     @Override
@@ -41,6 +51,11 @@ public class CliLogger implements Logger {
     }
 
     @Override
+    public void warn(String message, Object... argument) {
+        logger.warn(message, argument);
+    }
+
+    @Override
     public void error(String s) {
         logger.error(s);
     }
@@ -48,6 +63,11 @@ public class CliLogger implements Logger {
     @Override
     public void error(String s, Throwable throwable) {
         logger.error(s, throwable);
+    }
+
+    @Override
+    public void error(String message, Object... argument) {
+        logger.error(message, argument);
     }
 
 }

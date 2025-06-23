@@ -22,6 +22,11 @@ public class TestLogger implements Logger {
     }
 
     @Override
+    public void debug(String s, Object... argument) {
+        logger.debug(s, argument);
+    }
+
+    @Override
     public void info(String s) {
         logger.info(s);
     }
@@ -29,6 +34,11 @@ public class TestLogger implements Logger {
     @Override
     public void info(String s, Throwable throwable) {
         logger.info(s, throwable);
+    }
+
+    @Override
+    public void info(String s, Object... argument) {
+        logger.info(s, argument);
     }
 
     @Override
@@ -42,6 +52,11 @@ public class TestLogger implements Logger {
     }
 
     @Override
+    public void warn(String s, Object... argument) {
+        logger.warn(s, argument);
+    }
+
+    @Override
     public void error(String s) {
         logger.error(s);
     }
@@ -49,6 +64,11 @@ public class TestLogger implements Logger {
     @Override
     public void error(String s, Throwable throwable) {
         logger.error(s, throwable);
+    }
+
+    @Override
+    public void error(String s, Object... argument) {
+        logger.error(s, argument);
     }
 
 }
