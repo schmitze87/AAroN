@@ -1,5 +1,6 @@
 package aaron.sparx.processors;
 
+import aaron.logging.Logger;
 import aaron.model.*;
 import aaron.sparx.identifiers.ConnectorId;
 import aaron.sparx.identifiers.DiagramId;
@@ -14,8 +15,8 @@ import static aaron.model.PropertyType.*;
 
 public class DiagramLinksProcessor extends AbstractProcessor{
 
-    public DiagramLinksProcessor(String sha1, LocalDateTime time, Model model, ImportConext context) {
-        super(sha1, time, model, context);
+    public DiagramLinksProcessor(String sha1, LocalDateTime time, Model model, ImportConext context, Logger logger) {
+        super(sha1, time, model, context, logger);
     }
 
     @Override
@@ -31,18 +32,19 @@ public class DiagramLinksProcessor extends AbstractProcessor{
         ConnectorId connectorIdentifier = new ConnectorId(connectorId);
 
         AAroNNode diagramNode = model.getNode(diagramIdentifier);
-        String diagramGuid = diagramNode.getProperty(STRING, "eaGuid");
-
         AAroNEdge connectorEdge = model.getEdge(connectorIdentifier);
-        if (diagramGuid != null && connectorEdge != null) {
-            Identifier start = connectorEdge.getStart();
-            Identifier end = connectorEdge.getEnd();
+
+        if (diagramNode != null && connectorEdge != null) {
+
+            String diagramGuid = diagramNode.getProperty(STRING, "eaGuid");
             String eaGuid = connectorEdge.getProperty(STRING, "eaGuid");
 
+            Identifier start = connectorEdge.getStart();
+            Identifier end = connectorEdge.getEnd();
             AAroNNode startNode = model.getNode(start);
             AAroNNode endNode = model.getNode(end);
 
-            if (startNode != null && endNode != null) {
+            if (diagramGuid != null && eaGuid != null && startNode != null && endNode != null) {
                 AAroNEdge diagramlinkEdge = AAroNEdge.builder()
                         .setType("DIAGRAMLINK")
                         .setStart(start)
@@ -52,6 +54,8 @@ public class DiagramLinksProcessor extends AbstractProcessor{
                         .addProperty("hidden", BOOLEAN, hidden)
                         .build();
                 model.addEdge(new ImplizitRelationId(), diagramlinkEdge);
+            } else {
+
             }
         }
     }

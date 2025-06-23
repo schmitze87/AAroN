@@ -1,5 +1,6 @@
 package aaron.sparx.processors;
 
+import aaron.logging.Logger;
 import aaron.model.ImportConext;
 import aaron.model.Model;
 import aaron.sparx.GUIDHelper;
@@ -16,8 +17,8 @@ public class AttributeTagProcessor extends AbstractProcessor {
 
     private final TaggedValueMode mode;
 
-    public AttributeTagProcessor(String sha1, LocalDateTime time, Model model, ImportConext context, TaggedValueMode mode) {
-        super(sha1, time, model, context);
+    public AttributeTagProcessor(String sha1, LocalDateTime time, Model model, ImportConext context, TaggedValueMode mode, Logger logger) {
+        super(sha1, time, model, context, logger);
         this.mode = mode;
     }
 
@@ -33,6 +34,6 @@ public class AttributeTagProcessor extends AbstractProcessor {
         ObjectId elementIdentifier = new ObjectId(elementId);
         AttributeTagGUID attributeTagGUID = new AttributeTagGUID(eaGuid);
 
-        TaggedValueHelper.process(sha1, time, model, mode, property, "<memo>".equals(value) ? notes : value, attributeTagGUID, elementIdentifier);
+        TaggedValueHelper.process(sha1, time, model, mode, property, "<memo>".equals(value) ? notes : value, attributeTagGUID, elementIdentifier, logger);
     }
 }

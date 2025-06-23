@@ -1,5 +1,6 @@
 package aaron.sparx;
 
+import aaron.logging.Logger;
 import aaron.model.Model;
 import aaron.sparx.model.*;
 import aaron.util.Util;
@@ -20,8 +21,8 @@ public class SparxMySQLConverter extends AbstractSparxConverter {
     private final String username;
     private final String password;
 
-    public SparxMySQLConverter(final Config config, String host, long port, String databaseName, String username, String password) {
-        super(new Model(), config);
+    public SparxMySQLConverter(final Config config, String host, long port, String databaseName, String username, String password, Logger logger) {
+        super(new Model(), config, logger);
         this.config = config;
         this.host = host;
         this.port = port;

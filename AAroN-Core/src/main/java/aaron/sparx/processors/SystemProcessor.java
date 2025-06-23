@@ -1,5 +1,6 @@
 package aaron.sparx.processors;
 
+import aaron.logging.Logger;
 import aaron.model.AAroNNode;
 import aaron.model.ImportConext;
 import aaron.model.Model;
@@ -13,8 +14,8 @@ import static aaron.model.PropertyType.STRING;
 
 public class SystemProcessor extends AbstractProcessor {
 
-    public SystemProcessor(String sha1, LocalDateTime time, Model model, ImportConext context) {
-        super(sha1, time, model, context);
+    public SystemProcessor(String sha1, LocalDateTime time, Model model, ImportConext context, Logger logger) {
+        super(sha1, time, model, context, logger);
     }
 
     @Override

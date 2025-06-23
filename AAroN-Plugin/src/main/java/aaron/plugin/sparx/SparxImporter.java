@@ -1,8 +1,10 @@
 package aaron.plugin.sparx;
 
+import aaron.logging.Logger;
 import aaron.model.Converter;
 import aaron.model.Model;
 import aaron.model.ModelProcessor;
+import aaron.plugin.logging.Neo4jLogger;
 import aaron.sparx.*;
 import aaron.util.ProgressInfo;
 import aaron.util.ProgressReporter;
@@ -35,6 +37,7 @@ public class SparxImporter {
     @Procedure(name = "aaron.import.sparxeap", mode = Mode.WRITE)
     @Description("Imports an Sparx Enterprise Architect Project (EAP) File")
     public Stream<ProgressInfo> importEAP(@Name("eapFileName") String fileName, @Name(value = "config", defaultValue = "{}") Map<String, Object> configMap) throws InterruptedException {
+        Logger logger = new Neo4jLogger(log);
         Config config = Config.createFromMap(configMap);
         String importFolder;
         try (Transaction transaction = db.beginTx()) {
@@ -56,13 +59,13 @@ public class SparxImporter {
             switch (extension) {
                 case "EAP":
                 case "EAPX":
-                    converter = new SparxJETConverter(config, file);
+                    converter = new SparxJETConverter(config, file, logger);
                     break;
                 case "QEA":
-                    converter = new SparxSQLiteConverter(config, file);
+                    converter = new SparxSQLiteConverter(config, file, logger);
                     break;
                 case "FEAP":
-                    converter = new SparxFirebirdConverter(config, file);
+                    converter = new SparxFirebirdConverter(config, file, logger);
             }
             Model model = null;
             if (converter == null) {
@@ -98,12 +101,13 @@ public class SparxImporter {
                                             @Name("username") String username,
                                             @Name("password") String password,
                                             @Name(value = "config", defaultValue = "{}") Map<String, Object> configMap) {
+        Logger logger = new Neo4jLogger(log);
         Config config = Config.createFromMap(configMap);
         CompletableFuture<ProgressInfo> future = CompletableFuture.supplyAsync(() -> {
             ProgressInfo progressInfo = new ProgressInfo(databaseName, host, "MySQL");
             progressInfo.batchSize = 1000;
             final ProgressReporter reporter = new ProgressReporter(null, new PrintWriter(System.out), progressInfo);
-            Converter converter = new SparxMySQLConverter(config, host, port, databaseName, username, password);
+            Converter converter = new SparxMySQLConverter(config, host, port, databaseName, username, password, logger);
             Model model = null;
             try {
                 model = converter.convert();
@@ -134,12 +138,13 @@ public class SparxImporter {
                                             @Name(value = "password") String password,
                                             @Name(value = "instance", defaultValue = "") String instance,
                                             @Name(value = "config", defaultValue = "{}") Map<String, Object> configMap) {
+        Logger logger = new Neo4jLogger(log);
         Config config = Config.createFromMap(configMap);
         CompletableFuture<ProgressInfo> future = CompletableFuture.supplyAsync(() -> {
             ProgressInfo progressInfo = new ProgressInfo(databaseName, host, "MSSQL");
             progressInfo.batchSize = 1000;
             final ProgressReporter reporter = new ProgressReporter(null, new PrintWriter(System.out), progressInfo);
-            Converter converter = new SparxMSSQLConverter(config, host, instance, port, databaseName, username, password);
+            Converter converter = new SparxMSSQLConverter(config, host, instance, port, databaseName, username, password, logger);
             Model model = null;
             try {
                 model = converter.convert();

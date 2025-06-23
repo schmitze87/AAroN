@@ -1,5 +1,6 @@
 package aaron.sparx.processors;
 
+import aaron.logging.Logger;
 import aaron.model.AAroNEdge;
 import aaron.model.AAroNNode;
 import aaron.model.ImportConext;
@@ -17,8 +18,8 @@ import static aaron.sparx.model.EAObjectConstraint.*;
 
 public class ObjectConstraintProcessor extends AbstractProcessor {
 
-    public ObjectConstraintProcessor(final String sha1, final LocalDateTime time, final Model model, ImportConext context) {
-        super(sha1, time, model, context);
+    public ObjectConstraintProcessor(final String sha1, final LocalDateTime time, final Model model, ImportConext context, Logger logger) {
+        super(sha1, time, model, context, logger);
     }
 
     @Override

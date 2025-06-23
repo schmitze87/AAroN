@@ -1,5 +1,6 @@
 package aaron.sparx.processors;
 
+import aaron.logging.Logger;
 import aaron.model.AAroNEdge;
 import aaron.model.AAroNNode;
 import aaron.model.ImportConext;
@@ -20,8 +21,8 @@ import static aaron.sparx.model.EAObject.*;
 
 public class ObjectProcessor extends AbstractProcessor {
 
-    public ObjectProcessor(String sha1, LocalDateTime time, Model model, ImportConext context) {
-        super(sha1, time, model, context);
+    public ObjectProcessor(String sha1, LocalDateTime time, Model model, ImportConext context, Logger logger) {
+        super(sha1, time, model, context, logger);
     }
 
     public void process(final Map<String, Object> row) {

@@ -1,5 +1,6 @@
 package aaron.sparx.processors;
 
+import aaron.logging.Logger;
 import aaron.model.AAroNEdge;
 import aaron.model.AAroNNode;
 import aaron.model.ImportConext;
@@ -24,8 +25,8 @@ public class XRefProcessor extends AbstractProcessor {
     private final static Pattern xrefStereotypePattern =
             Pattern.compile("@STEREO;Name=(?<Name>\\w+);(?:FQName=(?<FQName>(?<ns>[\\w\\d\\.-]+)::(?<s>[\\w\\d]+));)?@ENDSTEREO;|@STEREO;Name=(?<Name2>\\w+);GUID=(?<GUID>\\{[0-9A-Fa-f]{8}-(?:[0-9A-Fa-f]{4}-){3}[0-9A-Fa-f]{12}\\});@ENDSTEREO;");
 
-    public XRefProcessor(String sha1, LocalDateTime time, Model model, ImportConext context) {
-        super(sha1, time, model, context);
+    public XRefProcessor(String sha1, LocalDateTime time, Model model, ImportConext context, Logger logger) {
+        super(sha1, time, model, context, logger);
     }
 
     @Override

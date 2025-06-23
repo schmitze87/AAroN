@@ -1,5 +1,6 @@
 package aaron.sparx;
 
+import aaron.logging.Logger;
 import aaron.model.Model;
 import aaron.sparx.model.*;
 import aaron.util.Util;
@@ -15,8 +16,8 @@ public class SparxFirebirdConverter extends AbstractSparxConverter {
 
     private final File file;
 
-    public SparxFirebirdConverter(final Config config, final File file) {
-        super(new Model(), config);
+    public SparxFirebirdConverter(final Config config, final File file, Logger logger) {
+        super(new Model(), config, logger);
         this.file = file;
     }
 

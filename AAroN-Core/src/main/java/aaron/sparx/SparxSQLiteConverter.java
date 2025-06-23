@@ -1,5 +1,6 @@
 package aaron.sparx;
 
+import aaron.logging.Logger;
 import aaron.model.Model;
 import aaron.sparx.model.*;
 import aaron.util.Util;
@@ -15,8 +16,8 @@ public class SparxSQLiteConverter extends AbstractSparxConverter {
 
     private File qeaFile;
 
-    public SparxSQLiteConverter(final Config config, final File qeaFile) {
-        super(new Model(), config);
+    public SparxSQLiteConverter(final Config config, final File qeaFile, Logger logger) {
+        super(new Model(), config, logger);
         this.config = config;
         this.qeaFile = qeaFile;
     }

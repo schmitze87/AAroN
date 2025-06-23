@@ -1,5 +1,6 @@
 package aaron.sparx.processors;
 
+import aaron.logging.Logger;
 import aaron.model.*;
 import aaron.sparx.TaggedValueMode;
 import aaron.sparx.identifiers.ConnectorId;
@@ -14,7 +15,7 @@ import static aaron.model.PropertyType.STRING;
 public class TaggedValueHelper {
 
     static void process(final String sha1, final LocalDateTime time, final Model model, final TaggedValueMode mode, final String name, final String value,
-                        final Identifier<String> tagIdentifier, final Identifier taggedElementIdentifier) {
+                        final Identifier<String> tagIdentifier, final Identifier taggedElementIdentifier, Logger logger) {
         AAroNNode node = null;
         switch (mode) {
             case AS_NODE:

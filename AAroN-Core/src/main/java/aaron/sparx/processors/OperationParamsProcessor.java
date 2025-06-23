@@ -1,5 +1,6 @@
 package aaron.sparx.processors;
 
+import aaron.logging.Logger;
 import aaron.model.AAroNEdge;
 import aaron.model.AAroNNode;
 import aaron.model.ImportConext;
@@ -16,8 +17,8 @@ import static aaron.sparx.model.EAOperationParams.*;
 
 public class OperationParamsProcessor extends AbstractProcessor {
 
-    public OperationParamsProcessor(String sha1, LocalDateTime time, Model model, ImportConext context) {
-        super(sha1, time, model, context);
+    public OperationParamsProcessor(String sha1, LocalDateTime time, Model model, ImportConext context, Logger logger) {
+        super(sha1, time, model, context, logger);
     }
 
     @Override

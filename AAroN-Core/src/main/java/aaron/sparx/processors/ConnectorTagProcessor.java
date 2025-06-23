@@ -1,5 +1,6 @@
 package aaron.sparx.processors;
 
+import aaron.logging.Logger;
 import aaron.model.ImportConext;
 import aaron.model.Model;
 import aaron.sparx.GUIDHelper;
@@ -16,8 +17,8 @@ public class ConnectorTagProcessor extends AbstractProcessor {
 
     private final TaggedValueMode mode;
 
-    public ConnectorTagProcessor(final String sha1, final LocalDateTime time, final Model model, ImportConext context) {
-        super(sha1, time, model, context);
+    public ConnectorTagProcessor(final String sha1, final LocalDateTime time, final Model model, ImportConext context, Logger logger) {
+        super(sha1, time, model, context, logger);
         //Tagged Values for connectors need to be added as properties because there is no corresponding node
         this.mode = TaggedValueMode.AS_PROPERTY;
     }
@@ -34,6 +35,6 @@ public class ConnectorTagProcessor extends AbstractProcessor {
         ConnectorId connectorId = new ConnectorId(elementId);
         AttributeTagGUID connectorTagGUID = new AttributeTagGUID(eaGuid);
 
-        TaggedValueHelper.process(sha1, time, model, mode, property, "<memo>".equals(value) ? notes : value, connectorTagGUID, connectorId);
+        TaggedValueHelper.process(sha1, time, model, mode, property, "<memo>".equals(value) ? notes : value, connectorTagGUID, connectorId, logger);
     }
 }

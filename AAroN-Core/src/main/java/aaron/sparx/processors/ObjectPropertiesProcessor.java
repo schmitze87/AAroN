@@ -1,5 +1,6 @@
 package aaron.sparx.processors;
 
+import aaron.logging.Logger;
 import aaron.model.ImportConext;
 import aaron.model.Model;
 import aaron.sparx.GUIDHelper;
@@ -17,8 +18,8 @@ public class ObjectPropertiesProcessor extends AbstractProcessor {
 
     private final TaggedValueMode mode;
 
-    public ObjectPropertiesProcessor(final String sha1, final LocalDateTime time, final Model model, final ImportConext context, final TaggedValueMode mode) {
-        super(sha1, time, model, context);
+    public ObjectPropertiesProcessor(final String sha1, final LocalDateTime time, final Model model, final ImportConext context, final TaggedValueMode mode, Logger logger) {
+        super(sha1, time, model, context, logger);
         this.mode = mode;
     }
 
@@ -35,6 +36,6 @@ public class ObjectPropertiesProcessor extends AbstractProcessor {
         ObjectPropertiesGUID propertyGUID = new ObjectPropertiesGUID(eaGuid);
         ObjectId objectIdentifier = new ObjectId(objectId);
 
-        TaggedValueHelper.process(sha1, time, model, mode, property, "<memo>".equals(value) ? notes : value, propertyGUID, objectIdentifier);
+        TaggedValueHelper.process(sha1, time, model, mode, property, "<memo>".equals(value) ? notes : value, propertyGUID, objectIdentifier, logger);
     }
 }

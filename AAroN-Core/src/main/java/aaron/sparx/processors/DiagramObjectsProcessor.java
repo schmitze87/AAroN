@@ -1,5 +1,6 @@
 package aaron.sparx.processors;
 
+import aaron.logging.Logger;
 import aaron.model.AAroNEdge;
 import aaron.model.ImportConext;
 import aaron.model.Model;
@@ -16,8 +17,8 @@ import static aaron.model.PropertyType.*;
 
 public class DiagramObjectsProcessor extends AbstractProcessor{
 
-    public DiagramObjectsProcessor(String sha1, LocalDateTime time, Model model, ImportConext context) {
-        super(sha1, time, model, context);
+    public DiagramObjectsProcessor(String sha1, LocalDateTime time, Model model, ImportConext context, Logger logger) {
+        super(sha1, time, model, context, logger);
     }
 
     @Override
