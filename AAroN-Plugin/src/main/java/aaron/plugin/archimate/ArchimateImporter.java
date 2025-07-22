@@ -57,6 +57,6 @@ public class ArchimateImporter {
         } catch (ExecutionException e) {
             log.error("Could not process the results", e);
         }
-        return Stream.of(null);
+        return Stream.empty();
     }
 }
