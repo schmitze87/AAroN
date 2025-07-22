@@ -3,10 +3,10 @@ package aaron.export;
 import aaron.logging.Logger;
 import aaron.model.Converter;
 import aaron.model.Model;
-import aaron.sparx.Config;
 import aaron.sparx.SparxFirebirdConverter;
 import aaron.sparx.SparxJETConverter;
 import aaron.sparx.SparxSQLiteConverter;
+import aaron.sparx.config.Config;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 

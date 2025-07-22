@@ -1,7 +1,7 @@
 package aaron.export;
 
-import aaron.sparx.Config;
 import aaron.sparx.TaggedValueMode;
+import aaron.sparx.config.Config;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
