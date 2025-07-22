@@ -1,0 +1,9 @@
+taggedValueMode: AS_PROPERTY
+taggedValueMode2: AS_PROPERTY
+dbsToImport:
+  - type: MSSQL
+    hostname: localhost
+    port: 1433
+    database: test1
+    username: test
+    password: Secret12345678!

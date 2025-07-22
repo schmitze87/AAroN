@@ -2,6 +2,7 @@ package aaron.sparx;
 
 import aaron.logging.Logger;
 import aaron.model.Model;
+import aaron.sparx.config.Config;
 import aaron.sparx.model.*;
 import aaron.util.Util;
 

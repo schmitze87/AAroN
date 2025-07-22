@@ -6,6 +6,7 @@ import aaron.model.Model;
 import aaron.model.ModelProcessor;
 import aaron.plugin.logging.Neo4jLogger;
 import aaron.sparx.*;
+import aaron.sparx.config.Config;
 import aaron.util.ProgressInfo;
 import aaron.util.ProgressReporter;
 import aaron.util.Util;
