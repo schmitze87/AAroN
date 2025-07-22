@@ -2,9 +2,11 @@ package aaron;
 
 import aaron.export.AAroNCsvWriter;
 import aaron.logging.Logger;
-import aaron.model.Converter;
 import aaron.model.Model;
 import aaron.sparx.*;
+import aaron.sparx.config.Config;
+import aaron.sparx.config.DBToImport;
+import aaron.sparx.config.DBType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -13,7 +15,9 @@ import org.apache.commons.io.comparator.PathFileComparator;
 import picocli.CommandLine;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -67,6 +71,70 @@ public class CliConverter implements Callable<Integer> {
                             "value is not a directory.", file));
         }
         this.outputDir = file;
+    }
+
+    @Override
+    public Integer call() throws IOException {
+        Config config = loadConfigOrDefault();
+        Path outputPath = outputDir.toPath();
+        File outputFile = outputPath.resolve("aaron_output.yml").toFile();
+        try(FileOutputStream fos = new FileOutputStream(outputFile)) {
+            if (importArg != null && importArg.directory != null) {
+                List<File> fileList = determineFilesToImport(config, importArg.directory);
+                convert(fileList, config, fos);
+            }
+            if (importArg != null && importArg.files != null) {
+                convert(Arrays.asList(importArg.files), config, fos);
+            }
+            if (importArg != null && importArg.files == null && importArg.directory == null) {
+                convert(config, fos);
+            }
+        } catch (AAroNConversionException e) {
+            logger.error("Conversion error: " + e.getMessage(), e);
+            return 1;
+        }
+        return 0;
+    }
+
+    void convert(List<File> fileList, Config config, OutputStream outputStream) throws AAroNConversionException, IOException {
+        AAronCLIOutput output = new AAronCLIOutput();
+        Path outputPath = outputDir.toPath();
+        List<ConversionJob> conversionJobs = new ArrayList<>();
+
+        for (File eapFile : fileList) {
+            conversionJobs.add(createConversionJob(config, outputPath, eapFile));
+        }
+
+        processConversionJobs(conversionJobs, output);
+
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.SPLIT_LINES));
+        ObjectWriter objectWriter = mapper.writerWithDefaultPrettyPrinter();
+        objectWriter.writeValue(outputStream, output);
+    }
+
+    void convert(Config config, OutputStream outputStream) throws AAroNConversionException, IOException {
+        AAronCLIOutput output = new AAronCLIOutput();
+        Path outputPath = outputDir.toPath();
+        List<ConversionJob> conversionJobs = new ArrayList<>();
+
+        //Files
+        List<String> filesToConvert = config.getFilesToConvert();
+        for (String eapFileName : filesToConvert) {
+            File eapFile = Path.of(eapFileName).toFile();
+            conversionJobs.add(createConversionJob(config, outputPath, eapFile));
+        }
+
+        //Databases
+        List<DBToImport> dbsToImport = config.getDbsToImport();
+        for (DBToImport dbToImport : dbsToImport) {
+            conversionJobs.add(createConversionJob(config, outputPath, dbToImport));
+        }
+
+        processConversionJobs(conversionJobs, output);
+
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.SPLIT_LINES));
+        ObjectWriter objectWriter = mapper.writerWithDefaultPrettyPrinter();
+        objectWriter.writeValue(outputStream, output);
     }
 
     private Optional<Path> findConfigInDirectory(File directory) throws IOException {
@@ -139,33 +207,6 @@ public class CliConverter implements Callable<Integer> {
         }
     }
 
-    private void convert(List<File> fileList, Config config) throws AAroNConversionException, IOException {
-        AAronCLIOutput output = new AAronCLIOutput();
-        Path outputPath = outputDir.toPath();
-        for (File eapFile : fileList) {
-            var eapFileName = eapFile.getName();
-            File nodesFile = outputPath.resolve("nodes_" + eapFileName + ".csv").toFile();
-            File edgesFile = outputPath.resolve("edges_" + eapFileName + ".csv").toFile();
-            Converter converter = getSparxConverter(config, eapFile);
-            try {
-                if (converter != null) {
-                    Model model = converter.convert();
-                    AAroNCsvWriter.write(model, nodesFile, edgesFile);
-                } else {
-                    throw new AAroNConversionException();
-                }
-                output.getNodesToImport().add(nodesFile.getAbsoluteFile().toString());
-                output.getEdgesToImport().add(edgesFile.getAbsoluteFile().toString());
-            } catch (IOException e) {
-                throw new AAroNConversionException(e);
-            }
-        }
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.SPLIT_LINES));
-        ObjectWriter objectWriter = mapper.writerWithDefaultPrettyPrinter();
-        File outputFile = outputPath.resolve("aaron_output.yml").toFile();
-        objectWriter.writeValue(outputFile, output);
-    }
-
     private AbstractSparxConverter getSparxConverter(Config config, File eapFile) {
         AbstractSparxConverter converter = null;
         var eapFileName = eapFile.getName();
@@ -182,21 +223,55 @@ public class CliConverter implements Callable<Integer> {
         return converter;
     }
 
-    @Override
-    public Integer call() throws IOException {
-        Config config = loadConfigOrDefault();
-        try {
-            if (importArg != null && importArg.directory != null) {
-                List<File> fileList = determineFilesToImport(config, importArg.directory);
-                convert(fileList, config);
-            }
-            if (importArg != null && importArg.files != null) {
-                convert(Arrays.asList(importArg.files), config);
-            }
-        } catch (AAroNConversionException e) {
-            logger.error("Conversion error: " + e.getMessage(), e);
-            return 1;
-        }
-        return 0;
+    private ConversionJob createConversionJob(Config config, Path outputPath, File eapFile) {
+        ConversionJob job = new ConversionJob();
+        String eapFileName = eapFile.getName();
+        job.converter = getSparxConverter(config, eapFile);
+        job.nodesFile = outputPath.resolve("nodes_" + eapFileName + ".csv").toFile();
+        job.edgesFile = outputPath.resolve("edges_" + eapFileName + ".csv").toFile();
+        return job;
     }
+
+    private ConversionJob createConversionJob(Config config, Path outputPath, DBToImport dbToImport) {
+        ConversionJob job = new ConversionJob();
+        DBType type = dbToImport.getType();
+        switch (type) {
+            case MSSQL:
+                job.converter = new SparxMSSQLConverter(config, dbToImport.getHostname(), "", dbToImport.getPort(), dbToImport.getDatabase(), dbToImport.getUsername(), dbToImport.getPassword(), logger);
+                break;
+            case MySQL:
+                job.converter = new SparxMySQLConverter(config, dbToImport.getHostname(), dbToImport.getPort(), dbToImport.getDatabase(), dbToImport.getUsername(), dbToImport.getPassword(), logger);
+                break;
+        }
+        job.nodesFile = outputPath.resolve("nodes_" + dbToImport.getHostname()+ "_" + dbToImport.getDatabase() + ".csv").toFile();
+        job.edgesFile = outputPath.resolve("edges_" + dbToImport.getHostname()+ "_" + dbToImport.getDatabase() + ".csv").toFile();
+        return job;
+    }
+
+    private static void processConversionJobs(List<ConversionJob> conversionJobs, AAronCLIOutput output) throws AAroNConversionException {
+        for (ConversionJob conversionJob : conversionJobs) {
+            AbstractSparxConverter converter = conversionJob.converter;
+            File nodesFile = conversionJob.nodesFile;
+            File edgesFile = conversionJob.edgesFile;
+            try {
+                if (converter != null) {
+                    Model model = converter.convert();
+                    AAroNCsvWriter.write(model, nodesFile, edgesFile);
+                } else {
+                    throw new AAroNConversionException();
+                }
+                output.getNodesToImport().add(nodesFile.getAbsoluteFile().toString());
+                output.getEdgesToImport().add(edgesFile.getAbsoluteFile().toString());
+            } catch (IOException e) {
+                throw new AAroNConversionException(e);
+            }
+        }
+    }
+
+    static class ConversionJob {
+        AbstractSparxConverter converter;
+        File nodesFile;
+        File edgesFile;
+    }
+
 }

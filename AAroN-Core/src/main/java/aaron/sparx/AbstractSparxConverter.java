@@ -5,14 +5,12 @@ import aaron.model.Converter;
 import aaron.model.ImportConext;
 import aaron.model.Model;
 import aaron.model.Processor;
+import aaron.sparx.config.Config;
 import aaron.sparx.processors.*;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Stream;
-
-import static java.util.stream.Stream.generate;
 
 public abstract class AbstractSparxConverter implements Converter {
 
