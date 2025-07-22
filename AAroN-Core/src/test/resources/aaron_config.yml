@@ -3,3 +3,10 @@ taggedValueMode2: AS_PROPERTY
 filesToImport:
   - bla
   - blupp
+dbsToImport:
+  - type: MSSQL
+    hostname: localhost
+    port: 1433
+    database: test1
+    username: test
+    password: Secret12345678!
