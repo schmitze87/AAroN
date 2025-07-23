@@ -24,9 +24,9 @@ import java.math.BigInteger;
  * <pre>
  * &lt;complexType name="ViewNodeType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{http://www.opengroup.org/xsd/archimate/3.0/}ViewConceptType"&gt;
- *       &lt;attGroup ref="{http://www.opengroup.org/xsd/archimate/3.0/}LocationGroup"/&gt;
- *       &lt;attGroup ref="{http://www.opengroup.org/xsd/archimate/3.0/}SizeGroup"/&gt;
+ *     &lt;extension base="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}ViewConceptType"&gt;
+ *       &lt;attGroup ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}LocationGroup"/&gt;
+ *       &lt;attGroup ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}SizeGroup"/&gt;
  *       &lt;anyAttribute namespace='##other'/&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;

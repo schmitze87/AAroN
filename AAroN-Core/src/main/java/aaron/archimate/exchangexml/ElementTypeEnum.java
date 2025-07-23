@@ -19,7 +19,7 @@ import jakarta.xml.bind.annotation.XmlType;
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * <pre>
  * &lt;simpleType name="ElementTypeEnum"&gt;
- *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}NMTOKEN"&gt;
+ *   &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}NMTOKEN"&gt;
  *     &lt;enumeration value="BusinessActor"/&gt;
  *     &lt;enumeration value="BusinessRole"/&gt;
  *     &lt;enumeration value="BusinessCollaboration"/&gt;

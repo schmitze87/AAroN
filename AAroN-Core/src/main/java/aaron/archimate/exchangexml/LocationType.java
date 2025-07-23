@@ -21,8 +21,8 @@ import java.math.BigInteger;
  * <pre>
  * &lt;complexType name="LocationType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
- *       &lt;attGroup ref="{http://www.opengroup.org/xsd/archimate/3.0/}LocationGroup"/&gt;
+ *     &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}anyType"&gt;
+ *       &lt;attGroup ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}LocationGroup"/&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;

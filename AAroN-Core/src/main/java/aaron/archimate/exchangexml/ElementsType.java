@@ -28,9 +28,9 @@ import java.util.List;
  * <pre>
  * &lt;complexType name="ElementsType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *     &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="element" type="{http://www.opengroup.org/xsd/archimate/3.0/}ElementType" maxOccurs="unbounded"/&gt;
+ *         &lt;element name="element" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}ElementType" maxOccurs="unbounded"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;

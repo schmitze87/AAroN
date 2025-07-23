@@ -25,11 +25,11 @@ import jakarta.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="ConceptType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{http://www.opengroup.org/xsd/archimate/3.0/}ReferenceableType"&gt;
+ *     &lt;extension base="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}ReferenceableType"&gt;
  *       &lt;sequence&gt;
- *         &lt;group ref="{http://www.opengroup.org/xsd/archimate/3.0/}ConceptGroup"/&gt;
+ *         &lt;group ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}ConceptGroup"/&gt;
  *       &lt;/sequence&gt;
- *       &lt;attGroup ref="{http://www.opengroup.org/xsd/archimate/3.0/}ConceptAttributeGroup"/&gt;
+ *       &lt;attGroup ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}ConceptAttributeGroup"/&gt;
  *       &lt;anyAttribute namespace='##other'/&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;

@@ -24,7 +24,7 @@ import jakarta.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="Line"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{http://www.opengroup.org/xsd/archimate/3.0/}ConnectionType"&gt;
+ *     &lt;extension base="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}ConnectionType"&gt;
  *       &lt;anyAttribute namespace='##other'/&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;

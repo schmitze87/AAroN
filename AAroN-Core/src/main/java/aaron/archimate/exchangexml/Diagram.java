@@ -27,10 +27,10 @@ import java.util.List;
  * <pre>
  * &lt;complexType name="Diagram"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{http://www.opengroup.org/xsd/archimate/3.0/}ViewType"&gt;
+ *     &lt;extension base="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}ViewType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="node" type="{http://www.opengroup.org/xsd/archimate/3.0/}ViewNodeType" maxOccurs="unbounded" minOccurs="0"/&gt;
- *         &lt;element name="connection" type="{http://www.opengroup.org/xsd/archimate/3.0/}ConnectionType" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;element name="node" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}ViewNodeType" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;element name="connection" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}ConnectionType" maxOccurs="unbounded" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *       &lt;anyAttribute namespace='##other'/&gt;
  *     &lt;/extension&gt;

@@ -28,9 +28,9 @@ import java.util.List;
  * <pre>
  * &lt;complexType name="RelationshipsType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *     &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="relationship" type="{http://www.opengroup.org/xsd/archimate/3.0/}RelationshipType" maxOccurs="unbounded"/&gt;
+ *         &lt;element name="relationship" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}RelationshipType" maxOccurs="unbounded"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;

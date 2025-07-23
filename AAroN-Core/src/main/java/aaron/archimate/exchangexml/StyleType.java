@@ -25,13 +25,13 @@ import java.math.BigInteger;
  * <pre>
  * &lt;complexType name="StyleType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *     &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}anyType"&gt;
  *       &lt;all&gt;
- *         &lt;element name="lineColor" type="{http://www.opengroup.org/xsd/archimate/3.0/}RGBColorType" minOccurs="0"/&gt;
- *         &lt;element name="fillColor" type="{http://www.opengroup.org/xsd/archimate/3.0/}RGBColorType" minOccurs="0"/&gt;
- *         &lt;element name="font" type="{http://www.opengroup.org/xsd/archimate/3.0/}FontType" minOccurs="0"/&gt;
+ *         &lt;element name="lineColor" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}RGBColorType" minOccurs="0"/&gt;
+ *         &lt;element name="fillColor" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}RGBColorType" minOccurs="0"/&gt;
+ *         &lt;element name="font" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}FontType" minOccurs="0"/&gt;
  *       &lt;/all&gt;
- *       &lt;attribute name="lineWidth" type="{http://www.w3.org/2001/XMLSchema}positiveInteger" /&gt;
+ *       &lt;attribute name="lineWidth" type="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}positiveInteger" /&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;

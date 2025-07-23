@@ -26,11 +26,11 @@ import java.util.List;
  * <pre>
  * &lt;complexType name="ModelingNoteType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *     &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;group ref="{http://www.opengroup.org/xsd/archimate/3.0/}DocumentationGroup" maxOccurs="unbounded"/&gt;
+ *         &lt;group ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}DocumentationGroup" maxOccurs="unbounded"/&gt;
  *       &lt;/sequence&gt;
- *       &lt;attribute name="type" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
+ *       &lt;attribute name="type" type="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}string" /&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;

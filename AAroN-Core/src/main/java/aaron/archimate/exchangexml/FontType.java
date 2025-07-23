@@ -29,13 +29,13 @@ import java.util.List;
  * <pre>
  * &lt;complexType name="FontType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *     &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="color" type="{http://www.opengroup.org/xsd/archimate/3.0/}RGBColorType" minOccurs="0"/&gt;
+ *         &lt;element name="color" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}RGBColorType" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
- *       &lt;attribute name="name" type="{http://www.w3.org/2001/XMLSchema}string" /&gt;
- *       &lt;attribute name="size" type="{http://www.opengroup.org/xsd/archimate/3.0/}nonNegativeHalfGranularityDecimal" /&gt;
- *       &lt;attribute name="style" type="{http://www.opengroup.org/xsd/archimate/3.0/}FontStyleType" /&gt;
+ *       &lt;attribute name="name" type="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}string" /&gt;
+ *       &lt;attribute name="size" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}nonNegativeHalfGranularityDecimal" /&gt;
+ *       &lt;attribute name="style" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}FontStyleType" /&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;

@@ -24,7 +24,7 @@ import jakarta.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="PreservedLangStringType"&gt;
  *   &lt;simpleContent&gt;
- *     &lt;restriction base="&lt;http://www.opengroup.org/xsd/archimate/3.0/&gt;LangStringType"&gt;
+ *     &lt;restriction base="&lt;<a href="http://www.opengroup.org/xsd/archimate/3.0/&gt;LangStringType">...</a>"&gt;
  *     &lt;/restriction&gt;
  *   &lt;/simpleContent&gt;
  * &lt;/complexType&gt;
