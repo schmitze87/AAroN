@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 
 public class SparxSQLiteConverter extends AbstractSparxConverter {
 
-    private File qeaFile;
+    private final File qeaFile;
 
     public SparxSQLiteConverter(final Config config, final File qeaFile, Logger logger) {
         super(new Model(), config, logger);
@@ -32,7 +32,7 @@ public class SparxSQLiteConverter extends AbstractSparxConverter {
             sha1 = Util.createSHA256(qeaFile);
             context.setFileHash(sha1);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Could not compute SHA-256 hash of " + qeaFile.getAbsolutePath(), e);
         }
         try (Connection connection = DriverManager.getConnection("jdbc:sqlite:" + qeaFile.getAbsolutePath())) {
             handleTable(sha1, now, connection, this::processSystem, "SELECT * FROM " + EASystem.TABLE_NAME);

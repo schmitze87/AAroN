@@ -11,7 +11,7 @@ public class AAroNNode extends WithProperties {
 
     private Integer id;
 
-    private Set<String> labels;
+    private final Set<String> labels;
 
     private AAroNNode() {
         labels = new HashSet<>();
@@ -59,7 +59,7 @@ public class AAroNNode extends WithProperties {
 
     public static class Builder {
 
-        private AAroNNode node;
+        private final AAroNNode node;
 
         private Builder() {
             node = new AAroNNode();

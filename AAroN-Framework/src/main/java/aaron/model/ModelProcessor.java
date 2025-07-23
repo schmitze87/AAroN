@@ -11,7 +11,7 @@ public class ModelProcessor {
 
     private final GraphDatabaseService db;
     private final ProgressReporter reporter;
-    private final Map<Identifier, Long> identifierToNeo4jId;
+    private final Map<Identifier, String> identifierToNeo4jId;
     private final Map<AAroNNode, Set<Identifier>> nodeToIdentifiers;
 
     public ModelProcessor(final GraphDatabaseService db, final ProgressReporter reporter) {
@@ -38,11 +38,11 @@ public class ModelProcessor {
 
     private void processNodes(final Map<Identifier, AAroNNode> nodesMap) {
         try (BatchTransaction btx = new BatchTransaction(db, 1000, reporter)) {
-            List<AAroNNode> nodes = nodesMap.values().stream().distinct().collect(Collectors.toList());
+            List<AAroNNode> nodes = nodesMap.values().stream().distinct().toList();
             for (AAroNNode node : nodes) {
                 Transaction tx = btx.getTransaction();
                 Node newNode = tx.createNode();
-                long neo4jId = newNode.getId();
+                String neo4jId = newNode.getElementId();
                 Set<Identifier> identifiers = nodeToIdentifiers.get(node);
                 identifiers.forEach(i -> identifierToNeo4jId.put(i, neo4jId));
                 node.getLabels().forEach(label -> newNode.addLabel(Label.label(label)));
@@ -64,19 +64,19 @@ public class ModelProcessor {
 
     private void processEdges(final Map<Identifier, AAroNEdge> edgesMap) {
         try (BatchTransaction btx = new BatchTransaction(db, 1000, reporter)) {
-            List<AAroNEdge> edges = edgesMap.values().stream().distinct().collect(Collectors.toList());
+            List<AAroNEdge> edges = edgesMap.values().stream().distinct().toList();
             edges.forEach(edge -> {
                 Transaction tx = btx.getTransaction();
-                Long startId = identifierToNeo4jId.get(edge.getStart());
-                Long endId = identifierToNeo4jId.get(edge.getEnd());
+                String startId = identifierToNeo4jId.get(edge.getStart());
+                String endId = identifierToNeo4jId.get(edge.getEnd());
                 if (startId == null) {
                     return;
                 }
                 if (endId == null) {
                     return;
                 }
-                Node startNode = tx.getNodeById(startId);
-                Node endNode = tx.getNodeById(endId);
+                Node startNode = tx.getNodeByElementId(startId);
+                Node endNode = tx.getNodeByElementId(endId);
                 Relationship relationship = startNode.createRelationshipTo(endNode, RelationshipType.withName(edge.getType()));
                 int props = 0;
                 for (Map.Entry<String, Property> prop : edge.getProperties().entrySet()) {
@@ -87,7 +87,7 @@ public class ModelProcessor {
                         props++;
                     }
                 }
-                edge.setNeo4jId(relationship.getId());
+                edge.setNeo4jElementId(relationship.getElementId());
                 reporter.update(0, 1, props);
                 btx.increment();
             });
@@ -95,8 +95,8 @@ public class ModelProcessor {
         }
     }
 
-    private Long resolveNeo4jEdgeId(final Map<Identifier, AAroNEdge> edgesMap, final Identifier identifier) {
+    private String resolveNeo4jEdgeId(final Map<Identifier, AAroNEdge> edgesMap, final Identifier identifier) {
         AAroNEdge aAroNEdge = edgesMap.get(identifier);
-        return aAroNEdge != null ? aAroNEdge.getNeo4jId() : null;
+        return aAroNEdge != null ? aAroNEdge.getNeo4jElementId() : null;
     }
 }

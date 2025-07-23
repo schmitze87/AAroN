@@ -41,31 +41,28 @@ public class Util {
 
     public static String createSHA1(File file) throws Exception {
         MessageDigest digest = MessageDigest.getInstance("SHA-1");
-        InputStream fis = new FileInputStream(file);
-        int n = 0;
-        byte[] buffer = new byte[8192];
-        while (n != -1) {
-            n = fis.read(buffer);
-            if (n > 0) {
-                digest.update(buffer, 0, n);
-            }
-        }
-        return encodeHexString(digest.digest()).toLowerCase();
+        byte[] digestBytes = computeDigest(file, digest);
+        return encodeHexString(digestBytes).toLowerCase();
     }
 
     public static String createSHA256(File file) throws Exception {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        InputStream fis = new FileInputStream(file);
-        int n = 0;
-        byte[] buffer = new byte[8192];
-        while (n != -1) {
-            n = fis.read(buffer);
-            if (n > 0) {
-                digest.update(buffer, 0, n);
+        byte[] digestBytes = computeDigest(file, digest);
+        return encodeHexString(digestBytes).toLowerCase();
+    }
+
+    private static byte[] computeDigest(File file, MessageDigest digest) throws IOException {
+        try (InputStream fis = new FileInputStream(file)) {
+            int n = 0;
+            byte[] buffer = new byte[8192];
+            while (n != -1) {
+                n = fis.read(buffer);
+                if (n > 0) {
+                    digest.update(buffer, 0, n);
+                }
             }
         }
-
-        return encodeHexString(digest.digest()).toLowerCase();
+        return digest.digest();
     }
 
     /**

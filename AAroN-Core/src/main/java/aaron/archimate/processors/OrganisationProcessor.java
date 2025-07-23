@@ -28,7 +28,7 @@ public class OrganisationProcessor extends AbstractProcessor<OrganizationType> {
         AAroNNode node;
         Identifier identifier;
         Object identifierRef = organizationType.getIdentifierRef();
-        if (identifierRef != null && identifierRef instanceof ReferenceableType) {
+        if (identifierRef instanceof ReferenceableType) {
             ReferenceableType referencedObject = (ReferenceableType) identifierRef;
             identifier = new ArchiMateIdentifier(referencedObject.getIdentifier());
         } else {

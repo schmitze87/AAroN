@@ -16,7 +16,7 @@ public class TaggedValueHelper {
 
     static void process(final String sha1, final LocalDateTime time, final Model model, final TaggedValueMode mode, final String name, final String value,
                         final Identifier<String> tagIdentifier, final Identifier taggedElementIdentifier, Logger logger) {
-        AAroNNode node = null;
+        AAroNNode node;
         switch (mode) {
             case AS_NODE:
                 node = AAroNNode.builder().build();

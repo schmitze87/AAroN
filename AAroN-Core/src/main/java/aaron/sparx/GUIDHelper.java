@@ -7,7 +7,7 @@ public class GUIDHelper {
     private final static Pattern guidPattern = Pattern.compile("\\{\\p{XDigit}{8}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{12}\\}");
 
     public static boolean isEaGuid(String s) {
-        return s != null ? guidPattern.matcher(s).matches() : false;
+        return s != null && guidPattern.matcher(s).matches();
     }
 
     public static String unwrapGuid(final String s) {

@@ -31,7 +31,7 @@ public class SparxFirebirdConverter extends AbstractSparxConverter {
             sha1 = Util.createSHA256(file);
             context.setFileHash(sha1);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Could not compute SHA-256 hash of " + file.getAbsolutePath(), e);
         }
 
         String url = "jdbc:firebirdsql:embedded:" + file.getAbsolutePath();

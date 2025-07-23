@@ -39,7 +39,7 @@ public class SparxMSSQLConverter extends AbstractSparxConverter {
     public Model convert() throws IOException {
         LocalDateTime now = LocalDateTime.now();
         //jdbc:sqlserver://[serverName[\instanceName][:portNumber]][;property=value[;property=value]]
-        String url = "jdbc:sqlserver://" + host + (StringUtils.isNotBlank(instance) ? "\\" +instance : "") + ":" + port + ";encrypt=true" + ";trustServerCertificate=true" + ";databaseName=" + databaseName + "";
+        String url = "jdbc:sqlserver://" + host + (StringUtils.isNotBlank(instance) ? "\\" +instance : "") + ":" + port + ";encrypt=true" + ";trustServerCertificate=true" + ";databaseName=" + databaseName;
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             String sha1 = Util.createSHA1(url, now.toInstant(ZoneOffset.UTC));
             context.setFileHash(sha1);

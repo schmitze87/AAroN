@@ -16,7 +16,7 @@ public class Config {
 
     private TaggedValueMode taggedValueMode = TaggedValueMode.AS_PROPERTY;
     private List<String> filesToConvert = new ArrayList<>();
-    private List<DBToImport> dbsToImport = new ArrayList<>();
+    private final List<DBToImport> dbsToImport = new ArrayList<>();
 
     public TaggedValueMode getTaggedValueMode() {
         return taggedValueMode;
@@ -38,7 +38,7 @@ public class Config {
         Config config = new Config();
         if (map != null) {
             Object taggedValues = map.getOrDefault("taggedValues", "AS_PROPERTY");
-            if (taggedValues != null && taggedValues instanceof String) {
+            if (taggedValues instanceof String) {
                 config.taggedValueMode = TaggedValueMode.valueOf(((String) taggedValues).toUpperCase());
             }
         }
@@ -49,7 +49,6 @@ public class Config {
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory())
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         mapper.findAndRegisterModules();
-        Config config = mapper.readValue(configFile, Config.class);
-        return config;
+        return mapper.readValue(configFile, Config.class);
     }
 }

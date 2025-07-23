@@ -28,11 +28,11 @@ public class SparxJETConverter extends AbstractSparxConverter {
         table.forEach(row -> {
             List<Map<String, Object>> list = new ArrayList<>(1);
             Map<String, Object> rowMap = new HashMap<>();
-            row.entrySet().forEach(entry -> {
+            for (Map.Entry<String, Object> entry : row.entrySet()) {
                 String key = entry.getKey().toLowerCase(Locale.ROOT);
                 Object value = entry.getValue();
                 rowMap.put(key, value);
-            });
+            }
             list.add(rowMap);
             processInterface.process(sha1, time, list);
         });
@@ -47,7 +47,7 @@ public class SparxJETConverter extends AbstractSparxConverter {
             sha1 = Util.createSHA256(file);
             context.setFileHash(sha1);
         } catch (Exception e) {
-            e.printStackTrace();
+            logger.error("Could not compute SHA-256 hash of " + file.getAbsolutePath(), e);
         }
 
         Database db = fixCharEncoding(DatabaseBuilder.open(file));

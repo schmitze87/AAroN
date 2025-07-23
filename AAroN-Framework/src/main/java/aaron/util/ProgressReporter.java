@@ -8,8 +8,8 @@ import java.util.stream.Stream;
 
 /**
  * This file was taken from APOC
- * https://github.com/neo4j-contrib/neo4j-apoc-procedures
- *
+ * <a href="https://github.com/neo4j-contrib/neo4j-apoc-procedures">...</a>
+ * <p>
  * It is licensed under Apache-2.0 License
  *
  * @author mh

@@ -46,11 +46,7 @@ public class Column<T> {
                 if (dateTime == null) {
                     dateTime = tryGetDate(s);
                 }
-                if (dateTime == null) {
-                    return (T) LocalDateTime.now();
-                } else {
-                    return (T) dateTime;
-                }
+                return (T) Objects.requireNonNullElseGet(dateTime, LocalDateTime::now);
             }
         }
         if (o instanceof Integer && clazz == Boolean.class) {

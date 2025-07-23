@@ -5,7 +5,7 @@ import java.util.Objects;
 
 public class AAroNEdge extends WithProperties {
 
-    private long neo4jId;
+    private String neo4jElementId;
     private String type;
     private Identifier start;
     private Identifier end;
@@ -13,12 +13,12 @@ public class AAroNEdge extends WithProperties {
     private AAroNEdge() {
     }
 
-    public long getNeo4jId() {
-        return neo4jId;
+    public String getNeo4jElementId() {
+        return neo4jElementId;
     }
 
-    public void setNeo4jId(long neo4jId) {
-        this.neo4jId = neo4jId;
+    public void setNeo4jElementId(String neo4jElementId) {
+        this.neo4jElementId = neo4jElementId;
     }
 
     public String getType() {
@@ -51,11 +51,6 @@ public class AAroNEdge extends WithProperties {
     }
 
     @Override
-    public Map<String, Property> getProperties() {
-        return properties;
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -74,7 +69,7 @@ public class AAroNEdge extends WithProperties {
 
     public static class Builder {
 
-        private AAroNEdge edge;
+        private final AAroNEdge edge;
 
         private Builder() {
             edge = new AAroNEdge();

@@ -31,8 +31,8 @@ public class PropertyType<E> {
             BOOLEAN, BOOLEAN_ARRAY, LONG, LONG_ARRAY, SHORT, SHORT_ARRAY, DOUBLE, DOUBLE_ARRAY, FLOAT, FLOAT_ARRAY,
             LOCALDATETIME, LOCALDATETIME_ARRAY, POINT};
 
-    private String csvValue;
-    private Class<? extends E> clazz;
+    private final String csvValue;
+    private final Class<? extends E> clazz;
 
     private PropertyType(String csvValue, Class<? extends E> clazz) {
         this.csvValue = csvValue;

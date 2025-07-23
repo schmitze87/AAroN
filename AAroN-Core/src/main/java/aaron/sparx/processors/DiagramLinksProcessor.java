@@ -9,7 +9,6 @@ import aaron.sparx.model.EADiagramLink;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.UUID;
 
 import static aaron.model.PropertyType.*;
 

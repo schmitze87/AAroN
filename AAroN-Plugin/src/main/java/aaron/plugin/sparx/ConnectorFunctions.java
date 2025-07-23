@@ -23,7 +23,7 @@ public class ConnectorFunctions {
         if (relationship.hasProperty("conveyed")) {
             Object conveyed = relationship.getProperty("conveyed");
             if (conveyed instanceof String[]) {
-                Stream.Builder<Node> builder = Stream.<Node>builder();
+                Stream.Builder<Node> builder = Stream.builder();
                 String[] conveyedItems = (String[]) conveyed;
                 for (String conveyedItem : conveyedItems) {
                     ResourceIterator<Node> nodes = tx.findNodes(Label.label("t_object"), "eaGuid", conveyedItem);
@@ -47,7 +47,7 @@ public class ConnectorFunctions {
                 return tx.getAllRelationships().stream().filter(r -> {
                     if (r.hasProperty("eaGuid")) {
                         String eaGuid = (String) r.getProperty("eaGuid");
-                        return Arrays.stream(informationFlowsRealized).anyMatch(i -> i.equals(eaGuid));
+                        return Arrays.asList(informationFlowsRealized).contains(eaGuid);
                     }
                     return false;
                 }).collect(Collectors.toList());

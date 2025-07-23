@@ -89,7 +89,7 @@ public class XRefProcessor extends AbstractProcessor {
     private void SetFQStereotype(final AAroNNode node, final String description) {
         Matcher m = xrefStereotypePattern.matcher(description);
         if (m.matches()) {
-            String stereotype = (String) node.getProperty(STRING, "stereotype");
+            String stereotype = node.getProperty(STRING, "stereotype");
             String xrefStereotype = m.group("Name");
             String xrefFQStereotype = m.group("FQName");
             if (StringUtils.equals(stereotype, xrefStereotype)) {
@@ -101,7 +101,7 @@ public class XRefProcessor extends AbstractProcessor {
     private void SetFQStereotype(final AAroNEdge edge, final String description) {
         Matcher m = xrefStereotypePattern.matcher(description);
         if (m.matches()) {
-            String stereotype = (String) edge.getProperty(STRING, "stereotype");
+            String stereotype = edge.getProperty(STRING, "stereotype");
             String xrefStereotype = m.group("Name");
             String xrefFQStereotype = m.group("FQName");
             if (StringUtils.equals(stereotype, xrefStereotype)) {
@@ -126,8 +126,6 @@ public class XRefProcessor extends AbstractProcessor {
             for (Name t : Name.values()) {
                 if (t.name.equals(name)) {
                     return t;
-                } else {
-                    continue;
                 }
             }
             return null;
@@ -151,8 +149,6 @@ public class XRefProcessor extends AbstractProcessor {
             for (Type t : Type.values()) {
                 if (t.name.equals(name)) {
                     return t;
-                } else {
-                    continue;
                 }
             }
             return UNKNOWN;
@@ -174,8 +170,6 @@ public class XRefProcessor extends AbstractProcessor {
             for (BEHAVIOUR behaviour : BEHAVIOUR.values()) {
                 if (behaviour.name.equals(name)) {
                     return behaviour;
-                } else {
-                    continue;
                 }
             }
             return UNKNOWN;

@@ -81,7 +81,7 @@ public class AAroNCsvWriter {
     private void writeToCsvFile(List<String[]> list, File file) throws IOException {
         List<String> collect = list.stream()
                 .map(this::convertToCsvFormat)
-                .collect(Collectors.toList());
+                .toList();
         // CSV is a normal text file, need a writer
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             for (String line : collect) {
@@ -102,7 +102,7 @@ public class AAroNCsvWriter {
                 LOG.error("can not write to nodes file. Check file permission");
             } else {
                 List<String[]> nodesData = new ArrayList<>();
-                model.getNodes().values().stream().distinct().forEach(n -> n.getProperties().entrySet().forEach(entry -> nodeHeaders.add(new CSVHeader(entry.getKey(), entry.getValue()))));
+                model.getNodes().values().stream().distinct().forEach(n -> n.getProperties().forEach((key, value) -> nodeHeaders.add(new CSVHeader(key, value))));
                 nodeCSVHeader = createNodeCSVHeader(nodeHeaders, model);
                 nodesData.add(Arrays.stream(nodeCSVHeader).map(CSVHeader::toString).toArray(String[]::new));
                 model.getNodes().values().stream().distinct().forEach(n -> {
@@ -117,7 +117,7 @@ public class AAroNCsvWriter {
                 LOG.error("can not write to edges file. Check file permission");
             } else {
                 List<String[]> edgesData = new ArrayList<>();
-                model.getEdges().values().stream().distinct().forEach(e -> e.getProperties().entrySet().forEach(entry -> edgeHeaders.add(new CSVHeader(entry.getKey(), entry.getValue()))));
+                model.getEdges().values().stream().distinct().forEach(e -> e.getProperties().forEach((key, value) -> edgeHeaders.add(new CSVHeader(key, value))));
                 edgeCSVHeader = createEdgeCSVHeader(edgeHeaders, model);
                 edgesData.add(Arrays.stream(edgeCSVHeader).map(CSVHeader::toString).toArray(String[]::new));
                 model.getEdges().values().stream().distinct().forEach(edge -> {

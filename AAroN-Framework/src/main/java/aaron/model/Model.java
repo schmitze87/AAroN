@@ -5,8 +5,8 @@ import java.util.Map;
 
 public class Model {
 
-    private Map<Identifier, AAroNNode> nodes = new HashMap<>();
-    private Map<Identifier, AAroNEdge> edges = new HashMap<>();
+    private final Map<Identifier, AAroNNode> nodes = new HashMap<>();
+    private final Map<Identifier, AAroNEdge> edges = new HashMap<>();
 
     private ImportConext context = null;
 

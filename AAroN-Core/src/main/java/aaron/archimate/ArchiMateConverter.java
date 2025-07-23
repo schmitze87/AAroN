@@ -5,6 +5,7 @@ import aaron.archimate.processors.DiagramProcessor;
 import aaron.archimate.processors.ElementProcessor;
 import aaron.archimate.processors.OrganisationProcessor;
 import aaron.archimate.processors.RelationshipProcessor;
+import aaron.logging.Logger;
 import aaron.model.Converter;
 import aaron.model.Model;
 import aaron.model.Processor;
@@ -20,9 +21,11 @@ public class ArchiMateConverter implements Converter {
 
     private final Model graphModel;
     private final File file;
+    private final Logger logger;
 
-    public ArchiMateConverter(final File file) {
+    public ArchiMateConverter(final File file, Logger logger) {
         this.file = file;
+        this.logger = logger;
         graphModel = new Model();
     }
 
@@ -37,7 +40,7 @@ public class ArchiMateConverter implements Converter {
             processViews(model.getViews());
             return graphModel;
         } catch (JAXBException e) {
-            e.printStackTrace();
+            logger.error("Error while converting Model", e);
         }
         return null;
     }
