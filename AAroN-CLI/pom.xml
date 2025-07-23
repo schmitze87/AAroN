@@ -5,7 +5,7 @@
     <parent>
         <groupId>schmitze87</groupId>
         <artifactId>aaron</artifactId>
-        <version>4.4.44-1</version>
+        <version>2025.06.2</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <modelVersion>4.0.0</modelVersion>
@@ -117,24 +117,5 @@
             </plugin>
         </plugins>
     </build>
-
-<!--    <profiles>-->
-<!--        <profile>-->
-<!--            <id>neo4jv4</id>-->
-<!--            <properties>-->
-<!--                <version.neo4j>4.4.37</version.neo4j>-->
-<!--                <java.version>11</java.version>-->
-<!--                <revision>${version.neo4j}</revision>-->
-<!--            </properties>-->
-<!--        </profile>-->
-<!--        <profile>-->
-<!--            <id>neo4jv5</id>-->
-<!--            <properties>-->
-<!--                <version.neo4j>5.23.0</version.neo4j>-->
-<!--                <java.version>17</java.version>-->
-<!--                <revision>${version.neo4j}</revision>-->
-<!--            </properties>-->
-<!--        </profile>-->
-<!--    </profiles>-->
 
 </project>
