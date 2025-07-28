@@ -25,13 +25,13 @@ import jakarta.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="NamedReferenceableType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}ReferenceableType"&gt;
+ *     &lt;restriction base="{http://www.opengroup.org/xsd/archimate/3.0/}ReferenceableType"&gt;
  *       &lt;sequence&gt;
- *         &lt;group ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}NameGroup" maxOccurs="unbounded"/&gt;
- *         &lt;group ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}DocumentationGroup"/&gt;
- *         &lt;group ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}grp.any"/&gt;
+ *         &lt;group ref="{http://www.opengroup.org/xsd/archimate/3.0/}NameGroup" maxOccurs="unbounded"/&gt;
+ *         &lt;group ref="{http://www.opengroup.org/xsd/archimate/3.0/}DocumentationGroup"/&gt;
+ *         &lt;group ref="{http://www.opengroup.org/xsd/archimate/3.0/}grp.any"/&gt;
  *       &lt;/sequence&gt;
- *       &lt;attGroup ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}IdentifierGroup"/&gt;
+ *       &lt;attGroup ref="{http://www.opengroup.org/xsd/archimate/3.0/}IdentifierGroup"/&gt;
  *       &lt;anyAttribute namespace='##other'/&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;

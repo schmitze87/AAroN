@@ -30,14 +30,14 @@ import java.util.Map;
  * <pre>
  * &lt;complexType name="ViewConceptType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}anyType"&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;group ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}LabelGroup" maxOccurs="unbounded" minOccurs="0"/&gt;
- *         &lt;group ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}DocumentationGroup" maxOccurs="unbounded" minOccurs="0"/&gt;
- *         &lt;element name="style" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}StyleType" minOccurs="0"/&gt;
- *         &lt;element name="viewRef" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}ReferenceType" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;group ref="{http://www.opengroup.org/xsd/archimate/3.0/}LabelGroup" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;group ref="{http://www.opengroup.org/xsd/archimate/3.0/}DocumentationGroup" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;element name="style" type="{http://www.opengroup.org/xsd/archimate/3.0/}StyleType" minOccurs="0"/&gt;
+ *         &lt;element name="viewRef" type="{http://www.opengroup.org/xsd/archimate/3.0/}ReferenceType" maxOccurs="unbounded" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
- *       &lt;attGroup ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}IdentifierGroup"/&gt;
+ *       &lt;attGroup ref="{http://www.opengroup.org/xsd/archimate/3.0/}IdentifierGroup"/&gt;
  *       &lt;anyAttribute namespace='##other'/&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -69,7 +69,7 @@ public abstract class ViewConceptType {
     @XmlSchemaType(name = "ID")
     protected String identifier;
     @XmlAnyAttribute
-    private final Map<QName, String> otherAttributes = new HashMap<>();
+    private Map<QName, String> otherAttributes = new HashMap<>();
 
     /**
      * Gets the value of the labelGroup property.

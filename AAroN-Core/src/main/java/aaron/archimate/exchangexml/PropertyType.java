@@ -25,11 +25,11 @@ import java.util.List;
  * <pre>
  * &lt;complexType name="PropertyType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}anyType"&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="value" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}LangStringType" maxOccurs="unbounded"/&gt;
+ *         &lt;element name="value" type="{http://www.opengroup.org/xsd/archimate/3.0/}LangStringType" maxOccurs="unbounded"/&gt;
  *       &lt;/sequence&gt;
- *       &lt;attribute name="propertyDefinitionRef" use="required" type="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}IDREF" /&gt;
+ *       &lt;attribute name="propertyDefinitionRef" use="required" type="{http://www.w3.org/2001/XMLSchema}IDREF" /&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;

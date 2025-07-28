@@ -24,8 +24,8 @@ import java.util.Objects;
  * <pre>
  * &lt;complexType name="Access"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}RelationshipType"&gt;
- *       &lt;attribute name="accessType" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}AccessTypeEnum" default="Access" /&gt;
+ *     &lt;extension base="{http://www.opengroup.org/xsd/archimate/3.0/}RelationshipType"&gt;
+ *       &lt;attribute name="accessType" type="{http://www.opengroup.org/xsd/archimate/3.0/}AccessTypeEnum" default="Access" /&gt;
  *       &lt;anyAttribute namespace='##other'/&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;

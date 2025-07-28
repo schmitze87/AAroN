@@ -30,13 +30,13 @@ import java.util.Map;
  * <pre>
  * &lt;complexType name="ReferenceableType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}anyType"&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;group ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}NameGroup" maxOccurs="unbounded" minOccurs="0"/&gt;
- *         &lt;group ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}DocumentationGroup"/&gt;
- *         &lt;group ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}grp.any"/&gt;
+ *         &lt;group ref="{http://www.opengroup.org/xsd/archimate/3.0/}NameGroup" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;group ref="{http://www.opengroup.org/xsd/archimate/3.0/}DocumentationGroup"/&gt;
+ *         &lt;group ref="{http://www.opengroup.org/xsd/archimate/3.0/}grp.any"/&gt;
  *       &lt;/sequence&gt;
- *       &lt;attGroup ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}IdentifierGroup"/&gt;
+ *       &lt;attGroup ref="{http://www.opengroup.org/xsd/archimate/3.0/}IdentifierGroup"/&gt;
  *       &lt;anyAttribute namespace='##other'/&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
@@ -66,7 +66,7 @@ public abstract class ReferenceableType {
     @XmlSchemaType(name = "ID")
     protected String identifier;
     @XmlAnyAttribute
-    private final Map<QName, String> otherAttributes = new HashMap<>();
+    private Map<QName, String> otherAttributes = new HashMap<>();
 
     /**
      * Gets the value of the nameGroup property.

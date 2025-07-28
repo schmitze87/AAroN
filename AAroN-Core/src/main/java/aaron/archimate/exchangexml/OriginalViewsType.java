@@ -25,9 +25,9 @@ import jakarta.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="ViewsType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}anyType"&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="viewpoints" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}ViewpointsType" minOccurs="0"/&gt;
+ *         &lt;element name="viewpoints" type="{http://www.opengroup.org/xsd/archimate/3.0/}ViewpointsType" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;

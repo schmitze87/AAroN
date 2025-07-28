@@ -24,8 +24,8 @@ import java.util.Objects;
  * <pre>
  * &lt;complexType name="Association"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}RelationshipType"&gt;
- *       &lt;attribute name="isDirected" type="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}boolean" default="false" /&gt;
+ *     &lt;extension base="{http://www.opengroup.org/xsd/archimate/3.0/}RelationshipType"&gt;
+ *       &lt;attribute name="isDirected" type="{http://www.w3.org/2001/XMLSchema}boolean" default="false" /&gt;
  *       &lt;anyAttribute namespace='##other'/&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;

@@ -22,8 +22,8 @@ import jakarta.xml.bind.annotation.*;
  * <pre>
  * &lt;complexType name="LangStringType"&gt;
  *   &lt;simpleContent&gt;
- *     &lt;extension base="&lt;<a href="http://www.w3.org/2001/XMLSchema&gt;string">...</a>"&gt;
- *       &lt;attribute ref="{<a href="http://www.w3.org/XML/1998/namespace">...</a>}lang"/&gt;
+ *     &lt;extension base="&lt;http://www.w3.org/2001/XMLSchema&gt;string"&gt;
+ *       &lt;attribute ref="{http://www.w3.org/XML/1998/namespace}lang"/&gt;
  *     &lt;/extension&gt;
  *   &lt;/simpleContent&gt;
  * &lt;/complexType&gt;

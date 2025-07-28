@@ -26,9 +26,9 @@ import jakarta.xml.bind.annotation.*;
  * <pre>
  * &lt;complexType name="RelationshipType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}ConceptType"&gt;
- *       &lt;attribute name="source" use="required" type="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}IDREF" /&gt;
- *       &lt;attribute name="target" use="required" type="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}IDREF" /&gt;
+ *     &lt;extension base="{http://www.opengroup.org/xsd/archimate/3.0/}ConceptType"&gt;
+ *       &lt;attribute name="source" use="required" type="{http://www.w3.org/2001/XMLSchema}IDREF" /&gt;
+ *       &lt;attribute name="target" use="required" type="{http://www.w3.org/2001/XMLSchema}IDREF" /&gt;
  *       &lt;anyAttribute namespace='##other'/&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;

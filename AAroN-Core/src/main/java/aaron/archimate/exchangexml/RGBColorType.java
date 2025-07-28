@@ -27,13 +27,13 @@ import jakarta.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="RGBColorType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}anyType"&gt;
- *       &lt;attribute name="r" use="required" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}RGBValueType" /&gt;
- *       &lt;attribute name="g" use="required" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}RGBValueType" /&gt;
- *       &lt;attribute name="b" use="required" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}RGBValueType" /&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;attribute name="r" use="required" type="{http://www.opengroup.org/xsd/archimate/3.0/}RGBValueType" /&gt;
+ *       &lt;attribute name="g" use="required" type="{http://www.opengroup.org/xsd/archimate/3.0/}RGBValueType" /&gt;
+ *       &lt;attribute name="b" use="required" type="{http://www.opengroup.org/xsd/archimate/3.0/}RGBValueType" /&gt;
  *       &lt;attribute name="a"&gt;
  *         &lt;simpleType&gt;
- *           &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}unsignedByte"&gt;
+ *           &lt;restriction base="{http://www.w3.org/2001/XMLSchema}unsignedByte"&gt;
  *             &lt;minInclusive value="0"/&gt;
  *             &lt;maxInclusive value="100"/&gt;
  *           &lt;/restriction&gt;

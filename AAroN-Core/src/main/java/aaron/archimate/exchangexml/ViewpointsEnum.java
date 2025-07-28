@@ -19,7 +19,7 @@ import jakarta.xml.bind.annotation.XmlType;
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * <pre>
  * &lt;simpleType name="ViewpointsEnum"&gt;
- *   &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}token"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}token"&gt;
  *     &lt;enumeration value="Organization"/&gt;
  *     &lt;enumeration value="Application Platform"/&gt;
  *     &lt;enumeration value="Application Structure"/&gt;

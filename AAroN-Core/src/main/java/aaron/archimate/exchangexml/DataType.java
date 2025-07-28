@@ -19,7 +19,7 @@ import jakarta.xml.bind.annotation.XmlType;
  * <p>Das folgende Schemafragment gibt den erwarteten Content an, der in dieser Klasse enthalten ist.
  * <pre>
  * &lt;simpleType name="DataType"&gt;
- *   &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}NMTOKEN"&gt;
+ *   &lt;restriction base="{http://www.w3.org/2001/XMLSchema}NMTOKEN"&gt;
  *     &lt;enumeration value="string"/&gt;
  *     &lt;enumeration value="boolean"/&gt;
  *     &lt;enumeration value="currency"/&gt;

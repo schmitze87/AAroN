@@ -28,9 +28,9 @@ import java.util.List;
  * <pre>
  * &lt;complexType name="Container"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}ViewNodeType"&gt;
+ *     &lt;extension base="{http://www.opengroup.org/xsd/archimate/3.0/}ViewNodeType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="node" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}ViewNodeType" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;element name="node" type="{http://www.opengroup.org/xsd/archimate/3.0/}ViewNodeType" maxOccurs="unbounded" minOccurs="0"/&gt;
  *       &lt;/sequence&gt;
  *       &lt;anyAttribute namespace='##other'/&gt;
  *     &lt;/extension&gt;

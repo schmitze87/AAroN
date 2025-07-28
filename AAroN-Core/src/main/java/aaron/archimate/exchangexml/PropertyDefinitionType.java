@@ -25,8 +25,8 @@ import jakarta.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="PropertyDefinitionType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}NamedReferenceableType"&gt;
- *       &lt;attribute name="type" use="required" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}DataType" /&gt;
+ *     &lt;extension base="{http://www.opengroup.org/xsd/archimate/3.0/}NamedReferenceableType"&gt;
+ *       &lt;attribute name="type" use="required" type="{http://www.opengroup.org/xsd/archimate/3.0/}DataType" /&gt;
  *       &lt;anyAttribute namespace='##other'/&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;

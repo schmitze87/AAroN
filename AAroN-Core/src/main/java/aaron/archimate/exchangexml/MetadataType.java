@@ -31,10 +31,10 @@ import java.util.List;
  * <pre>
  * &lt;complexType name="MetadataType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}anyType"&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;choice&gt;
- *         &lt;group ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}SchemaInfoGroup"/&gt;
- *         &lt;element name="schemaInfo" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}SchemaInfoType" maxOccurs="unbounded" minOccurs="0"/&gt;
+ *         &lt;group ref="{http://www.opengroup.org/xsd/archimate/3.0/}SchemaInfoGroup"/&gt;
+ *         &lt;element name="schemaInfo" type="{http://www.opengroup.org/xsd/archimate/3.0/}SchemaInfoType" maxOccurs="unbounded" minOccurs="0"/&gt;
  *       &lt;/choice&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;

@@ -22,8 +22,8 @@ import jakarta.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="Influence"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}RelationshipType"&gt;
- *       &lt;attribute name="modifier" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}InfluenceModifierType" /&gt;
+ *     &lt;extension base="{http://www.opengroup.org/xsd/archimate/3.0/}RelationshipType"&gt;
+ *       &lt;attribute name="modifier" type="{http://www.opengroup.org/xsd/archimate/3.0/}InfluenceModifierType" /&gt;
  *       &lt;anyAttribute namespace='##other'/&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;

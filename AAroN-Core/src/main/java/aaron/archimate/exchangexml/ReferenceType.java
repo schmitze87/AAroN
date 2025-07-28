@@ -22,8 +22,8 @@ import jakarta.xml.bind.annotation.*;
  * <pre>
  * &lt;complexType name="ReferenceType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}anyType"&gt;
- *       &lt;attribute name="ref" use="required" type="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}IDREF" /&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
+ *       &lt;attribute name="ref" use="required" type="{http://www.w3.org/2001/XMLSchema}IDREF" /&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
  * &lt;/complexType&gt;

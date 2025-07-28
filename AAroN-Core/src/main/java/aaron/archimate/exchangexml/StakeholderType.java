@@ -25,9 +25,9 @@ import java.util.List;
  * <pre>
  * &lt;complexType name="StakeholderType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}anyType"&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;group ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}LabelGroup" maxOccurs="unbounded"/&gt;
+ *         &lt;group ref="{http://www.opengroup.org/xsd/archimate/3.0/}LabelGroup" maxOccurs="unbounded"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;

@@ -21,7 +21,7 @@ import jakarta.xml.bind.annotation.XmlType;
  * <pre>
  * &lt;complexType name="Location"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}CompositeType"&gt;
+ *     &lt;extension base="{http://www.opengroup.org/xsd/archimate/3.0/}CompositeType"&gt;
  *       &lt;anyAttribute namespace='##other'/&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;

@@ -25,12 +25,12 @@ import jakarta.xml.bind.annotation.*;
  * <pre>
  * &lt;complexType name="ViewType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;extension base="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}NamedReferenceableType"&gt;
+ *     &lt;extension base="{http://www.opengroup.org/xsd/archimate/3.0/}NamedReferenceableType"&gt;
  *       &lt;sequence&gt;
- *         &lt;group ref="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}PropertiesGroup"/&gt;
+ *         &lt;group ref="{http://www.opengroup.org/xsd/archimate/3.0/}PropertiesGroup"/&gt;
  *       &lt;/sequence&gt;
- *       &lt;attribute name="viewpoint" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}ViewpointTypeType" /&gt;
- *       &lt;attribute name="viewpointRef" type="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}IDREF" /&gt;
+ *       &lt;attribute name="viewpoint" type="{http://www.opengroup.org/xsd/archimate/3.0/}ViewpointTypeType" /&gt;
+ *       &lt;attribute name="viewpointRef" type="{http://www.w3.org/2001/XMLSchema}IDREF" /&gt;
  *       &lt;anyAttribute namespace='##other'/&gt;
  *     &lt;/extension&gt;
  *   &lt;/complexContent&gt;

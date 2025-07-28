@@ -28,9 +28,9 @@ import java.util.List;
  * <pre>
  * &lt;complexType name="DiagramsType"&gt;
  *   &lt;complexContent&gt;
- *     &lt;restriction base="{<a href="http://www.w3.org/2001/XMLSchema">...</a>}anyType"&gt;
+ *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="view" type="{<a href="http://www.opengroup.org/xsd/archimate/3.0/">...</a>}Diagram" maxOccurs="unbounded"/&gt;
+ *         &lt;element name="view" type="{http://www.opengroup.org/xsd/archimate/3.0/}Diagram" maxOccurs="unbounded"/&gt;
  *       &lt;/sequence&gt;
  *     &lt;/restriction&gt;
  *   &lt;/complexContent&gt;
