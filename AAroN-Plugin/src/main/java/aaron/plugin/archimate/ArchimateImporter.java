@@ -1,8 +1,10 @@
 package aaron.plugin.archimate;
 
 import aaron.archimate.ArchiMateConverter;
+import aaron.logging.Logger;
 import aaron.model.Model;
 import aaron.model.ModelProcessor;
+import aaron.plugin.logging.Neo4jLogger;
 import aaron.util.ProgressInfo;
 import aaron.util.ProgressReporter;
 import aaron.util.Util;
@@ -34,6 +36,7 @@ public class ArchimateImporter {
     @Description("Imports an ArchiMate Open Exchange Format XML File")
     public Stream<ProgressInfo> importArchiExchangeXML(
             @Name("file") String fileName) {
+        Logger logger = new Neo4jLogger(log);
         String importFolder;
         try (Transaction transaction = db.beginTx()) {
             importFolder = Util.getImportFolder(transaction);
@@ -43,7 +46,7 @@ public class ArchimateImporter {
             ProgressInfo progressInfo = new ProgressInfo(fileName, "file", "xml");
             progressInfo.batchSize = 500;
             final ProgressReporter reporter = new ProgressReporter(null, new PrintWriter(System.out), progressInfo);
-            ArchiMateConverter converter = new ArchiMateConverter(file);
+            ArchiMateConverter converter = new ArchiMateConverter(file, logger);
             Model model = converter.convert();
             ModelProcessor modelProcessor = new ModelProcessor(db, reporter);
             modelProcessor.process(model);

@@ -26,3 +26,6 @@ ENV EXTENSION_SCRIPT=/usr/bin/aaron-import.sh
 ENV PATH="$PATH:/opt/fbembed"
 ENV LD_LIBRARY_PATH=/opt/fbembed
 ENV FIREBIRD=/opt/fbembed
+ENV AARON_CONFIG=/import/aaron_config.yml
+ENV AARON_OUTPUT=/import/aaron_output.yml
+ENV AARON_LOG=/import/aaron.log

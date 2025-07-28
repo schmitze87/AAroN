@@ -7,7 +7,6 @@ import aaron.model.Model;
 import aaron.model.Processor;
 import aaron.sparx.config.Config;
 import aaron.sparx.processors.*;
-import org.jetbrains.annotations.NotNull;
 
 import java.sql.*;
 import java.time.LocalDateTime;

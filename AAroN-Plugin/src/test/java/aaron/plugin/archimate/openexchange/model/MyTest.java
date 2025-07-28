@@ -2,13 +2,16 @@ package aaron.plugin.archimate.openexchange.model;
 
 import aaron.archimate.ArchiMateConverter;
 import aaron.archimate.exchangexml.ModelType;
+import aaron.logging.Logger;
 import aaron.model.Model;
+import aaron.plugin.TestLogger;
 import jakarta.xml.bind.JAXBContext;
 import jakarta.xml.bind.JAXBElement;
 import jakarta.xml.bind.JAXBException;
 import jakarta.xml.bind.Unmarshaller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.slf4j.LoggerFactory;
 
 import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
@@ -37,10 +40,11 @@ class MyTest {
 
     @Test
     void secondTest() {
+        Logger logger = new TestLogger(LoggerFactory.getLogger(MyTest.class));
         URL resource = ClassLoader.getSystemResource("archisurance.xml");
         File file = new File(resource.getFile());
         Assertions.assertNotNull(file);
-        ArchiMateConverter converter = new ArchiMateConverter(file);
+        ArchiMateConverter converter = new ArchiMateConverter(file, logger);
         Model graphModel = converter.convert();
         System.out.println(graphModel.toString());
     }

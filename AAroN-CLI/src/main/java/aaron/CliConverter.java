@@ -81,10 +81,14 @@ public class CliConverter implements Callable<Integer> {
         try(FileOutputStream fos = new FileOutputStream(outputFile)) {
             if (importArg != null && importArg.directory != null) {
                 List<File> fileList = determineFilesToImport(config, importArg.directory);
-                convert(fileList, config, fos);
+                List<String> filesToConvert = config.getFilesToConvert();
+                fileList.forEach(file -> filesToConvert.add(file.getAbsolutePath()));
+                convert(config, fos);
             }
             if (importArg != null && importArg.files != null) {
-                convert(Arrays.asList(importArg.files), config, fos);
+                List<String> filesToConvert = config.getFilesToConvert();
+                Arrays.stream(importArg.files).forEach(file -> filesToConvert.add(file.getAbsolutePath()));
+                convert(config, fos);
             }
             if (importArg != null && importArg.files == null && importArg.directory == null) {
                 convert(config, fos);
@@ -94,22 +98,6 @@ public class CliConverter implements Callable<Integer> {
             return 1;
         }
         return 0;
-    }
-
-    void convert(List<File> fileList, Config config, OutputStream outputStream) throws AAroNConversionException, IOException {
-        AAronCLIOutput output = new AAronCLIOutput();
-        Path outputPath = outputDir.toPath();
-        List<ConversionJob> conversionJobs = new ArrayList<>();
-
-        for (File eapFile : fileList) {
-            conversionJobs.add(createConversionJob(config, outputPath, eapFile));
-        }
-
-        processConversionJobs(conversionJobs, output);
-
-        ObjectMapper mapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.SPLIT_LINES));
-        ObjectWriter objectWriter = mapper.writerWithDefaultPrettyPrinter();
-        objectWriter.writeValue(outputStream, output);
     }
 
     void convert(Config config, OutputStream outputStream) throws AAroNConversionException, IOException {
