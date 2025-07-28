@@ -20,7 +20,7 @@ RUN ln -s -f /usr/share/zoneinfo/CET /etc/localtime
 RUN mkdir -p /opt/fbembed
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
-ENV NEO4J_dbms_default__database=neo4j
+ENV NEO4J_initial_dbms_default__database=neo4j
 ENV NEO4J_dbms_db_timezone=SYSTEM
 ENV EXTENSION_SCRIPT=/usr/bin/aaron-import.sh
 ENV PATH="$PATH:/opt/fbembed"

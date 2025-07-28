@@ -18,10 +18,12 @@ function run_load_dump {
   local load_dump_command="neo4j-admin"
   local dumpFile="$1"
 
-  if [[ $neo4j_version =~ 5 ]]; then
-      load_dump_command+=" database load --overwrite-destination=true --from-stdin $NEO4J_initial_dbms_default__database"
+  if [[ $neo4j_version =~ 4 ]]; then
+    load_dump_command+=" load --from=- --database=$NEO4J_dbms_default__database --force"
+  elif [[ $neo4j_version =~ 5 ]]; then
+    load_dump_command+=" database load --overwrite-destination=true --from-stdin $NEO4J_initial_dbms_default__database"
   else
-      load_dump_command+=" load --from=- --database=$NEO4J_dbms_default__database --force"
+    load_dump_command+=" database load --overwrite-destination=true --from-stdin $NEO4J_initial_dbms_default__database"
   fi
 
   if running_as_root; then
@@ -34,10 +36,10 @@ function run_load_dump {
 function run_import {
     local import_command="neo4j-admin"
 
-    if [[ $neo4j_version =~ 5 ]]; then
-        import_command+=" database import full $NEO4J_initial_dbms_default__database"
+    if [[ $neo4j_version =~ 4 ]]; then
+      import_command+=" import --database=$NEO4J_dbms_default__database"
     else
-        import_command+=" import --database=$NEO4J_dbms_default__database"
+      import_command+=" database import full $NEO4J_initial_dbms_default__database"
     fi
 
     if running_as_root; then
@@ -65,10 +67,10 @@ function run_import {
 neo4j_version=$(neo4j --version)
 
 #Check if database already exists. If yes then exit script and continue with startup
-if [[ $neo4j_version =~ 5 ]]; then
-  dbDir=$NEO4J_initial_dbms_default__database
-else
+if [[ $neo4j_version =~ 4 ]]; then
   dbDir=$NEO4J_dbms_default__database
+else
+  dbDir=$NEO4J_initial_dbms_default__database
 fi
 if [ -d "data/databases/$dbDir" ]; then
   return
