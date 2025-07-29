@@ -1,6 +1,5 @@
 package aaron.model;
 
-import java.util.Map;
 import java.util.Objects;
 
 public class AAroNEdge extends WithProperties {

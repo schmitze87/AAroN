@@ -5,7 +5,6 @@ import aaron.util.ProgressReporter;
 import org.neo4j.graphdb.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ModelProcessor {
 
