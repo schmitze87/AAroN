@@ -35,7 +35,7 @@ public class CliConverter implements Callable<Integer> {
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
 
-    @CommandLine.ArgGroup(exclusive = true, multiplicity = "1")
+    @CommandLine.ArgGroup(exclusive = true, multiplicity = "0..1")
     Import importArg;
 
     @CommandLine.Option(
@@ -49,13 +49,13 @@ public class CliConverter implements Callable<Integer> {
     static class Import {
         @CommandLine.Option(
                 names = {"-f", "--file"},
-                arity = "1..*", required = true, paramLabel = "FILE",
+                arity = "1..*", required = false, paramLabel = "FILE",
                 description = "The file to be converted and imported into a graph db.")
         File[] files;
 
         @CommandLine.Option(
                 names = {"-d", "--directory"},
-                arity = "1", required = true, paramLabel = "DIRECTORY",
+                arity = "1", required = false, paramLabel = "DIRECTORY",
                 description = "The directory you want to import from.")
         File directory;
     }
