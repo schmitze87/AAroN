@@ -255,13 +255,13 @@ public class AAroNCsvWriter {
             if (value == null) {
                 return null;
             } else {
-                // with neo4j 4 this fix is not necessary
-//                return value
-//                        .replace('(', '[')
-//                        .replace(')', ']')
-//                        .replace('{', '[')
-//                        .replace('}', ']');
-                return value;
+                //TODO: Fix to temporary handle neo4j issue https://github.com/neo4j/neo4j/issues/13680
+                return value
+                        .replace('(', '[')
+                        .replace(')', ']')
+                        .replace('{', '[')
+                        .replace('}', ']');
+//                return value;
             }
         }
 
