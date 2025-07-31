@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import org.apache.commons.io.comparator.PathFileComparator;
+import org.apache.commons.lang3.StringUtils;
 import picocli.CommandLine;
 
 import java.io.File;
@@ -75,6 +76,7 @@ public class CliConverter implements Callable<Integer> {
 
     @Override
     public Integer call() throws IOException {
+        logger.info("Start AAroN CLI converter");
         Config config = loadConfigOrDefault();
         Path outputPath = outputDir.toPath();
         File outputFile = outputPath.resolve("aaron_output.yml").toFile();
@@ -82,16 +84,23 @@ public class CliConverter implements Callable<Integer> {
             List<String> filesToConvert = config.getFilesToConvert();
             if (importArg != null && importArg.directory != null) {
                 List<File> filesInFolder = determineFilesToImport(config, importArg.directory);
-                filesInFolder.forEach(file -> filesToConvert.add(file.getAbsolutePath()));
+                filesInFolder.forEach(file -> {
+                    logger.info("Adding file in folder to conversion list: " + file.getAbsolutePath());
+                    filesToConvert.add(file.getAbsolutePath());
+                });
             }
             if (importArg != null && importArg.files != null) {
-                Arrays.stream(importArg.files).forEach(file -> filesToConvert.add(file.getAbsolutePath()));
+                Arrays.stream(importArg.files).forEach(file -> {
+                    logger.info("Adding file to conversion list: " + file.getAbsolutePath());
+                    filesToConvert.add(file.getAbsolutePath());
+                });
             }
             convert(config, fos);
         } catch (AAroNConversionException e) {
             logger.error("Conversion error: " + e.getMessage(), e);
             return 1;
         }
+        logger.info("End AAroN CLI converter");
         return 0;
     }
 
@@ -104,13 +113,20 @@ public class CliConverter implements Callable<Integer> {
         List<String> filesToConvert = config.getFilesToConvert();
         for (String eapFileName : filesToConvert) {
             File eapFile = Path.of(eapFileName).toFile();
+            logger.info("Create conversion job for file: " + filesToConvert.get(0));
             conversionJobs.add(createConversionJob(config, outputPath, eapFile));
         }
 
         //Databases
         List<DBToImport> dbsToImport = config.getDbsToImport();
         for (DBToImport dbToImport : dbsToImport) {
-            conversionJobs.add(createConversionJob(config, outputPath, dbToImport));
+            DBToImport db = dbsToImport.get(0);
+            if (StringUtils.isNotBlank(db.getDatabase())) {
+                logger.info("Create conversion job for DB: " + db.getDatabase());
+                conversionJobs.add(createConversionJob(config, outputPath, dbToImport));
+            } else {
+                logger.warn("Can not create conversion job for DB: " + db.getDatabase());
+            }
         }
 
         processConversionJobs(conversionJobs, output);
