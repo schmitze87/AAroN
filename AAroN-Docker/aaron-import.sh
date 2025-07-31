@@ -116,7 +116,7 @@ if [ -f "${aaron_output}" ]; then
   if [[ -n "${nodes:-}" ]]; then
       run_import
   else
-      echo "no architecture files to import"
+      echo "no architecture csv-files to import"
   fi
 fi
 
