@@ -23,6 +23,7 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
@@ -92,6 +93,13 @@
                             </excludes>
                         </filter>
                     </filters>
+                    <artifactSet>
+                        <excludes>
+                            <!-- Beispiel: SLF4J-NOP oder Logback nicht einshaden -->
+                            <exclude>org.slf4j:slf4j-nop</exclude>
+                            <exclude>ch.qos.logback:logback-classic</exclude>
+                        </excludes>
+                    </artifactSet>
                 </configuration>
                 <executions>
                     <execution>

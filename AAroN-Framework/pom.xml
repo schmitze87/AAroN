@@ -16,11 +16,6 @@
             <artifactId>neo4j-graphdb-api</artifactId>
             <scope>provided</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.neo4j.driver</groupId>-->
-<!--            <artifactId>neo4j-java-driver</artifactId>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
     </dependencies>
 
 </project>
