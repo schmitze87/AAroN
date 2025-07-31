@@ -14,8 +14,12 @@ public class AAroNCLI implements Callable<Integer> {
         return 0;
     }
 
+    public static int execute(String[] args) {
+        return  new CommandLine(new AAroNCLI()).execute(args);
+    }
+
     public static void main(String[] args) {
-        int exitCode = new CommandLine(new AAroNCLI()).execute(args);
+        int exitCode = execute(args);
         System.exit(exitCode);
     }
 

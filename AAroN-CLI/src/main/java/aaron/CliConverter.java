@@ -35,7 +35,7 @@ public class CliConverter implements Callable<Integer> {
     @CommandLine.Spec
     CommandLine.Model.CommandSpec spec;
 
-    @CommandLine.ArgGroup(exclusive = true, multiplicity = "0..1")
+    @CommandLine.ArgGroup(exclusive = true, multiplicity = "0..1", validate = true)
     Import importArg;
 
     @CommandLine.Option(
@@ -79,20 +79,15 @@ public class CliConverter implements Callable<Integer> {
         Path outputPath = outputDir.toPath();
         File outputFile = outputPath.resolve("aaron_output.yml").toFile();
         try(FileOutputStream fos = new FileOutputStream(outputFile)) {
+            List<String> filesToConvert = config.getFilesToConvert();
             if (importArg != null && importArg.directory != null) {
-                List<File> fileList = determineFilesToImport(config, importArg.directory);
-                List<String> filesToConvert = config.getFilesToConvert();
-                fileList.forEach(file -> filesToConvert.add(file.getAbsolutePath()));
-                convert(config, fos);
+                List<File> filesInFolder = determineFilesToImport(config, importArg.directory);
+                filesInFolder.forEach(file -> filesToConvert.add(file.getAbsolutePath()));
             }
             if (importArg != null && importArg.files != null) {
-                List<String> filesToConvert = config.getFilesToConvert();
                 Arrays.stream(importArg.files).forEach(file -> filesToConvert.add(file.getAbsolutePath()));
-                convert(config, fos);
             }
-            if (importArg != null && importArg.files == null && importArg.directory == null) {
-                convert(config, fos);
-            }
+            convert(config, fos);
         } catch (AAroNConversionException e) {
             logger.error("Conversion error: " + e.getMessage(), e);
             return 1;
