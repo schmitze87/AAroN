@@ -6,7 +6,7 @@
     <parent>
         <groupId>schmitze87</groupId>
         <artifactId>aaron</artifactId>
-        <version>2025.06.2</version>
+        <version>${revision}${changelist}${sha1}</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
