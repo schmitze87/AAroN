@@ -7,6 +7,7 @@ import aaron.model.ModelProcessor;
 import aaron.plugin.logging.Neo4jLogger;
 import aaron.sparx.*;
 import aaron.sparx.config.Config;
+import aaron.sparx.config.MSSQLDB;
 import aaron.util.ProgressInfo;
 import aaron.util.ProgressReporter;
 import aaron.util.Util;
@@ -138,14 +139,22 @@ public class SparxImporter {
                                             @Name("username") String username,
                                             @Name(value = "password") String password,
                                             @Name(value = "instance", defaultValue = "") String instance,
+                                            @Name(value = "authenticationType", defaultValue = "AD_LOGIN", description = "Allowed values are 'AD_LOGIN' and 'SQL_LOGIN'") String authenticationType,
                                             @Name(value = "config", defaultValue = "{}") Map<String, Object> configMap) {
         Logger logger = new Neo4jLogger(log);
+        MSSQLDB.AuthenticationType dbAuthenticationType;
+        try {
+            dbAuthenticationType = MSSQLDB.AuthenticationType.valueOf(authenticationType.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            log.error("Unknown authentication type: " + authenticationType);
+            throw new RuntimeException("Unknown authentication type: " + authenticationType);
+        }
         Config config = Config.createFromMap(configMap);
         CompletableFuture<ProgressInfo> future = CompletableFuture.supplyAsync(() -> {
             ProgressInfo progressInfo = new ProgressInfo(databaseName, host, "MSSQL");
             progressInfo.batchSize = 1000;
             final ProgressReporter reporter = new ProgressReporter(null, new PrintWriter(System.out), progressInfo);
-            Converter converter = new SparxMSSQLConverter(config, host, instance, port, databaseName, username, password, logger);
+            Converter converter = new SparxMSSQLConverter(config, host, instance, port, databaseName, username, password, dbAuthenticationType, logger);
             Model model = null;
             try {
                 model = converter.convert();

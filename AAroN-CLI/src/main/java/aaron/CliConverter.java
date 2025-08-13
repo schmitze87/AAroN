@@ -7,6 +7,7 @@ import aaron.sparx.*;
 import aaron.sparx.config.Config;
 import aaron.sparx.config.DBToImport;
 import aaron.sparx.config.DBType;
+import aaron.sparx.config.MSSQLDB;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -236,7 +237,7 @@ public class CliConverter implements Callable<Integer> {
         DBType type = dbToImport.getType();
         switch (type) {
             case MSSQL:
-                job.converter = new SparxMSSQLConverter(config, dbToImport.getHostname(), "", dbToImport.getPort(), dbToImport.getDatabase(), dbToImport.getUsername(), dbToImport.getPassword(), logger);
+                job.converter = new SparxMSSQLConverter(config, (MSSQLDB) dbToImport, logger);
                 break;
             case MySQL:
                 job.converter = new SparxMySQLConverter(config, dbToImport.getHostname(), dbToImport.getPort(), dbToImport.getDatabase(), dbToImport.getUsername(), dbToImport.getPassword(), logger);

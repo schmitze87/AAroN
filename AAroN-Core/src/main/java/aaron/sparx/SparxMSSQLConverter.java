@@ -3,6 +3,7 @@ package aaron.sparx;
 import aaron.logging.Logger;
 import aaron.model.Model;
 import aaron.sparx.config.Config;
+import aaron.sparx.config.MSSQLDB;
 import aaron.sparx.model.*;
 import aaron.util.Util;
 import org.apache.commons.lang3.StringUtils;
@@ -23,23 +24,44 @@ public class SparxMSSQLConverter extends AbstractSparxConverter {
     private final String databaseName;
     private final String username;
     private final String password;
+    private final boolean trustServerCertificate;
+    private final MSSQLDB.AuthenticationType authenticationType;
 
-    public SparxMSSQLConverter(final Config config, String host, String instance, long port, String databaseName, String username, String password, Logger logger) {
+    public SparxMSSQLConverter(final Config config, String host, String instance, long port, String databaseName, String username, String password, MSSQLDB.AuthenticationType authenticationType, Logger logger) {
         super(new Model(), config, logger);
         this.config = config;
         this.host = host;
         this.instance = instance;
         this.port = port;
+        this.trustServerCertificate = true;
         this.databaseName = databaseName;
         this.username = username;
         this.password = password;
+        this.authenticationType = authenticationType;
+    }
+
+    public SparxMSSQLConverter(final Config config, MSSQLDB dbToImport, Logger logger) {
+        super(new Model(), config, logger);
+        this.config = config;
+        this.host = dbToImport.getHostname();
+        this.port = dbToImport.getPort();
+        this.instance = dbToImport.getInstance();
+        this.trustServerCertificate = dbToImport.isTrustCertificate();
+        this.databaseName = dbToImport.getDatabase();
+        this.username = dbToImport.getUsername();
+        this.password = dbToImport.getPassword();
+        this.authenticationType = dbToImport.getAuthenticationType();
     }
 
     @Override
     public Model convert() throws IOException {
         LocalDateTime now = LocalDateTime.now();
         //jdbc:sqlserver://[serverName[\instanceName][:portNumber]][;property=value[;property=value]]
-        String url = "jdbc:sqlserver://" + host + (StringUtils.isNotBlank(instance) ? "\\" +instance : "") + ":" + port + ";encrypt=true" + ";trustServerCertificate=true" + ";databaseName=" + databaseName;
+        String url = "jdbc:sqlserver://" + host + (StringUtils.isNotBlank(instance) ? "\\" +instance : "") + ":" + port + ";encrypt=true" + ";trustServerCertificate=" + trustServerCertificate + ";databaseName=" + databaseName;
+        switch (authenticationType) {
+            case AD_LOGIN ->   url = url + ";authenticationScheme=NTLM;integratedSecurity=true";
+            case SQL_LOGIN ->  url = url + ";authenticationScheme=NativeAuthentication;integratedSecurity=false";
+        }
         try (Connection connection = DriverManager.getConnection(url, username, password)) {
             String sha1 = Util.createSHA1(url, now.toInstant(ZoneOffset.UTC));
             context.setFileHash(sha1);

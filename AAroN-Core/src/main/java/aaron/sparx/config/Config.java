@@ -22,6 +22,10 @@ public class Config {
         return taggedValueMode;
     }
 
+    public void setTaggedValueMode(TaggedValueMode taggedValueMode) {
+        this.taggedValueMode = taggedValueMode;
+    }
+
     public List<String> getFilesToConvert() {
         return filesToConvert;
     }
