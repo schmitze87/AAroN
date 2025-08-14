@@ -76,8 +76,8 @@ if [ -d "data/databases/$dbDir" ]; then
   return
 fi
 
-if [ -f "data/${dbDir}.dump" ]; then
-  run_load_dump "data/${dbDir}.dump"
+if [ -f "backups/${dbDir}.dump" ]; then
+  run_load_dump "backups/${dbDir}.dump"
 fi
 
 #if [ -d "/backups" ]; then
