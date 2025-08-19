@@ -113,20 +113,25 @@ public class CliConverter implements Callable<Integer> {
         //Files
         List<String> filesToConvert = config.getFilesToConvert();
         for (String eapFileName : filesToConvert) {
-            File eapFile = Path.of(eapFileName).toFile();
-            logger.info("Create conversion job for file: " + filesToConvert.get(0));
+            Path path = Path.of(eapFileName);
+            File eapFile;
+            if (path.isAbsolute()) {
+                eapFile = path.toFile();
+            } else {
+                eapFile = outputPath.resolve(path).toFile();
+            }
+            logger.info("Create conversion job for file: " + eapFile);
             conversionJobs.add(createConversionJob(config, outputPath, eapFile));
         }
 
         //Databases
         List<DBToImport> dbsToImport = config.getDbsToImport();
         for (DBToImport dbToImport : dbsToImport) {
-            DBToImport db = dbsToImport.get(0);
-            if (StringUtils.isNotBlank(db.getDatabase())) {
-                logger.info("Create conversion job for DB: " + db.getDatabase());
+            if (StringUtils.isNotBlank(dbToImport.getDatabase())) {
+                logger.info("Create conversion job for DB: " + dbToImport.getDatabase());
                 conversionJobs.add(createConversionJob(config, outputPath, dbToImport));
             } else {
-                logger.warn("Can not create conversion job for DB: " + db.getDatabase());
+                logger.warn("Can not create conversion job for DB: " + dbToImport.getDatabase());
             }
         }
 
