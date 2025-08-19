@@ -72,15 +72,13 @@ if [[ $neo4j_version =~ 4 ]]; then
 else
   dbDir=$NEO4J_initial_dbms_default__database
 fi
-if [ -d "/data/databases/$dbDir" ]; then
-  echo "Found database dir for db: {$dbDir}"
-  echo "Not going to import any data. Using existing database."
+if [ -f "/data/databases/$dbDir/neostore" ]; then
+  echo "Database $dbDir already exists. Not going to import any data. Using existing database."
   return
 fi
 
 if [ -f "/backups/${dbDir}.dump" ]; then
-  echo "Found dump for database {$dbDir}."
-  echo "Going to import dump."
+  echo "Found dump for database $dbDir. Going to import dump."
   run_load_dump "/backups/${dbDir}.dump"
 fi
 
