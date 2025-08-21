@@ -95,9 +95,13 @@ aaron_output=$AARON_OUTPUT
 aaron_log=$AARON_LOG
 
 if [ -f "$aaron_config" ]; then
-  java -XX:InitialRAMPercentage=20 -XX:MaxRAMPercentage=80 -Djna.library.path="/opt/firebird/" -jar /usr/bin/aaron-cli.jar convert -o /import/ -c "$aaron_config" &> $aaron_log
+  java -XX:InitialRAMPercentage=20 -XX:MaxRAMPercentage=80 -Djna.library.path="/opt/firebird/" \
+    -Djavax.net.ssl.trustStore=/opt/java/openjdk/lib/security/cacerts -Djavax.net.ssl.trustStorePassword=changeit \
+    -jar /usr/bin/aaron-cli.jar convert -o /import/ -c "$aaron_config" &> $aaron_log
 elif [ -d "/import/" ]; then
-  java -XX:InitialRAMPercentage=20 -XX:MaxRAMPercentage=80 -Djna.library.path="/opt/firebird/" -jar /usr/bin/aaron-cli.jar convert -o /import/ -d /import/ &> $aaron_log
+  java -XX:InitialRAMPercentage=20 -XX:MaxRAMPercentage=80 -Djna.library.path="/opt/firebird/" \
+    -Djavax.net.ssl.trustStore=/opt/java/openjdk/lib/security/cacerts -Djavax.net.ssl.trustStorePassword=changeit \
+    -jar /usr/bin/aaron-cli.jar convert -o /import/ -d /import/ &> $aaron_log
 fi
 
 if [ -f "${aaron_output}" ]; then
