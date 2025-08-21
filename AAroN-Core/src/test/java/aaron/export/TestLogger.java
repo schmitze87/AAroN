@@ -4,10 +4,10 @@ import aaron.logging.Logger;
 
 public class TestLogger implements Logger {
 
-    private org.slf4j.Logger logger;
+    private final org.slf4j.Logger logger;
 
     public TestLogger(org.slf4j.Logger logger) {
-        logger = logger;
+        this.logger = logger;
     }
 
 
