@@ -80,15 +80,8 @@ fi
 if [ -f "/backups/${dbDir}.dump" ]; then
   echo "Found dump for database $dbDir. Going to import dump."
   run_load_dump "/backups/${dbDir}.dump"
+  return
 fi
-
-#if [ -d "/backups" ]; then
-#  mapfile -t dumpToImport < <(find "/backups" -maxdepth 1 -type f -name "*.dump" -printf "%T@ %p\n" | sort -nr | head -n 1 | cut -d' ' -f2-)
-#  if [[ -n "${dumpToImport:-}" ]]; then
-#    run_load_dump "${dumpToImport[0]}"
-#  fi
-#  return
-#fi
 
 aaron_config=$AARON_CONFIG
 aaron_output=$AARON_OUTPUT
