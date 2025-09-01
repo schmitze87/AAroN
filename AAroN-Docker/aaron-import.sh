@@ -97,6 +97,12 @@ elif [ -d "/import/" ]; then
     -jar /usr/bin/aaron-cli.jar convert -o /import/ -d /import/ &> $aaron_log
 fi
 
+aaronExitCode=$?
+if [ $aaronExitCode -ne 0 ]; then
+    echo "Error during aaron processing. Aborting..."
+    exit $aaronExitCode
+fi
+
 if [ -f "${aaron_output}" ]; then
   # Extract list with yq and store in array
   mapfile -t nodesToImport < <(yq '.nodesToImport[]' "$aaron_output")
