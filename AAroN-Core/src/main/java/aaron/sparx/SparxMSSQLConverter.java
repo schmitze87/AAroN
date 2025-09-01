@@ -64,7 +64,8 @@ public class SparxMSSQLConverter extends AbstractSparxConverter {
             case SQL_LOGIN ->  url = url + ";authenticationScheme=NativeAuthentication;integratedSecurity=false";
         }
         String secureUrl = url + ";encrypt=true" + ";trustServerCertificate=" + trustServerCertificate;
-        String[] urls = new String[]{secureUrl, url};
+        String semiSecureUrl = url + ";encrypt=true" + ";trustServerCertificate=true";
+        String[] urls = new String[]{secureUrl, semiSecureUrl, url};
         for (int i = 0; i < urls.length; i++) {
             if (i == 0) {
                 logger.info("try to establish secure connection to {}", host);
