@@ -203,7 +203,7 @@ public class AAroNCsvWriter {
 
     private void addPropertiesToRecord(final List<String> csvRecord, final CSVHeader[] headers, final WithProperties withProperties, int skip) {
         Arrays.stream(headers).skip(skip).forEach(h -> {
-            Property property = withProperties.getProperties().get(h.name);
+            Property property = withProperties.getProperties().get(h.rawName);
             if (property != null) {
                 Object value = property.getValue();
                 if (value == null) {
@@ -255,13 +255,18 @@ public class AAroNCsvWriter {
             if (value == null) {
                 return null;
             } else {
+                String header = value;
+                header = header
+                        .trim()
+                        .replaceAll("\\s+", " ");
+
                 //TODO: Fix to temporary handle neo4j issue https://github.com/neo4j/neo4j/issues/13680
-                return value
+                return header
                         .replace('(', '[')
                         .replace(')', ']')
                         .replace('{', '[')
                         .replace('}', ']');
-//                return value;
+//                return header;
             }
         }
 
