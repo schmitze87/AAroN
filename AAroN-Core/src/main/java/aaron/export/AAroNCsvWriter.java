@@ -88,6 +88,7 @@ public class AAroNCsvWriter {
                 bw.write(line);
                 bw.newLine();
             }
+            bw.flush();
         }
     }
 
