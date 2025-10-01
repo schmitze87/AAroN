@@ -24,6 +24,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <version.picocli>4.7.7</version.picocli>
+        <jackson.version>2.15.2</jackson.version>
     </properties>
 
     <scm>
@@ -53,6 +54,13 @@
 
     <dependencyManagement>
         <dependencies>
+            <dependency>
+                <groupId>org.neo4j</groupId>
+                <artifactId>parent</artifactId>
+                <version>${version.neo4j}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
             <dependency>
                 <groupId>schmitze87</groupId>
                 <artifactId>aaron-framework</artifactId>
@@ -127,7 +135,6 @@
                 <version>12.10.1.jre11</version>
             </dependency>
 
-
             <dependency>
                 <!-- This gives us the Procedure API our runtime code uses.
                      We have a `provided` scope on it, because when this is
@@ -137,6 +144,7 @@
                 <groupId>org.neo4j</groupId>
                 <artifactId>neo4j</artifactId>
                 <version>${version.neo4j}</version>
+                <scope>provided</scope>
             </dependency>
             <dependency>
                 <groupId>org.neo4j</groupId>
@@ -144,22 +152,22 @@
                 <version>${version.neo4j}</version>
                 <scope>provided</scope>
             </dependency>
-            <dependency>
-                <groupId>org.neo4j</groupId>
-                <artifactId>neo4j-import-tool</artifactId>
-                <version>${version.neo4j}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.neo4j</groupId>-->
+<!--                <artifactId>neo4j-import-tool</artifactId>-->
+<!--                <version>${version.neo4j}</version>-->
+<!--            </dependency>-->
             <dependency>
                 <groupId>org.neo4j.test</groupId>
                 <artifactId>neo4j-harness</artifactId>
                 <version>${version.neo4j}</version>
                 <scope>test</scope>
             </dependency>
-            <dependency>
-                <groupId>org.neo4j</groupId>
-                <artifactId>neo4j-command-line</artifactId>
-                <version>${version.neo4j}</version>
-            </dependency>
+<!--            <dependency>-->
+<!--                <groupId>org.neo4j</groupId>-->
+<!--                <artifactId>neo4j-command-line</artifactId>-->
+<!--                <version>${version.neo4j}</version>-->
+<!--            </dependency>-->
 
 <!--            <dependency>-->
 <!--                <groupId>org.neo4j.driver</groupId>-->
@@ -295,6 +303,10 @@
                             <goal>compile</goal>
                         </goals>
                         <configuration>
+                            <release>${maven.compiler.release}</release>
+                            <target>${maven.compiler.target}</target>
+                            <source>${maven.compiler.source}</source>
+                            <multiReleaseOutput>true</multiReleaseOutput>
 <!--                            <outputDirectory>${project.build.outputDirectory}_${version.neo4j}</outputDirectory>-->
                             <!--                            <executable>${jdk.11.executable.path}</executable>-->
 <!--                            <source>11</source>-->
@@ -307,6 +319,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifestEntries>
+                            <Multi-Release>true</Multi-Release>
+                        </manifestEntries>
+                    </archive>
+                </configuration>
 <!--                <executions>-->
 <!--                    <execution>-->
 <!--                        <id>neo4j</id>-->
