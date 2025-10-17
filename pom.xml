@@ -17,15 +17,15 @@
     <name>AAroN - Analyze Architecture on Neo4j</name>
 
     <properties>
-        <revision>2025.07.1</revision>
+        <revision>2025.09.0</revision>
         <changelist>-SNAPSHOT</changelist>
         <sha1></sha1>
-        <version.neo4j>2025.07.1</version.neo4j>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <version.neo4j>2025.09.0</version.neo4j>
         <version.picocli>4.7.7</version.picocli>
     </properties>
 
@@ -112,10 +112,11 @@
                 <version>2.0.13</version>
             </dependency>
 
+            <!-- https://mvnrepository.com/artifact/org.firebirdsql.jdbc/jaybird -->
             <dependency>
                 <groupId>org.firebirdsql.jdbc</groupId>
                 <artifactId>jaybird</artifactId>
-                <version>5.0.8.java11</version>
+                <version>5.0.10.java11</version>
             </dependency>
 
             <!-- MySQL -->
@@ -136,7 +137,7 @@
             <dependency>
                 <groupId>com.microsoft.sqlserver</groupId>
                 <artifactId>mssql-jdbc</artifactId>
-                <version>12.10.1.jre11</version>
+                <version>12.10.2.jre11</version>
             </dependency>
 
 
