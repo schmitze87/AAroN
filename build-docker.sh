@@ -3,7 +3,7 @@
 directory=$(dirname "$(readlink -f "$0")")
 cd "$directory" || exit
 
-VERSION=$(docker run -q --rm -v "$(pwd)":/usr/src/mymaven -w /usr/src/mymaven maven:3.9-eclipse-temurin-11-alpine mvn help:evaluate -Dexpression=version.neo4j -q -DforceStdout)
+VERSION=$(docker run -q --rm -v "$(pwd)":/usr/src/mymaven -w /usr/src/mymaven maven:3.9-eclipse-temurin-21-alpine mvn help:evaluate -Dexpression=version.neo4j -q -DforceStdout)
 echo "code version $VERSION"
 NEO4J_VERSION=${VERSION//-SNAPHSOT/}
 echo "neo4j version $NEO4J_VERSION"
