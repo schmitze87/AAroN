@@ -105,7 +105,7 @@ public class CliConverter implements Callable<Integer> {
             conversionJobs.add(createConversionJob(config, outputPath, eapFile));
         }
 
-        processConversionJobs(conversionJobs, output);
+        processConversionJobs(conversionJobs, output, config.isParenthesesFix());
 
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.SPLIT_LINES));
         ObjectWriter objectWriter = mapper.writerWithDefaultPrettyPrinter();
@@ -130,7 +130,7 @@ public class CliConverter implements Callable<Integer> {
             conversionJobs.add(createConversionJob(config, outputPath, dbToImport));
         }
 
-        processConversionJobs(conversionJobs, output);
+        processConversionJobs(conversionJobs, output, config.isParenthesesFix());
 
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.SPLIT_LINES));
         ObjectWriter objectWriter = mapper.writerWithDefaultPrettyPrinter();
@@ -248,7 +248,7 @@ public class CliConverter implements Callable<Integer> {
         return job;
     }
 
-    private static void processConversionJobs(List<ConversionJob> conversionJobs, AAronCLIOutput output) throws AAroNConversionException {
+    private static void processConversionJobs(List<ConversionJob> conversionJobs, AAronCLIOutput output, final boolean ParenthesesFix) throws AAroNConversionException {
         for (ConversionJob conversionJob : conversionJobs) {
             AbstractSparxConverter converter = conversionJob.converter;
             File nodesFile = conversionJob.nodesFile;
@@ -256,7 +256,7 @@ public class CliConverter implements Callable<Integer> {
             try {
                 if (converter != null) {
                     Model model = converter.convert();
-                    AAroNCsvWriter.write(model, nodesFile, edgesFile);
+                    AAroNCsvWriter.write(model, nodesFile, edgesFile, ParenthesesFix);
                 } else {
                     throw new AAroNConversionException();
                 }

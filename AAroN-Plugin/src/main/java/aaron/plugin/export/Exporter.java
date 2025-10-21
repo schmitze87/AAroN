@@ -52,6 +52,7 @@ public class Exporter {
         try (Transaction transaction = db.beginTx()) {
             importFolderStr = Util.getImportFolder(transaction);
         }
+        boolean parenthesesFix = (boolean) configMap.getOrDefault("parenthesesFix", false);
         Path importFolder = Path.of(importFolderStr);
         Path nodesFile = importFolder.resolve(fileName + "_nodes.csv");
         Path edgesFile = importFolder.resolve(fileName + "_edges.csv");
@@ -81,7 +82,7 @@ public class Exporter {
             model.addEdge(new Neo4jEdgeIdentifier(id), aaronEdge);
         });
         try {
-            AAroNCsvWriter.write(model, nodesFile.toFile(), edgesFile.toFile());
+            AAroNCsvWriter.write(model, nodesFile.toFile(), edgesFile.toFile(), parenthesesFix);
         } catch (IOException e) {
             log.error("Could not write CSV files", e);
             throw new RuntimeException(e);

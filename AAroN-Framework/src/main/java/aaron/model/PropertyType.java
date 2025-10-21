@@ -32,8 +32,8 @@ public class PropertyType<E> {
     public static PropertyType<Float[]> FLOAT_ARRAY = new PropertyType<>("float[]", Float[].class);
     public static PropertyType<LocalTime> LOCALTIME = new PropertyType<>("localtime", LocalTime.class);
     public static PropertyType<LocalTime[]> LOCALTIME_ARRAY = new PropertyType<>("localtime[]", LocalTime[].class);
-    public static PropertyType<LocalDate> LOCALDATE = new PropertyType<>("localdate", LocalDate.class);
-    public static PropertyType<LocalDate[]> LOCALDATE_ARRAY = new PropertyType<>("localdate[]", LocalDate[].class);
+    public static PropertyType<LocalDate> LOCALDATE = new PropertyType<>("date", LocalDate.class);
+    public static PropertyType<LocalDate[]> LOCALDATE_ARRAY = new PropertyType<>("date[]", LocalDate[].class);
     public static PropertyType<LocalDateTime> LOCALDATETIME = new PropertyType<>("localdatetime", LocalDateTime.class);
     public static PropertyType<LocalDateTime[]> LOCALDATETIME_ARRAY = new PropertyType<>("localdatetime[]", LocalDateTime[].class);
     public static PropertyType<TemporalAmount> DURATION = new PropertyType<>("duration", TemporalAmount.class);
