@@ -236,8 +236,9 @@ public class AAroNCsvWriter {
         Map<String, List<CSVHeader>> groupHeaderMap = new HashMap<>();
         if (headerSet != null) {
             headerSet.forEach(h -> {
-                groupHeaderMap.getOrDefault(h.getName(), new ArrayList<>()).add(h);
-                groupHeaderMap.put(h.getName(), new ArrayList<>());
+                List<CSVHeader> headerList = groupHeaderMap.getOrDefault(h.getName(), new ArrayList<>());
+                headerList.add(h);
+                groupHeaderMap.put(h.getName(), headerList);
             });
             groupHeaderMap.forEach((key, headerList) -> {
                 String definedType;
