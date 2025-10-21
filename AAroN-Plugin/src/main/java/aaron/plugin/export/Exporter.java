@@ -52,12 +52,13 @@ public class Exporter {
         try (Transaction transaction = db.beginTx()) {
             importFolderStr = Util.getImportFolder(transaction);
         }
+        boolean parenthesesFix = (boolean) configMap.getOrDefault("parenthesesFix", false);
         Path importFolder = Path.of(importFolderStr);
         Path nodesFile = importFolder.resolve(fileName + "_nodes.csv");
         Path edgesFile = importFolder.resolve(fileName + "_edges.csv");
         Model model = new Model();
         tx.getAllNodes().forEach(node -> {
-            long id = node.getId();
+            String id = node.getElementId();
             AAroNNode.Builder builder = AAroNNode.builder();
             node.getLabels().forEach(label -> {
                 builder.addLabel(label.name());
@@ -69,11 +70,11 @@ public class Exporter {
             model.addNode(new Neo4jNodeIdentifier(id), aaronNode);
         });
         tx.getAllRelationships().forEach(relationship -> {
-            long id = relationship.getId();
+            String id = relationship.getElementId();
             AAroNEdge.Builder builder = AAroNEdge.builder();
             builder.setType(relationship.getType().name());
-            builder.setStart(new Neo4jNodeIdentifier(relationship.getStartNodeId()));
-            builder.setEnd(new Neo4jNodeIdentifier(relationship.getEndNodeId()));
+            builder.setStart(new Neo4jNodeIdentifier(relationship.getStartNode().getElementId()));
+            builder.setEnd(new Neo4jNodeIdentifier(relationship.getEndNode().getElementId()));
             AAroNEdge aaronEdge = builder.build();
             relationship.getAllProperties().forEach((key, value) -> {
                 addProperty(aaronEdge, key, value);
@@ -81,7 +82,7 @@ public class Exporter {
             model.addEdge(new Neo4jEdgeIdentifier(id), aaronEdge);
         });
         try {
-            AAroNCsvWriter.write(model, nodesFile.toFile(), edgesFile.toFile());
+            AAroNCsvWriter.write(model, nodesFile.toFile(), edgesFile.toFile(), parenthesesFix);
         } catch (IOException e) {
             log.error("Could not write CSV files", e);
             throw new RuntimeException(e);

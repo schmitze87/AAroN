@@ -17,6 +17,7 @@ public class Config {
     private TaggedValueMode taggedValueMode = TaggedValueMode.AS_PROPERTY;
     private List<String> filesToConvert = new ArrayList<>();
     private final List<DBToImport> dbsToImport = new ArrayList<>();
+    private boolean parenthesesFix = false;
 
     public TaggedValueMode getTaggedValueMode() {
         return taggedValueMode;
@@ -32,6 +33,14 @@ public class Config {
 
     public List<DBToImport> getDbsToImport() {
         return dbsToImport;
+    }
+
+    public boolean isParenthesesFix() {
+        return parenthesesFix;
+    }
+
+    public void setParenthesesFix(boolean parenthesesFix) {
+        this.parenthesesFix = parenthesesFix;
     }
 
     public void setFilesToConvert(List<String> filesToConvert) {

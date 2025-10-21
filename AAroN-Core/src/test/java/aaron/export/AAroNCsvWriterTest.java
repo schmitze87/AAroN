@@ -30,7 +30,7 @@ class AAroNCsvWriterTest {
         File nodesFile = new File("nodes.csv");
         File edgesFile = new File("edges.csv");
         System.out.println(nodesFile.getAbsoluteFile());
-        AAroNCsvWriter.write(model, nodesFile, edgesFile);
+        AAroNCsvWriter.write(model, nodesFile, edgesFile, false);
     }
 
     @Test
@@ -45,7 +45,7 @@ class AAroNCsvWriterTest {
         File nodesFile = new File("nodes.csv");
         File edgesFile = new File("edges.csv");
         System.out.println(nodesFile.getAbsoluteFile());
-        AAroNCsvWriter.write(model, nodesFile, edgesFile);
+        AAroNCsvWriter.write(model, nodesFile, edgesFile, false);
     }
 
     @Test
@@ -60,6 +60,6 @@ class AAroNCsvWriterTest {
         File nodesFile = new File("nodes.csv");
         File edgesFile = new File("edges.csv");
         System.out.println(nodesFile.getAbsoluteFile());
-        AAroNCsvWriter.write(model, nodesFile, edgesFile);
+        AAroNCsvWriter.write(model, nodesFile, edgesFile, false);
     }
 }
