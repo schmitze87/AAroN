@@ -233,8 +233,35 @@ public class AAroNCsvWriter {
     }
 
     private static void addPropertiesForHeader(final List<CSVHeader> header, final Set<CSVHeader> headerSet) {
+        Map<String, List<CSVHeader>> groupHeaderMap = new HashMap<>();
         if (headerSet != null) {
-            header.addAll(headerSet);
+            headerSet.forEach(h -> {
+                groupHeaderMap.getOrDefault(h.getName(), new ArrayList<>()).add(h);
+                groupHeaderMap.put(h.getName(), new ArrayList<>());
+                List<CSVHeader> headerList = groupHeaderMap.getOrDefault(h.getName(), new ArrayList<>());
+                headerList.add(h);
+                groupHeaderMap.put(h.getName(), headerList);
+            });
+            groupHeaderMap.forEach((key, headerList) -> {
+                String definedType;
+                boolean typeConflict = false;
+                if (headerList.size() > 1) {
+                    CSVHeader firstHeader = headerList.get(0);
+                    definedType = firstHeader.getType();
+                    for (int i = 1; i < headerList.size(); i++) {
+                        String nextType = headerList.get(i).getType();
+                        if (!definedType.equals(nextType)) {
+                            typeConflict = true;
+                        }
+                    }
+                    if (typeConflict) {
+                        headerList.forEach(h -> h.setConflictingTypeDefinition(true));
+                        header.addAll(headerList);
+                    }
+                } else {
+                    header.add(headerList.get(0));
+                }
+            });
         }
     }
 
