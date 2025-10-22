@@ -18,7 +18,7 @@ public class PropertyType<E> {
     public static PropertyType<Character[]> CHAR_ARRAY = new PropertyType<>("char[]", Character[].class);
     public static PropertyType<String> STRING = new PropertyType<>("string", String.class);
     public static PropertyType<String[]> STRING_ARRAY = new PropertyType<>("string[]", String[].class);
-    public static PropertyType<Integer> INTEGER = new PropertyType<>("int", Integer.class);
+    public static PropertyType<Integer> INTEGER = new PropertyType<>("long", Integer.class);
     public static PropertyType<Integer[]> INTEGER_ARRAY = new PropertyType<>("int[]", Integer[].class);
     public static PropertyType<Boolean> BOOLEAN = new PropertyType<>("boolean", Boolean.class);
     public static PropertyType<Boolean[]> BOOLEAN_ARRAY = new PropertyType<>("boolean[]", Boolean[].class);
