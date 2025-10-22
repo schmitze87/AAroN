@@ -17,7 +17,7 @@ public class Config {
     private TaggedValueMode taggedValueMode = TaggedValueMode.AS_PROPERTY;
     private List<String> filesToConvert = new ArrayList<>();
     private final List<DBToImport> dbsToImport = new ArrayList<>();
-    private boolean parenthesesFix = false;
+    private boolean parenthesesFix = true;
 
     public TaggedValueMode getTaggedValueMode() {
         return taggedValueMode;
