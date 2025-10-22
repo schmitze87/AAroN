@@ -254,7 +254,7 @@ public class AAroNCsvWriter {
                     }
                     if (typeConflict) {
                         headerList.forEach(h -> h.setConflictingTypeDefinition(true));
-                        header.addAll(headerList);
+                        header.add(headerList.get(0));
                     }
                 } else {
                     header.add(headerList.get(0));
