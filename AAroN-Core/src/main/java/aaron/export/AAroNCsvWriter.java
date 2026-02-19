@@ -216,7 +216,7 @@ public class AAroNCsvWriter {
                 } else {
                     if (value.getClass().isArray()) {
                         Object[] objects = (Object[]) value;
-                        String list = Arrays.stream(objects).filter(Objects::nonNull).map(Object::toString).collect(Collectors.joining(","));
+                        String list = Arrays.stream(objects).filter(Objects::nonNull).map(Object::toString).collect(Collectors.joining(";"));
                         csvRecord.add(list);
                     } else if (value instanceof LocalDateTime) {
                         LocalDateTime dateTime = (LocalDateTime) value;
