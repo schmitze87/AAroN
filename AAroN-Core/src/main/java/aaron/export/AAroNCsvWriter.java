@@ -20,7 +20,8 @@ public class AAroNCsvWriter {
     private static final Logger LOG = LoggerFactory.getLogger(AAroNCsvWriter.class);
 
     private static final String COMMA = ",";
-    private static final String DEFAULT_SEPARATOR = COMMA;
+    private static final String DELIMITER = COMMA;
+    private static final String ARRAY_DELIMITER = ";";
     private static final String DOUBLE_QUOTES = "\"";
     private static final String EMBEDDED_DOUBLE_QUOTES = "\"\"";
     private static final String NEW_LINE_UNIX = "\n";
@@ -34,7 +35,7 @@ public class AAroNCsvWriter {
     }
 
     public String convertToCsvFormat(final String[] line) {
-        return convertToCsvFormat(line, DEFAULT_SEPARATOR);
+        return convertToCsvFormat(line, DELIMITER);
     }
 
     public String convertToCsvFormat(final String[] line, final String separator) {
@@ -216,7 +217,7 @@ public class AAroNCsvWriter {
                 } else {
                     if (value.getClass().isArray()) {
                         Object[] objects = (Object[]) value;
-                        String list = Arrays.stream(objects).filter(Objects::nonNull).map(Object::toString).collect(Collectors.joining(";"));
+                        String list = Arrays.stream(objects).filter(Objects::nonNull).map(Object::toString).collect(Collectors.joining(ARRAY_DELIMITER));
                         csvRecord.add(list);
                     } else if (value instanceof LocalDateTime) {
                         LocalDateTime dateTime = (LocalDateTime) value;
