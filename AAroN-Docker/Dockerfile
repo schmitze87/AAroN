@@ -4,7 +4,7 @@ FROM docker.io/library/neo4j:${NEO4J_VERSION}
 RUN set -eux \
     && DEBIAN_FRONTEND=noninteractive apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y locales libncurses5 \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -y locales libncurses6 \
     && rm -rf /var/lib/apt/lists/*
 
 RUN wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64 -O /usr/bin/yq \
