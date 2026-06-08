@@ -78,6 +78,10 @@ public class SparxImporter {
                 model = converter.convert();
             } catch (IOException e) {
                 log.error("IO Error", e);
+                throw new RuntimeException("EAP conversion failed: " + e.getMessage(), e);
+            }
+            if (model == null) {
+                throw new RuntimeException("EAP conversion returned null model");
             }
             ModelProcessor modelProcessor = new ModelProcessor(db, reporter);
             modelProcessor.process(model);
@@ -115,6 +119,10 @@ public class SparxImporter {
                 model = converter.convert();
             } catch (IOException e) {
                 log.error("IO Error", e);
+                throw new RuntimeException("MySQL conversion failed: " + e.getMessage(), e);
+            }
+            if (model == null) {
+                throw new RuntimeException("MySQL conversion returned null model");
             }
             ModelProcessor modelProcessor = new ModelProcessor(db, reporter);
             modelProcessor.process(model);
@@ -160,6 +168,10 @@ public class SparxImporter {
                 model = converter.convert();
             } catch (IOException e) {
                 log.error("IO Error", e);
+                throw new RuntimeException("MSSQL conversion failed: " + e.getMessage(), e);
+            }
+            if (model == null) {
+                throw new RuntimeException("MSSQL conversion returned null model");
             }
             ModelProcessor modelProcessor = new ModelProcessor(db, reporter);
             modelProcessor.process(model);
