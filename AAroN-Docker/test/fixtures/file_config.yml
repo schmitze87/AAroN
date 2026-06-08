@@ -1,0 +1,3 @@
+taggedValueMode: AS_PROPERTY
+filesToConvert:
+  - some-model.qea

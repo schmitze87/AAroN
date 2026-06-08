@@ -5,6 +5,17 @@ function running_as_root
     test "$(id -u)" = "0"
 }
 
+function strip_credentials {
+  local config="$1"
+  [ -f "$config" ] || return 0
+  yq -e '.dbsToImport[].password' "$config" >/dev/null 2>&1 || return 0
+  if yq -i 'del(.dbsToImport[].password)' "$config"; then
+    echo "Removed database password(s) from $config"
+  else
+    echo "Warning: could not strip password from $config"
+  fi
+}
+
 function deleteCSV {
   for eapFile in "$@"
   do
@@ -64,6 +75,10 @@ function run_import {
 }
 
 #set -x
+
+# Allow tests to source the helper functions without executing the import flow.
+[ -n "${AARON_IMPORT_SOURCE_ONLY:-}" ] && return 0
+
 neo4j_version=$(neo4j --version)
 
 #Check if database already exists. If yes then exit script and continue with startup
@@ -74,12 +89,14 @@ else
 fi
 if [ -f "/data/databases/$dbDir/neostore" ]; then
   echo "Database $dbDir already exists. Not going to import any data. Using existing database."
+  strip_credentials "$AARON_CONFIG"
   return
 fi
 
 if [ -f "/backups/${dbDir}.dump" ]; then
   echo "Found dump for database $dbDir. Going to import dump."
   run_load_dump "/backups/${dbDir}.dump"
+  strip_credentials "$AARON_CONFIG"
   return
 fi
 
@@ -87,17 +104,21 @@ aaron_config=$AARON_CONFIG
 aaron_output=$AARON_OUTPUT
 aaron_log=$AARON_LOG
 
+# Capture the exit code with `|| aaronExitCode=$?` so a failed conversion does
+# not abort this script under the entrypoint's `set -e`, ensuring the password
+# is still stripped from the config even when the import fails.
+aaronExitCode=0
 if [ -f "$aaron_config" ]; then
   java -XX:InitialRAMPercentage=20 -XX:MaxRAMPercentage=80 -Djna.library.path="/opt/firebird/" \
     -Djavax.net.ssl.trustStore=/opt/java/openjdk/lib/security/cacerts -Djavax.net.ssl.trustStorePassword=changeit \
-    -jar /usr/bin/aaron-cli.jar convert -o /import/ -c "$aaron_config" &> $aaron_log
+    -jar /usr/bin/aaron-cli.jar convert -o /import/ -c "$aaron_config" &> $aaron_log || aaronExitCode=$?
 elif [ -d "/import/" ]; then
   java -XX:InitialRAMPercentage=20 -XX:MaxRAMPercentage=80 -Djna.library.path="/opt/firebird/" \
     -Djavax.net.ssl.trustStore=/opt/java/openjdk/lib/security/cacerts -Djavax.net.ssl.trustStorePassword=changeit \
-    -jar /usr/bin/aaron-cli.jar convert -o /import/ -d /import/ &> $aaron_log
+    -jar /usr/bin/aaron-cli.jar convert -o /import/ -d /import/ &> $aaron_log || aaronExitCode=$?
 fi
 
-aaronExitCode=$?
+strip_credentials "$aaron_config"
 if [ $aaronExitCode -ne 0 ]; then
     echo "Error during aaron processing. Aborting..."
     exit $aaronExitCode
