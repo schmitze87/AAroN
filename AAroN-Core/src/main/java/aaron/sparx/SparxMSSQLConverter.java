@@ -110,6 +110,6 @@ public class SparxMSSQLConverter extends AbstractSparxConverter {
                 throw new RuntimeException(e);
             }
         }
-        return null;
+        throw new RuntimeException("Could not establish connection to MSSQL database at " + host + ":" + port);
     }
 }

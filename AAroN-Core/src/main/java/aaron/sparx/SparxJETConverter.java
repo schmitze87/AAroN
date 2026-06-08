@@ -54,8 +54,6 @@ public class SparxJETConverter extends AbstractSparxConverter {
 
         iterateJETTable(sha1, now, this::processSystem, db.getTable(EASystem.TABLE_NAME));
 
-        iterateJETTable(sha1, now, this::processSystem, db.getTable(EASystem.TABLE_NAME));
-
         iterateJETTable(sha1, now, this::processPackages, db.getTable(EAPackage.TABLE_NAME));
 
         iterateJETTable(sha1, now, this::processDiagrams, db.getTable(EADiagram.TABLE_NAME));
