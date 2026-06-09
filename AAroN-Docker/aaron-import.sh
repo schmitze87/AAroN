@@ -8,8 +8,8 @@ function running_as_root
 function strip_credentials {
   local config="$1"
   [ -f "$config" ] || return 0
-  yq -e '.dbsToImport[].password' "$config" >/dev/null 2>&1 || return 0
-  if yq -i 'del(.dbsToImport[].password)' "$config"; then
+  yq --exit-status '.dbsToImport[].password' "$config" >/dev/null 2>&1 || return 0
+  if yq --inplace 'del(.dbsToImport[].password)' "$config"; then
     echo "Removed database password(s) from $config"
   else
     echo "Warning: could not strip password from $config"
