@@ -1,0 +1,8 @@
+taggedValueMode: AS_PROPERTY
+dbsToImport:
+  - type: MySQL
+    hostname: localhost
+    port: 3306
+    database: test1
+    username: test
+    password: Secret12345678!

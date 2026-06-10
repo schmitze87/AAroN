@@ -38,3 +38,4 @@ AAroN-Framework/target
 /AAroN-Docker/aaron-cli
 
 .gitconfig
+.flattened-pom.xml
