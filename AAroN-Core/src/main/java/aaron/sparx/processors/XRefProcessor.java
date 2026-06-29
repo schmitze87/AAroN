@@ -1,14 +1,11 @@
 package aaron.sparx.processors;
 
 import aaron.logging.Logger;
-import aaron.model.AAroNEdge;
-import aaron.model.AAroNNode;
-import aaron.model.ImportConext;
-import aaron.model.Model;
+import aaron.model.*;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.ConnectorGUID;
 import aaron.sparx.identifiers.ObjectGUID;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -54,7 +51,7 @@ public class XRefProcessor extends AbstractProcessor {
                 AAroNNode node = model.getNode(objectGUID);
                 if (node != null) {
                     if (nameEnum == Name.STEREOTYPES) {
-                        SetFQStereotype(node, description);
+                        processXRefStereotypeDescription(node, description);
                     }
                 }
                 break;
@@ -63,7 +60,7 @@ public class XRefProcessor extends AbstractProcessor {
                 AAroNEdge edge = model.getEdge(connectorGUID);
                 if (edge != null) {
                     if (nameEnum == Name.STEREOTYPES) {
-                        SetFQStereotype(edge, description);
+                        processXRefStereotypeDescription(edge, description);
                     }
                     if (nameEnum == Name.MOF_PROPERTIES && behaviourEnum == BEHAVIOUR.CONVEYED && description != null) {
                         String[] collect = Arrays.stream(description.split(",")).map(GUIDHelper::unwrapGuid).toArray(String[]::new);
@@ -86,32 +83,17 @@ public class XRefProcessor extends AbstractProcessor {
         }
     }
 
-    private void SetFQStereotype(final AAroNNode node, final String description) {
+    private void processXRefStereotypeDescription(final WithProperties withProperties, final String description) {
         if (description == null) {
             return;
         }
         Matcher m = xrefStereotypePattern.matcher(description);
         if (m.matches()) {
-            String stereotype = node.getProperty(STRING, "stereotype");
+            String stereotype = withProperties.getProperty(STRING, "stereotype");
             String xrefStereotype = m.group("Name");
             String xrefFQStereotype = m.group("FQName");
-            if (StringUtils.equals(stereotype, xrefStereotype)) {
-                node.addProperty("fqStereotype", STRING, xrefFQStereotype);
-            }
-        }
-    }
-
-    private void SetFQStereotype(final AAroNEdge edge, final String description) {
-        if (description == null) {
-            return;
-        }
-        Matcher m = xrefStereotypePattern.matcher(description);
-        if (m.matches()) {
-            String stereotype = edge.getProperty(STRING, "stereotype");
-            String xrefStereotype = m.group("Name");
-            String xrefFQStereotype = m.group("FQName");
-            if (StringUtils.equals(stereotype, xrefStereotype)) {
-                edge.addProperty("fqStereotype", STRING, xrefFQStereotype);
+            if (Strings.CS.equals(stereotype, xrefStereotype)) {
+                withProperties.addProperty("fqStereotype", STRING, xrefFQStereotype);
             }
         }
     }
