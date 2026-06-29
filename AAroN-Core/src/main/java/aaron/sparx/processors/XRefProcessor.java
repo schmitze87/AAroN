@@ -87,6 +87,9 @@ public class XRefProcessor extends AbstractProcessor {
     }
 
     private void SetFQStereotype(final AAroNNode node, final String description) {
+        if (description == null) {
+            return;
+        }
         Matcher m = xrefStereotypePattern.matcher(description);
         if (m.matches()) {
             String stereotype = node.getProperty(STRING, "stereotype");
@@ -99,6 +102,9 @@ public class XRefProcessor extends AbstractProcessor {
     }
 
     private void SetFQStereotype(final AAroNEdge edge, final String description) {
+        if (description == null) {
+            return;
+        }
         Matcher m = xrefStereotypePattern.matcher(description);
         if (m.matches()) {
             String stereotype = edge.getProperty(STRING, "stereotype");
