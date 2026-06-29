@@ -5,7 +5,8 @@ cd "$directory" || exit 1
 
 cd docker_test
 
-docker run --rm -it --name aaron \
+podman run --rm -it --name aaron \
+  --user "`id -u`:`id -g`" \
   --volume "`pwd`/import:/import" \
   --volume "`pwd`/data:/data" \
   --volume "`pwd`/logs:/logs" \
@@ -26,5 +27,4 @@ docker run --rm -it --name aaron \
   --cap-add "CAP_SETUID" \
   --cap-add "CAP_SYS_CHROOT" \
   -e "NEO4J_AUTH=neo4j/test12345678" \
-  -m 4096m \
    docker.io/mschmitze87/aaron:latest
