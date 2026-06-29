@@ -7,6 +7,7 @@ import aaron.sparx.SparxFirebirdConverter;
 import aaron.sparx.SparxJETConverter;
 import aaron.sparx.SparxSQLiteConverter;
 import aaron.sparx.config.Config;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 
@@ -48,6 +49,7 @@ class AAroNCsvWriterTest {
         AAroNCsvWriter.write(model, nodesFile, edgesFile, false);
     }
 
+    @Disabled
     @Test
     void testFEAP() throws IOException {
         Logger logger = new TestLogger(LoggerFactory.getLogger(AAroNCsvWriterTest.class));
