@@ -77,7 +77,7 @@ public class SparxJETConverter extends AbstractSparxConverter {
         iterateJETTable(sha1, now, this::processAttributeTags, db.getTable(EAAttributeTag.TABLE_NAME));
         iterateJETTable(sha1, now, this::processAttributeConstraints, db.getTable(EAAttributeConstraint.TABLE_NAME));
 
-        processXRefs(sha1, now, db.getTable(EAXref.TABLE_NAME));
+        iterateJETTable(sha1, now, this::processXRefs, db.getTable(EAXref.TABLE_NAME));
         return model;
     }
 
@@ -87,10 +87,6 @@ public class SparxJETConverter extends AbstractSparxConverter {
             db.setCharset(Charset.forName("cp1252"));
         }
         return db;
-    }
-
-    private <T extends Iterable<U>, U extends Map<String, Object>> T getTable(Database db, EATable table) throws IOException {
-        return (T) db.getTable(table.getTableName());
     }
 
 }
