@@ -26,5 +26,6 @@ docker run --rm -it --name aaron \
   --cap-add "CAP_SETUID" \
   --cap-add "CAP_SYS_CHROOT" \
   -e "NEO4J_AUTH=neo4j/test12345678" \
+  -e "EXTENSION_SCRIPT=/usr/bin/aaron-import.sh" \
   -m 4096m \
    docker.io/mschmitze87/aaron:latest

@@ -23,7 +23,6 @@ ENV LC_ALL=C.UTF-8
 ENV NEO4J_dbms_usage__report_enabled=false
 ENV NEO4J_initial_dbms_default__database=neo4j
 ENV NEO4J_dbms_db_timezone=SYSTEM
-ENV EXTENSION_SCRIPT=/usr/bin/aaron-import.sh
 ENV PATH="$PATH:/opt/fbembed"
 ENV LD_LIBRARY_PATH=/opt/fbembed
 ENV FIREBIRD=/opt/fbembed
