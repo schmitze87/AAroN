@@ -61,6 +61,7 @@ public class SparxSQLiteConverter extends AbstractSparxConverter {
             handleTable(sha1, now, connection, this::processAttributeConstraints, "SELECT * FROM " + EAAttributeConstraint.TABLE_NAME);
 
             handleTable(sha1, now, connection, this::processXRefs, "SELECT * FROM " + EAXref.TABLE_NAME);
+            postProcessProxyConnectors();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

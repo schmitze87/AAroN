@@ -1,11 +1,9 @@
 package aaron.sparx;
 
 import aaron.logging.Logger;
-import aaron.model.Converter;
-import aaron.model.ImportConext;
-import aaron.model.Model;
-import aaron.model.Processor;
+import aaron.model.*;
 import aaron.sparx.config.Config;
+import aaron.sparx.identifiers.*;
 import aaron.sparx.processors.*;
 
 import java.sql.*;
@@ -133,6 +131,19 @@ public abstract class AbstractSparxConverter implements Converter {
             final String sha1, final LocalDateTime time, final T table) {
         Processor<Map<String, Object>> processor = new AttributeTagProcessor(sha1, time, model, context, config.getTaggedValueMode(), logger);
         table.forEach(processor::process);
+    }
+
+    protected void postProcessProxyConnectors() {
+        List<Identifier> proxyConnectorKeys = model.getNodes().keySet().stream().filter(key -> key instanceof ProxyConnectorIdentifier).toList();
+        for(Identifier key : proxyConnectorKeys) {
+            ProxyConnectorIdentifier proxyConnectorIdentifier = (ProxyConnectorIdentifier) key;
+            ProxyConnectorId identifier = proxyConnectorIdentifier.getIdentifier();
+            ConnectorGUID connectorGUID = identifier.connectorGUID();
+            AAroNEdge proxiedConnector = model.getEdge(connectorGUID);
+            String connectorType = proxiedConnector.getType();
+            AAroNNode node = model.getNode(key);
+            node.addProperty("connectorType", PropertyType.STRING, connectorType);
+        }
     }
 
     void handleTable(String sha1, LocalDateTime now, Connection connection, ProcessInterface processInterface, String sql) throws SQLException {

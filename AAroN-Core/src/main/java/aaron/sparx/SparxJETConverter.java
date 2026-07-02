@@ -78,6 +78,7 @@ public class SparxJETConverter extends AbstractSparxConverter {
         iterateJETTable(sha1, now, this::processAttributeConstraints, db.getTable(EAAttributeConstraint.TABLE_NAME));
 
         iterateJETTable(sha1, now, this::processXRefs, db.getTable(EAXref.TABLE_NAME));
+        postProcessProxyConnectors();
         return model;
     }
 

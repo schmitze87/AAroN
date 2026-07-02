@@ -148,6 +148,17 @@ public class ObjectProcessor extends AbstractProcessor {
         model.addNode(objectIdentifier, node);
         model.addNode(objectGUID, node);
 
+        if ("ProxyConnector".equals(objectType)) {
+            node.addLabel("ProxyConnector");
+            String connectorGuid = GUIDHelper.unwrapGuid(classifierGuid);
+            if (connectorGuid != null) {
+                node.addProperty("connectorGuid", STRING, connectorGuid);
+                ConnectorGUID connectorGUIDIdentifier = new ConnectorGUID(connectorGuid);
+                ProxyConnectorIdentifier proxyConnectorIdentifier = new ProxyConnectorIdentifier(new ProxyConnectorId(connectorGUIDIdentifier, objectGUID));
+                model.addNode(proxyConnectorIdentifier, node);
+            }
+        }
+
         //****************************************
         //Start creating implicit relationships
         //****************************************

@@ -103,6 +103,7 @@ public class SparxMSSQLConverter extends AbstractSparxConverter {
                 handleTable(sha1, now, connection, this::processAttributeConstraints, "SELECT * FROM " + EAAttributeConstraint.TABLE_NAME);
 
                 handleTable(sha1, now, connection, this::processXRefs, "SELECT * FROM " + EAXref.TABLE_NAME);
+                postProcessProxyConnectors();
                 return model;
             } catch (SQLServerException serverException) {
                 continue;
