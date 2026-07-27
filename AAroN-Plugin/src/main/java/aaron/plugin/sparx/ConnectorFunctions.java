@@ -1,14 +1,9 @@
 package aaron.plugin.sparx;
 
 import org.neo4j.graphdb.*;
-import org.neo4j.procedure.Context;
-import org.neo4j.procedure.Description;
-import org.neo4j.procedure.Name;
-import org.neo4j.procedure.UserFunction;
+import org.neo4j.procedure.*;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -55,4 +50,44 @@ public class ConnectorFunctions {
         }
         return Collections.emptyList();
     }
+
+    @UserFunction(name = "aaron.sparx.relationshipConnectors")
+    @Description("aaron.sparx.relationshipConnectors(relationship) - gives a list of all the relationships realized by the given relationship.")
+    public List<Relationship> relationshipConnectors(@Name("relationship") Relationship relationship) {
+        Object eaGuid = relationship.getProperty("eaGuid");
+        if (eaGuid != null) {
+            String connectorGuid = (String) eaGuid;
+            List<Relationship> relationships = new ArrayList<>();
+            tx.findNodes(Label.label("ProxyConnector"), "connectorGuid", connectorGuid).stream().forEach(n -> {
+                n.getRelationships(Direction.INCOMING).stream().filter(r -> {
+                    return ! (r.isType(RelationshipType.withName("SHOWS"))
+                            || r.isType(RelationshipType.withName("CONTAINS"))
+                            || r.isType(RelationshipType.withName("DIAGRAMLINK")));
+                }).forEach(relationships::add);
+                n.getRelationships(Direction.OUTGOING).stream().filter(r -> {
+                    return ! (r.isType(RelationshipType.withName("SHOWS"))
+                            || r.isType(RelationshipType.withName("CONTAINS"))
+                            || r.isType(RelationshipType.withName("DIAGRAMLINK")));
+                }).forEach(relationships::add);
+            });
+            return relationships;
+        }
+        return Collections.emptyList();
+    }
+
+    @UserFunction(name = "aaron.sparx.resolveProxyConnector")
+    @Description("aaron.sparx.resolveProxyConnector(node) - resolves the ProxyConnector Node to it's corresponding relationship.")
+    public Relationship resolveProxyConnector(@Name("proxyConnectorNode") Node node) {
+        if (node.hasLabel(Label.label("ProxyConnector"))) {
+            Object connectorGuidProperty = node.getProperty("connectorGuid");
+            Object connectorTypeProperty = node.getProperty("connectorType");
+            if (connectorGuidProperty != null && connectorTypeProperty != null) {
+                String connectorGuid = (String) connectorGuidProperty;
+                String connectorType = (String) connectorTypeProperty;
+                return tx.findRelationship(RelationshipType.withName(connectorType), "eaGuid", connectorGuid);
+            }
+        }
+        return null;
+    }
+
 }
