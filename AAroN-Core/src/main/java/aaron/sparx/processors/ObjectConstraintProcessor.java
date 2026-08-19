@@ -1,10 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.logging.Logger;
-import aaron.model.AAroNEdge;
-import aaron.model.AAroNNode;
-import aaron.model.ImportConext;
-import aaron.model.Model;
+import aaron.model.*;
 import aaron.sparx.identifiers.ImplizitRelationId;
 import aaron.sparx.identifiers.ObjectConstraintId;
 import aaron.sparx.identifiers.ObjectId;
@@ -45,8 +42,9 @@ public class ObjectConstraintProcessor extends AbstractProcessor {
 
         ObjectId objectIdentifier = new ObjectId(objectId);
         ObjectConstraintId objectConstraintId = new ObjectConstraintId(new Triple<>(objectIdentifier, constraint, type));
-
-        model.addNode(objectConstraintId, node);
+        UniqueNodeIdentifier<java.util.UUID> uniqueNodeIdentifier = new UniqueNodeIdentifierImpl();
+        model.addNode(uniqueNodeIdentifier, node);
+        model.addNodeIdentifier(objectConstraintId, uniqueNodeIdentifier);
 
         AAroNEdge edge = AAroNEdge.builder()
                 .setType("HAS_CONSTRAINT")

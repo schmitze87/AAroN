@@ -35,9 +35,10 @@ public class MSSQLServerConnectionTest {
         dbToImport.setAuthenticationType(MSSQLDB.AuthenticationType.AD_LOGIN);
         dbsToImport.add(dbToImport);
         Assertions.assertNotNull(config);
-
-        SparxMSSQLConverter converter = new SparxMSSQLConverter(config, dbToImport, logger);
-        Model model = converter.convert();
+        Model.Builder modelBuilder = new Model.Builder();
+        Model model = modelBuilder.build();
+        SparxMSSQLConverter converter = new SparxMSSQLConverter(model, config, dbToImport, logger);
+        model = converter.convert();
         Assertions.assertNotNull(model);
     }
 
@@ -58,9 +59,10 @@ public class MSSQLServerConnectionTest {
         dbToImport.setAuthenticationType(MSSQLDB.AuthenticationType.SQL_LOGIN);
         dbsToImport.add(dbToImport);
         Assertions.assertNotNull(config);
-
-        SparxMSSQLConverter converter = new SparxMSSQLConverter(config, dbToImport, logger);
-        Model model = converter.convert();
+        Model.Builder modelBuilder = new Model.Builder();
+        Model model = modelBuilder.build();
+        SparxMSSQLConverter converter = new SparxMSSQLConverter(model, config, dbToImport, logger);
+        model = converter.convert();
         Assertions.assertNotNull(model);
     }
 }

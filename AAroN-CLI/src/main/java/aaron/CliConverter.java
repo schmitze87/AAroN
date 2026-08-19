@@ -14,6 +14,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.fasterxml.jackson.dataformat.yaml.YAMLGenerator;
 import org.apache.commons.io.comparator.PathFileComparator;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.LoggerFactory;
 import picocli.CommandLine;
 
 import java.io.File;
@@ -32,6 +33,7 @@ import java.util.stream.Stream;
 public class CliConverter implements Callable<Integer> {
 
     private static final Pattern sparxFilePattern = Pattern.compile(".*\\.(eapx|eap|qea|qeax|feap)");
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(CliConverter.class);
     private final Logger logger = new CliLogger();
 
     @CommandLine.Spec
@@ -106,7 +108,7 @@ public class CliConverter implements Callable<Integer> {
     }
 
     void convert(Config config, OutputStream outputStream) throws AAroNConversionException, IOException {
-        AAronCLIOutput output = new AAronCLIOutput();
+        AAronCLIOutput cliOutput = new AAronCLIOutput();
         Path outputPath = outputDir.toPath();
         List<ConversionJob> conversionJobs = new ArrayList<>();
 
@@ -135,11 +137,11 @@ public class CliConverter implements Callable<Integer> {
             }
         }
 
-        processConversionJobs(conversionJobs, output, config.isParenthesesFix());
+        processConversionJobs(conversionJobs, cliOutput, config.isParenthesesFix());
 
         ObjectMapper mapper = new ObjectMapper(new YAMLFactory().disable(YAMLGenerator.Feature.SPLIT_LINES));
         ObjectWriter objectWriter = mapper.writerWithDefaultPrettyPrinter();
-        objectWriter.writeValue(outputStream, output);
+        objectWriter.writeValue(outputStream, cliOutput);
     }
 
     private Optional<Path> findConfigInDirectory(File directory) throws IOException {
@@ -212,18 +214,18 @@ public class CliConverter implements Callable<Integer> {
         }
     }
 
-    private AbstractSparxConverter getSparxConverter(Config config, File eapFile) {
+    private AbstractSparxConverter getSparxConverter(Model model, Config config, File eapFile) {
         AbstractSparxConverter converter = null;
         var eapFileName = eapFile.getName();
         String lowerCaseName = eapFileName.toLowerCase();
         if (lowerCaseName.endsWith(".eap") || lowerCaseName.endsWith(".eapx")) {
-            converter = new SparxJETConverter(config, eapFile, logger);
+            converter = new SparxJETConverter(model, config, eapFile, logger);
         }
         if (lowerCaseName.endsWith(".qea") || lowerCaseName.endsWith(".qeax")) {
-            converter = new SparxSQLiteConverter(config, eapFile, logger);
+            converter = new SparxSQLiteConverter(model, config, eapFile, logger);
         }
         if (lowerCaseName.endsWith(".feap")) {
-            converter = new SparxFirebirdConverter(config, eapFile, logger);
+            converter = new SparxFirebirdConverter(model, config, eapFile, logger);
         }
         return converter;
     }
@@ -231,7 +233,9 @@ public class CliConverter implements Callable<Integer> {
     private ConversionJob createConversionJob(Config config, Path outputPath, File eapFile) {
         ConversionJob job = new ConversionJob();
         String eapFileName = eapFile.getName();
-        job.converter = getSparxConverter(config, eapFile);
+        Model.Builder builder = new  Model.Builder();
+        job.model = builder.workingDir(outputPath.toFile()).build();
+        job.converter = getSparxConverter(job.model, config, eapFile);
         job.nodesFile = outputPath.resolve("nodes_" + eapFileName + ".csv").toFile();
         job.edgesFile = outputPath.resolve("edges_" + eapFileName + ".csv").toFile();
         return job;
@@ -240,12 +244,14 @@ public class CliConverter implements Callable<Integer> {
     private ConversionJob createConversionJob(Config config, Path outputPath, DBToImport dbToImport) {
         ConversionJob job = new ConversionJob();
         DBType type = dbToImport.getType();
+        Model.Builder builder = new  Model.Builder();
+        job.model = builder.workingDir(outputPath.toFile()).build();
         switch (type) {
             case MSSQL:
-                job.converter = new SparxMSSQLConverter(config, (MSSQLDB) dbToImport, logger);
+                job.converter = new SparxMSSQLConverter(job.model, config, (MSSQLDB) dbToImport, logger);
                 break;
             case MySQL:
-                job.converter = new SparxMySQLConverter(config, dbToImport.getHostname(), dbToImport.getPort(), dbToImport.getDatabase(), dbToImport.getUsername(), dbToImport.getPassword(), logger);
+                job.converter = new SparxMySQLConverter(job.model, config, dbToImport.getHostname(), dbToImport.getPort(), dbToImport.getDatabase(), dbToImport.getUsername(), dbToImport.getPassword(), logger);
                 break;
         }
         job.nodesFile = outputPath.resolve("nodes_" + dbToImport.getHostname()+ "_" + dbToImport.getDatabase() + ".csv").toFile();
@@ -254,14 +260,16 @@ public class CliConverter implements Callable<Integer> {
     }
 
     private static void processConversionJobs(List<ConversionJob> conversionJobs, AAronCLIOutput output, final boolean parenthesesFix) throws AAroNConversionException {
+        AAroNCsvWriter writer = new AAroNCsvWriter();
         for (ConversionJob conversionJob : conversionJobs) {
             AbstractSparxConverter converter = conversionJob.converter;
             File nodesFile = conversionJob.nodesFile;
             File edgesFile = conversionJob.edgesFile;
             try {
                 if (converter != null) {
-                    Model model = converter.convert();
-                    AAroNCsvWriter.write(model, nodesFile, edgesFile, parenthesesFix);
+                    conversionJob.model = converter.convert();
+                    writer.write(conversionJob.model, nodesFile, edgesFile, parenthesesFix);
+                    conversionJob.model.close();
                 } else {
                     throw new AAroNConversionException();
                 }
@@ -271,9 +279,13 @@ public class CliConverter implements Callable<Integer> {
                 throw new AAroNConversionException(e);
             }
         }
+        output.setTotalNodesCount(writer.getNodesCount());
+        output.setTotalEdgesCount(writer.getEdgesCount());
+        output.setTotalPropertiesCount(writer.getPropertiesCount());
     }
 
     static class ConversionJob {
+        Model model;
         AbstractSparxConverter converter;
         File nodesFile;
         File edgesFile;

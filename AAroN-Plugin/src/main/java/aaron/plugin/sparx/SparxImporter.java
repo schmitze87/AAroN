@@ -45,6 +45,7 @@ public class SparxImporter {
         try (Transaction transaction = db.beginTx()) {
             importFolder = Util.getImportFolder(transaction);
         }
+        File importFolderFile = new File(importFolder);
         File file = new File(importFolder, fileName).getAbsoluteFile();
         CompletableFuture<ProgressInfo> future = CompletableFuture.supplyAsync(() -> {
             ProgressInfo progressInfo = new ProgressInfo(fileName, "file", "eap");
@@ -56,20 +57,21 @@ public class SparxImporter {
                 log.error("Can not determine EA-Repository type. Missing file extension");
                 throw new RuntimeException("Can not determine EA-Repository type. Missing file extension");
             }
+            Model.Builder modelBuilder = new  Model.Builder();
+            Model model = modelBuilder.workingDir(importFolderFile).build();
             String extension = upperCaseFileName.substring(i + 1);
             Converter converter = null;
             switch (extension) {
                 case "EAP":
                 case "EAPX":
-                    converter = new SparxJETConverter(config, file, logger);
+                    converter = new SparxJETConverter(model, config, file, logger);
                     break;
                 case "QEA":
-                    converter = new SparxSQLiteConverter(config, file, logger);
+                    converter = new SparxSQLiteConverter(model, config, file, logger);
                     break;
                 case "FEAP":
-                    converter = new SparxFirebirdConverter(config, file, logger);
+                    converter = new SparxFirebirdConverter(model, config, file, logger);
             }
-            Model model = null;
             if (converter == null) {
                 log.error("Can not determine EA-Repository type. Unknown file extension");
                 throw new RuntimeException("Can not determine EA-Repository type. Unknown file extension");
@@ -105,14 +107,20 @@ public class SparxImporter {
                                             @Name(value = "config", defaultValue = "{}") Map<String, Object> configMap) {
         Logger logger = new Neo4jLogger(log);
         Config config = Config.createFromMap(configMap);
+        String importFolder;
+        try (Transaction transaction = db.beginTx()) {
+            importFolder = Util.getImportFolder(transaction);
+        }
+        File importFolderFile = new File(importFolder);
+        Model.Builder modelBuilder = new  Model.Builder();
+        final Model model = modelBuilder.workingDir(importFolderFile).build();
         CompletableFuture<ProgressInfo> future = CompletableFuture.supplyAsync(() -> {
             ProgressInfo progressInfo = new ProgressInfo(databaseName, host, "MySQL");
             progressInfo.batchSize = 1000;
             final ProgressReporter reporter = new ProgressReporter(null, new PrintWriter(System.out), progressInfo);
-            Converter converter = new SparxMySQLConverter(config, host, port, databaseName, username, password, logger);
-            Model model = null;
+            Converter converter = new SparxMySQLConverter(model, config, host, port, databaseName, username, password, logger);
             try {
-                model = converter.convert();
+                converter.convert();
             } catch (IOException e) {
                 log.error("IO Error", e);
             }
@@ -150,14 +158,20 @@ public class SparxImporter {
             throw new RuntimeException("Unknown authentication type: " + authenticationType);
         }
         Config config = Config.createFromMap(configMap);
+        String importFolder;
+        try (Transaction transaction = db.beginTx()) {
+            importFolder = Util.getImportFolder(transaction);
+        }
+        File importFolderFile = new File(importFolder);
+        Model.Builder modelBuilder = new  Model.Builder();
+        Model model = modelBuilder.workingDir(importFolderFile).build();
         CompletableFuture<ProgressInfo> future = CompletableFuture.supplyAsync(() -> {
             ProgressInfo progressInfo = new ProgressInfo(databaseName, host, "MSSQL");
             progressInfo.batchSize = 1000;
             final ProgressReporter reporter = new ProgressReporter(null, new PrintWriter(System.out), progressInfo);
-            Converter converter = new SparxMSSQLConverter(config, host, instance, port, databaseName, username, password, dbAuthenticationType, logger);
-            Model model = null;
+            Converter converter = new SparxMSSQLConverter(model, config, host, instance, port, databaseName, username, password, dbAuthenticationType, logger);
             try {
-                model = converter.convert();
+                converter.convert();
             } catch (IOException e) {
                 log.error("IO Error", e);
             }

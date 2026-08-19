@@ -4,6 +4,7 @@ import aaron.archimate.exchangexml.*;
 import aaron.model.Model;
 import aaron.model.Processor;
 
+import java.io.Serializable;
 import java.util.List;
 
 import static aaron.model.PropertyType.STRING;
@@ -18,7 +19,7 @@ public abstract class AbstractProcessor<T> implements Processor<T> {
 
     @FunctionalInterface
     protected interface ProcessProperty {
-        void process(String name, aaron.model.PropertyType type, Object value);
+        void process(String name, aaron.model.PropertyType type, Serializable value);
     }
 
     protected void processProperties(final PropertiesType propertiesType, ProcessProperty processor) {

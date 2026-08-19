@@ -1,5 +1,6 @@
 package aaron.model;
 
+import java.io.Serializable;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -7,7 +8,7 @@ import java.util.Set;
 
 import static aaron.model.PropertyType.STRING;
 
-public class AAroNNode extends WithProperties {
+public class AAroNNode extends WithProperties implements Serializable {
 
     private Integer id;
 
@@ -72,7 +73,7 @@ public class AAroNNode extends WithProperties {
             return this;
         }
 
-        public <E, T extends PropertyType<E>> Builder addProperty(final String key, final T type, final E value) {
+        public <E extends Serializable, T extends PropertyType<E>> Builder addProperty(final String key, final T type, final E value) {
             if (value != null) {
                 node.addProperty(key, type, value);
             }

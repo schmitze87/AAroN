@@ -5,9 +5,11 @@ import aaron.model.AAroNEdge;
 import aaron.model.AAroNNode;
 import aaron.model.Model;
 import aaron.model.WithProperties;
+import aaron.model.spatial.WGS84Point;
 import aaron.util.Util;
 import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.Transaction;
+import org.neo4j.graphdb.spatial.Point;
 import org.neo4j.logging.Log;
 import org.neo4j.procedure.*;
 
@@ -56,14 +58,14 @@ public class Exporter {
         Path importFolder = Path.of(importFolderStr);
         Path nodesFile = importFolder.resolve(fileName + "_nodes.csv");
         Path edgesFile = importFolder.resolve(fileName + "_edges.csv");
-        Model model = new Model();
+        Model model = new Model.Builder().workingDir(importFolder.toFile()).build();
         tx.getAllNodes().forEach(node -> {
             String id = node.getElementId();
-            AAroNNode.Builder builder = AAroNNode.builder();
+            AAroNNode.Builder nodeBuilder = AAroNNode.builder();
             node.getLabels().forEach(label -> {
-                builder.addLabel(label.name());
+                nodeBuilder.addLabel(label.name());
             });
-            AAroNNode aaronNode = builder.build();
+            AAroNNode aaronNode = nodeBuilder.build();
             node.getAllProperties().forEach((key, value) -> {
                 addProperty(aaronNode, key, value);
             });
@@ -82,16 +84,18 @@ public class Exporter {
             model.addEdge(new Neo4jEdgeIdentifier(id), aaronEdge);
         });
         try {
-            AAroNCsvWriter.write(model, nodesFile.toFile(), edgesFile.toFile(), parenthesesFix);
+            AAroNCsvWriter writer = new AAroNCsvWriter();
+            writer.write(model, nodesFile.toFile(), edgesFile.toFile(), parenthesesFix);
         } catch (IOException e) {
             log.error("Could not write CSV files", e);
             throw new RuntimeException(e);
         }
         ExportOutput output = new ExportOutput();
-        output.nodesCount = model.getNodes().size();
-        output.edgesCount = model.getEdges().size();
+        output.nodesCount = model.countNodes();
+        output.edgesCount = model.countEdges();
         output.nodesFile = nodesFile.toFile().toString();
         output.edgesFile = edgesFile.toFile().toString();
+        model.close();
         return Stream.of(output);
     }
 
@@ -153,10 +157,17 @@ public class Exporter {
                 aaronObject.addProperty(key, STRING_ARRAY, STRING_ARRAY.cast(value));
                 break;
             case "Point":
-                aaronObject.addProperty(key, POINT, POINT.cast(value));
+                Point point = (Point) value;
+                aaronObject.addProperty(key, POINT, new WGS84Point(point.getCoordinate().getCoordinate()));
                 break;
             case "Point[]":
-                aaronObject.addProperty(key, POINT_ARRAY, POINT_ARRAY.cast(value));
+                Point[] points = (Point[]) value;
+                WGS84Point[] targetArray = new WGS84Point[points.length];
+                for (int i = 0; i < points.length; i++) {
+                    Point p = (Point) points[i];
+                    targetArray[i] = new WGS84Point(p.getCoordinate().getCoordinate());
+                }
+                aaronObject.addProperty(key, POINT_ARRAY, targetArray);
                 break;
             case "LocalDate":
                 aaronObject.addProperty(key, LOCALDATE, LOCALDATE.cast(value));

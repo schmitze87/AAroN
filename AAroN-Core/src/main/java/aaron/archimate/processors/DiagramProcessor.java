@@ -2,7 +2,7 @@ package aaron.archimate.processors;
 
 import aaron.archimate.exchangexml.Diagram;
 import aaron.archimate.exchangexml.LangStringType;
-import aaron.archimate.identifier.ArchiMateIdentifier;
+import aaron.archimate.identifier.ArchiMateNodeIdentifier;
 import aaron.model.AAroNNode;
 import aaron.model.Model;
 
@@ -30,6 +30,6 @@ public class DiagramProcessor extends AbstractProcessor<Diagram> {
                 .addProperty("name", STRING, name)
                 .addProperty("identifier", STRING, identifier)
                 .build();
-        model.addNode(new ArchiMateIdentifier(identifier), node);
+        model.addNode(new ArchiMateNodeIdentifier(identifier), node);
     }
 }

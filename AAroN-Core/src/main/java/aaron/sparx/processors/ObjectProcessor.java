@@ -1,17 +1,13 @@
 package aaron.sparx.processors;
 
 import aaron.logging.Logger;
-import aaron.model.AAroNEdge;
-import aaron.model.AAroNNode;
-import aaron.model.ImportConext;
-import aaron.model.Model;
+import aaron.model.*;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.*;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.UUID;
 
 import static aaron.model.PropertyType.*;
 import static aaron.sparx.model.EAObject.*;
@@ -145,8 +141,10 @@ public class ObjectProcessor extends AbstractProcessor {
 
         ObjectId objectIdentifier = new ObjectId(objectId);
         ObjectGUID objectGUID = new ObjectGUID(eaGuid);
-        model.addNode(objectIdentifier, node);
-        model.addNode(objectGUID, node);
+        UniqueNodeIdentifier<java.util.UUID> uniqueNodeIdentifier = new UniqueNodeIdentifierImpl();
+        model.addNode(uniqueNodeIdentifier, node);
+        model.addNodeIdentifier(objectIdentifier, uniqueNodeIdentifier);
+        model.addNodeIdentifier(objectGUID, uniqueNodeIdentifier);
 
         if ("ProxyConnector".equals(objectType)) {
             node.addLabel("ProxyConnector");
@@ -155,7 +153,7 @@ public class ObjectProcessor extends AbstractProcessor {
                 node.addProperty("connectorGuid", STRING, connectorGuid);
                 ConnectorGUID connectorGUIDIdentifier = new ConnectorGUID(connectorGuid);
                 ProxyConnectorIdentifier proxyConnectorIdentifier = new ProxyConnectorIdentifier(new ProxyConnectorId(connectorGUIDIdentifier, objectGUID));
-                model.addNode(proxyConnectorIdentifier, node);
+                model.addNodeIdentifier(proxyConnectorIdentifier, uniqueNodeIdentifier);
             }
         }
 
@@ -173,7 +171,7 @@ public class ObjectProcessor extends AbstractProcessor {
                 .addProperty("eapHash", STRING, sha1)
                 .addProperty("importedAt", LOCALDATETIME, time)
                 .build();
-        model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), containsEdge);
+        model.addEdge(new ImplizitRelationId(), containsEdge);
 
         //BEHAVIOUR
         if ("Action".equals(objectType)) {
@@ -187,7 +185,7 @@ public class ObjectProcessor extends AbstractProcessor {
                         .addProperty("eapHash", STRING, sha1)
                         .addProperty("importedAt", LOCALDATETIME, time)
                         .build();
-                model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), behaviourEdge);
+                model.addEdge(new ImplizitRelationId(), behaviourEdge);
             }
         }
 
@@ -203,7 +201,7 @@ public class ObjectProcessor extends AbstractProcessor {
                         .addProperty("eapHash", STRING, sha1)
                         .addProperty("importedAt", LOCALDATETIME, time)
                         .build();
-                model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), classifierEdge);
+                model.addEdge(new ImplizitRelationId(), classifierEdge);
             }
         }
 
@@ -219,7 +217,7 @@ public class ObjectProcessor extends AbstractProcessor {
                         .addProperty("eapHash", STRING, sha1)
                         .addProperty("importedAt", LOCALDATETIME, time)
                         .build();
-                model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), instanceOfEdge);
+                model.addEdge(new ImplizitRelationId(), instanceOfEdge);
             }
         }
 
@@ -235,7 +233,7 @@ public class ObjectProcessor extends AbstractProcessor {
                         .addProperty("eapHash", STRING, sha1)
                         .addProperty("importedAt", LOCALDATETIME, time)
                         .build();
-                model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), reusageEdge);
+                model.addEdge(new ImplizitRelationId(), reusageEdge);
             }
         }
 
@@ -254,7 +252,7 @@ public class ObjectProcessor extends AbstractProcessor {
                 if (StringUtils.isNotBlank(multiplicity)) {
                     portEdge.addProperty("multiplicity", STRING, multiplicity);
                 }
-                model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), portEdge);
+                model.addEdge(new ImplizitRelationId(), portEdge);
             }
 
             //HAS_PART
@@ -270,7 +268,7 @@ public class ObjectProcessor extends AbstractProcessor {
                 if (StringUtils.isNotBlank(multiplicity)) {
                     partEdge.addProperty("multiplicity", STRING, multiplicity);
                 }
-                model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), partEdge);
+                model.addEdge(new ImplizitRelationId(), partEdge);
             }
 
             //EMBEDS
@@ -285,7 +283,7 @@ public class ObjectProcessor extends AbstractProcessor {
             if (StringUtils.isNotBlank(multiplicity)) {
                 embedsEdge.addProperty("multiplicity", STRING, multiplicity);
             }
-            model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), embedsEdge);
+            model.addEdge(new ImplizitRelationId(), embedsEdge);
 
             //HAS_PARENT
             AAroNEdge parentEdge = AAroNEdge.builder()
@@ -296,7 +294,7 @@ public class ObjectProcessor extends AbstractProcessor {
                     .addProperty("eapHash", STRING, sha1)
                     .addProperty("importedAt", LOCALDATETIME, time)
                     .build();
-            model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), parentEdge);
+            model.addEdge(new ImplizitRelationId(), parentEdge);
         }
     }
 }

@@ -1,16 +1,14 @@
 package aaron.model;
 
+import java.io.Serializable;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.temporal.TemporalAmount;
-import java.util.List;
 
-import org.neo4j.graphdb.spatial.CRS;
-import org.neo4j.graphdb.spatial.Coordinate;
-import org.neo4j.graphdb.spatial.Point;
+import aaron.model.spatial.WGS84Point;
 
-public class PropertyType<E> {
+public class PropertyType<E extends Serializable> implements Serializable {
 
     public static PropertyType<Byte> BYTE = new PropertyType<>("byte", Byte.class);
     public static PropertyType<Byte[]> BYTE_ARRAY = new PropertyType<>("byte", Byte[].class);
@@ -36,10 +34,10 @@ public class PropertyType<E> {
     public static PropertyType<LocalDate[]> LOCALDATE_ARRAY = new PropertyType<>("date[]", LocalDate[].class);
     public static PropertyType<LocalDateTime> LOCALDATETIME = new PropertyType<>("localdatetime", LocalDateTime.class);
     public static PropertyType<LocalDateTime[]> LOCALDATETIME_ARRAY = new PropertyType<>("localdatetime[]", LocalDateTime[].class);
-    public static PropertyType<TemporalAmount> DURATION = new PropertyType<>("duration", TemporalAmount.class);
-    public static PropertyType<TemporalAmount[]> DURATION_ARRAY = new PropertyType<>("duration[]", TemporalAmount[].class);
-    public static PropertyType<Point> POINT = new PropertyType<>("point{crs:WGS-84}", Point.class);
-    public static PropertyType<Point[]> POINT_ARRAY = new PropertyType<>("point[]{crs:WGS-84}", Point[].class);
+    public static PropertyType<Duration> DURATION = new PropertyType<>("duration", Duration.class);
+    public static PropertyType<Duration[]> DURATION_ARRAY = new PropertyType<>("duration[]", Duration[].class);
+    public static PropertyType<WGS84Point> POINT = new PropertyType<>("point{crs:WGS-84}", WGS84Point.class);
+    public static PropertyType<WGS84Point[]> POINT_ARRAY = new PropertyType<>("point[]{crs:WGS-84}", WGS84Point[].class);
 
     public static PropertyType[] TYPES = new PropertyType[]{STRING, STRING_ARRAY, INTEGER, INTEGER_ARRAY,
             BOOLEAN, BOOLEAN_ARRAY, LONG, LONG_ARRAY, SHORT, SHORT_ARRAY, DOUBLE, DOUBLE_ARRAY, FLOAT, FLOAT_ARRAY,
@@ -63,45 +61,5 @@ public class PropertyType<E> {
 
     public E cast(Object value) {
         return clazz.cast(value);
-    }
-
-    public static class WGS84Point implements Point {
-
-        Coordinate coordinate;
-        CRS csr = new CRS() {
-            @Override
-            public int getCode() {
-                return 4326;
-            }
-
-            @Override
-            public String getType() {
-                return "WGS-84";
-            }
-
-            @Override
-            public String getHref() {
-                return "https://spatialreference.org/ref/epsg/4326/";
-            }
-        };
-
-        public WGS84Point(double latitude, double longitude) {
-            this.coordinate = new Coordinate(longitude, latitude);
-        }
-
-        @Override
-        public Coordinate getCoordinate() {
-            return coordinate;
-        }
-
-        @Override
-        public List<Coordinate> getCoordinates() {
-            return List.of(coordinate);
-        }
-
-        @Override
-        public CRS getCRS() {
-            return csr;
-        }
     }
 }

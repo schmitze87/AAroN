@@ -1,19 +1,17 @@
-package aaron.sparx.identifiers;
-
-import aaron.model.UniqueEdgeIdentifierImpl;
+package aaron.model;
 
 import java.util.Objects;
 import java.util.UUID;
 
-public class ImplizitRelationId extends UniqueEdgeIdentifierImpl {
+public class UniqueNodeIdentifierImpl extends AbstractUniqueIdentifier<UUID> implements UniqueNodeIdentifier<UUID> {
 
-    public ImplizitRelationId() {
+    public UniqueNodeIdentifierImpl() {
         super(UUID.randomUUID());
     }
 
     @Override
     public String toString() {
-        return "ImplizitRelationId{" +
+        return "UniqueNodeIdentifier{" +
                 "id=" + id.toString() +
                 '}';
     }
@@ -21,8 +19,12 @@ public class ImplizitRelationId extends UniqueEdgeIdentifierImpl {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        ImplizitRelationId that = (ImplizitRelationId) o;
+        UniqueNodeIdentifierImpl that = (UniqueNodeIdentifierImpl) o;
         return Objects.equals(id, that.id);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }

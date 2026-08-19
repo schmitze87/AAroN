@@ -7,13 +7,13 @@ import aaron.sparx.identifiers.ConnectorId;
 import aaron.sparx.identifiers.ImplizitRelationId;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
 import static aaron.model.PropertyType.LOCALDATETIME;
 import static aaron.model.PropertyType.STRING;
 
 public class TaggedValueHelper {
 
+    @SuppressWarnings("rawtypes")
     static void process(final String sha1, final LocalDateTime time, final Model model, final TaggedValueMode mode, final String name, final String value,
                         final Identifier<String> tagIdentifier, final Identifier taggedElementIdentifier, Logger logger) {
         AAroNNode node;
@@ -26,8 +26,9 @@ public class TaggedValueHelper {
                 node.addProperty("eaGuid", STRING, tagIdentifier.getIdentifier());
                 node.addProperty("eapHash", STRING, sha1);
                 node.addProperty("importedAt", LOCALDATETIME, time);
-
-                model.addNode(tagIdentifier, node);
+                UniqueNodeIdentifier<java.util.UUID> uniqueNodeIdentifier = new UniqueNodeIdentifierImpl();
+                model.addNode(uniqueNodeIdentifier, node);
+                model.addNodeIdentifier(tagIdentifier, uniqueNodeIdentifier);
 
                 //CONNECT WITH OBJECT
                 AAroNEdge edge = AAroNEdge.builder()
@@ -37,17 +38,23 @@ public class TaggedValueHelper {
                         .addProperty("eapHash", STRING, sha1)
                         .addProperty("importedAt", LOCALDATETIME, time)
                         .build();
-                model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), edge);
+                model.addEdge(new ImplizitRelationId(), edge);
                 break;
             case AS_PROPERTY:
-                WithProperties withProperties;
                 if (taggedElementIdentifier instanceof ConnectorId) {
-                    withProperties = model.getEdge(taggedElementIdentifier);
+                    UniqueEdgeIdentifier<java.util.UUID> uniqueEdgeIdentifier = model.getUniqueEdgeIdentifier(taggedElementIdentifier);
+                    AAroNEdge taggedEdge = model.getEdge(uniqueEdgeIdentifier);
+                    if (taggedEdge != null) {
+                        taggedEdge.addProperty("tag_" + name, STRING, value);
+                    }
+                    model.addEdge(uniqueEdgeIdentifier, taggedEdge);
                 } else {
-                    withProperties = model.getNode(taggedElementIdentifier);
-                }
-                if (withProperties != null) {
-                    withProperties.addProperty("tag_" + name, STRING, value);
+                    UniqueNodeIdentifier<java.util.UUID> uniqueTaggedNodeIdentifier = model.getUniqueNodeIdentifier(taggedElementIdentifier);
+                    AAroNNode taggedNode = model.getNode(uniqueTaggedNodeIdentifier);
+                    if (taggedNode != null) {
+                        taggedNode.addProperty("tag_" + name, STRING, value);
+                    }
+                    model.addNode(uniqueTaggedNodeIdentifier, taggedNode);
                 }
                 break;
         }

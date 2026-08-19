@@ -1,10 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.logging.Logger;
-import aaron.model.AAroNEdge;
-import aaron.model.AAroNNode;
-import aaron.model.ImportConext;
-import aaron.model.Model;
+import aaron.model.*;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.ImplizitRelationId;
 import aaron.sparx.identifiers.PackageId;
@@ -35,7 +32,8 @@ public class PackageProcessor extends AbstractProcessor {
 
         AAroNNode node;
         PackageId identifier = new PackageId(packageId);
-        node = model.getNode(identifier);
+        UniqueNodeIdentifier<java.util.UUID> uniqueNodeIdentifier = model.getUniqueNodeIdentifier(identifier);
+        node = model.getNode(uniqueNodeIdentifier);
         if (node == null) {
             node = AAroNNode.builder().build();
         }
@@ -49,7 +47,8 @@ public class PackageProcessor extends AbstractProcessor {
         node.addProperty("eapHash", STRING, sha1);
         node.addProperty("importedAt", LOCALDATETIME, time);
 
-        model.addNode(identifier, node);
+        model.addNode(uniqueNodeIdentifier, node);
+        model.addNodeIdentifier(identifier, uniqueNodeIdentifier);
 
         if (parentId == null || parentId == 0) {
             ProjectGUID projectGUIDIdentifier = new ProjectGUID(context.getProjectGuid());

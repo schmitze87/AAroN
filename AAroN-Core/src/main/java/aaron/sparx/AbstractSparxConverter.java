@@ -134,15 +134,19 @@ public abstract class AbstractSparxConverter implements Converter {
     }
 
     protected void postProcessProxyConnectors() {
-        List<Identifier> proxyConnectorKeys = model.getNodes().keySet().stream().filter(key -> key instanceof ProxyConnectorIdentifier).toList();
-        for(Identifier key : proxyConnectorKeys) {
+        @SuppressWarnings("rawtypes")
+        List<Identifier> proxyConnectorKeys = model.getNodeIdentifiers().stream().filter(key -> key instanceof ProxyConnectorIdentifier).toList();
+        for(@SuppressWarnings("rawtypes") Identifier key : proxyConnectorKeys) {
             ProxyConnectorIdentifier proxyConnectorIdentifier = (ProxyConnectorIdentifier) key;
             ProxyConnectorId identifier = proxyConnectorIdentifier.getIdentifier();
             ConnectorGUID connectorGUID = identifier.connectorGUID();
             AAroNEdge proxiedConnector = model.getEdge(connectorGUID);
             String connectorType = proxiedConnector.getType();
-            AAroNNode node = model.getNode(key);
+            @SuppressWarnings("rawtypes")
+            UniqueNodeIdentifier uniqueNodeIdentifier = model.getUniqueNodeIdentifier(key);
+            AAroNNode node = model.getNode(uniqueNodeIdentifier);
             node.addProperty("connectorType", PropertyType.STRING, connectorType);
+            model.addNode(uniqueNodeIdentifier, node);
         }
     }
 
@@ -159,14 +163,12 @@ public abstract class AbstractSparxConverter implements Converter {
                     resultSet.close();
                 } catch (SQLException ignored) {
                 } // ignore
-                resultSet = null;
             }
             if (statement != null) {
                 try {
                     statement.close();
                 } catch (SQLException ignored) {
                 } // ignore
-                statement = null;
             }
         }
     }

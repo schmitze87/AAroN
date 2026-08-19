@@ -1,10 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.logging.Logger;
-import aaron.model.AAroNEdge;
-import aaron.model.AAroNNode;
-import aaron.model.ImportConext;
-import aaron.model.Model;
+import aaron.model.*;
 import aaron.sparx.identifiers.AttributeGUID;
 import aaron.sparx.identifiers.AttributeId;
 import aaron.sparx.identifiers.ImplizitRelationId;
@@ -13,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.UUID;
 
 import static aaron.model.PropertyType.*;
 import static aaron.sparx.model.EAAttribute.*;
@@ -88,11 +84,12 @@ public class AttributeProcessor extends AbstractProcessor {
         if (StringUtils.isNotBlank(stereotype)) {
             node.addLabel(stereotype);
         }
-
+        UniqueNodeIdentifier<java.util.UUID> uniqueNodeIdentifier = new UniqueNodeIdentifierImpl();
         AttributeId attributeId = new AttributeId(id);
         AttributeGUID attributeGUID = new AttributeGUID(eaGuid);
-        model.addNode(attributeId, node);
-        model.addNode(attributeGUID, node);
+        model.addNode(uniqueNodeIdentifier, node);
+        model.addNodeIdentifier(attributeId, uniqueNodeIdentifier);
+        model.addNodeIdentifier(attributeGUID, uniqueNodeIdentifier);
 
         ObjectId objectIdentifier = new ObjectId(objectId);
         AAroNEdge objectEdge = AAroNEdge.builder()
@@ -102,7 +99,7 @@ public class AttributeProcessor extends AbstractProcessor {
                 .addProperty("eapHash", STRING, sha1)
                 .addProperty("importedAt", LOCALDATETIME, time)
                 .build();
-        model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), objectEdge);
+        model.addEdge(new ImplizitRelationId(), objectEdge);
 
         if (StringUtils.isNumeric(classifier)) {
             int classifierInt = Integer.parseInt(classifier);
@@ -114,7 +111,7 @@ public class AttributeProcessor extends AbstractProcessor {
                     .addProperty("eapHash", STRING, sha1)
                     .addProperty("importedAt", LOCALDATETIME, time)
                     .build();
-            model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), classifierEdge);
+            model.addEdge(new ImplizitRelationId(), classifierEdge);
         }
 
     }

@@ -2,10 +2,7 @@ package aaron.sparx.processors;
 
 import aaron.export.TestLogger;
 import aaron.logging.Logger;
-import aaron.model.AAroNEdge;
-import aaron.model.AAroNNode;
-import aaron.model.ImportConext;
-import aaron.model.Model;
+import aaron.model.*;
 import aaron.sparx.identifiers.ConnectorGUID;
 import aaron.sparx.identifiers.ObjectGUID;
 import org.junit.jupiter.api.Test;
@@ -14,6 +11,7 @@ import org.slf4j.LoggerFactory;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 import static aaron.model.PropertyType.STRING;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -38,9 +36,13 @@ class XRefProcessorTest {
 
     @Test
     void elementStereotypeWithNullDescriptionDoesNotThrow() {
-        Model model = new Model();
+        Model.Builder modelBuilder = new Model.Builder();
+        Model model = modelBuilder.build();
         String client = "node-1";
-        model.addNode(new ObjectGUID(client), AAroNNode.builder().build());
+        ObjectGUID objectGUID = new ObjectGUID(client);
+        UniqueNodeIdentifier<UUID> uniqueNodeIdentifier = new UniqueNodeIdentifierImpl();
+        model.addNode(uniqueNodeIdentifier, AAroNNode.builder().build());
+        model.addNodeIdentifier(objectGUID, uniqueNodeIdentifier);
 
         XRefProcessor processor = newProcessor(model);
 
@@ -49,9 +51,13 @@ class XRefProcessorTest {
 
     @Test
     void connectorStereotypeWithNullDescriptionDoesNotThrow() {
-        Model model = new Model();
+        Model.Builder modelBuilder = new Model.Builder();
+        Model model = modelBuilder.build();
         String client = "edge-1";
-        model.addEdge(new ConnectorGUID(client), AAroNEdge.builder().build());
+        UniqueEdgeIdentifier<UUID> uniqueEdgeIdentifier = new UniqueEdgeIdentifierImpl();
+        ConnectorGUID connectorGUID = new ConnectorGUID(client);
+        model.addEdge(uniqueEdgeIdentifier, AAroNEdge.builder().build());
+        model.addEdgeIdentifier(connectorGUID, uniqueEdgeIdentifier);
 
         XRefProcessor processor = newProcessor(model);
 
@@ -66,12 +72,16 @@ class XRefProcessorTest {
 
     @Test
     void connectorStereotypeWithMatchingNameSetsFqStereotype() {
-        Model model = new Model();
+        Model.Builder modelBuilder = new Model.Builder();
+        Model model = modelBuilder.build();
         String client = "edge-2";
         AAroNEdge edge = AAroNEdge.builder()
                 .addProperty("stereotype", STRING, "Foo")
                 .build();
-        model.addEdge(new ConnectorGUID(client), edge);
+        UniqueEdgeIdentifier<UUID> uniqueEdgeIdentifier = new UniqueEdgeIdentifierImpl();
+        ConnectorGUID connectorGUID = new ConnectorGUID(client);
+        model.addEdge(uniqueEdgeIdentifier, edge);
+        model.addEdgeIdentifier(connectorGUID, uniqueEdgeIdentifier);
 
         XRefProcessor processor = newProcessor(model);
 
@@ -83,17 +93,24 @@ class XRefProcessorTest {
 
         processor.process(row);
 
-        assertEquals("ns::Foo", edge.getProperty(STRING, "fqStereotype"));
+        // Die AAroNEdge edge ist nicht die Referenz auf das Objekt, an dem der Property gesetzt wird.
+        // Da das Objekt serialisiert und wieder deserialisiert wird, bricht hier die Referenzierung.
+        AAroNEdge extendedEdge = model.getEdge(uniqueEdgeIdentifier);
+        assertEquals("ns::Foo", extendedEdge.getProperty(STRING, "fqStereotype"));
     }
 
     @Test
     void elementStereotypeWithMatchingNameSetsFqStereotype() {
-        Model model = new Model();
+        Model.Builder modelBuilder = new Model.Builder();
+        Model model = modelBuilder.build();
         String client = "node-2";
         AAroNNode node = AAroNNode.builder()
                 .addProperty("stereotype", STRING, "Foo")
                 .build();
-        model.addNode(new ObjectGUID(client), node);
+        UniqueNodeIdentifier<UUID> uniqueNodeIdentifier = new UniqueNodeIdentifierImpl();
+        ObjectGUID objectGUID = new ObjectGUID(client);
+        model.addNode(uniqueNodeIdentifier, node);
+        model.addNodeIdentifier(objectGUID, uniqueNodeIdentifier);
 
         XRefProcessor processor = newProcessor(model);
 
@@ -102,22 +119,32 @@ class XRefProcessorTest {
 
         processor.process(row);
 
-        assertEquals("ns::Foo", node.getProperty(STRING, "fqStereotype"));
+        // Die AAroNNode node ist nicht die Referenz auf das Objekt, an dem der Property gesetzt wird.
+        // Da das Objekt serialisiert und wieder deserialisiert wird, bricht hier die Referenzierung.
+        AAroNNode extendedNode = model.getNode(uniqueNodeIdentifier);
+        assertEquals("ns::Foo", extendedNode.getProperty(STRING, "fqStereotype"));
     }
 
     @Test
     void elementStereotypeWithNonMatchingDescriptionSetsNothing() {
-        Model model = new Model();
+        Model.Builder modelBuilder = new Model.Builder();
+        Model model = modelBuilder.build();
         String client = "node-3";
         AAroNNode node = AAroNNode.builder()
                 .addProperty("stereotype", STRING, "Foo")
                 .build();
-        model.addNode(new ObjectGUID(client), node);
+        UniqueNodeIdentifier<UUID> uniqueNodeIdentifier = new UniqueNodeIdentifierImpl();
+        ObjectGUID objectGUID = new ObjectGUID(client);
+        model.addNode(uniqueNodeIdentifier, node);
+        model.addNodeIdentifier(objectGUID, uniqueNodeIdentifier);
 
         XRefProcessor processor = newProcessor(model);
 
         processor.process(stereotypeRow(client, "kein-stereotyp-token"));
 
-        assertFalse(node.getProperties().containsKey("fqStereotype"));
+        // Die AAroNNode node ist nicht die Referenz auf das Objekt, an dem der Property gesetzt wird.
+        // Da das Objekt serialisiert und wieder deserialisiert wird, bricht hier die Referenzierung.
+        AAroNNode extendedNode = model.getNode(uniqueNodeIdentifier);
+        assertFalse(extendedNode.getProperties().containsKey("fqStereotype"));
     }
 }

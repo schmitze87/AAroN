@@ -1,10 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.logging.Logger;
-import aaron.model.AAroNEdge;
-import aaron.model.AAroNNode;
-import aaron.model.ImportConext;
-import aaron.model.Model;
+import aaron.model.*;
 import aaron.sparx.identifiers.AttributeConstraint;
 import aaron.sparx.identifiers.AttributeId;
 import aaron.sparx.identifiers.ImplizitRelationId;
@@ -12,7 +9,6 @@ import aaron.sparx.identifiers.Tuple;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.UUID;
 
 import static aaron.model.PropertyType.LOCALDATETIME;
 import static aaron.model.PropertyType.STRING;
@@ -46,7 +42,9 @@ public class AttributeConstraintProcessor extends AbstractProcessor {
 
         AttributeId attributeId = new AttributeId(id);
         AttributeConstraint identifier = new AttributeConstraint(new Tuple<>(constraint, attributeId));
-        model.addNode(identifier, node);
+        UniqueNodeIdentifier<java.util.UUID> uniqueNodeIdentifier = new UniqueNodeIdentifierImpl();
+        model.addNode(uniqueNodeIdentifier, node);
+        model.addNodeIdentifier(identifier, uniqueNodeIdentifier);
 
         AAroNEdge edge = AAroNEdge.builder()
                 .setType("HAS_CONSTRAINT")
@@ -55,6 +53,6 @@ public class AttributeConstraintProcessor extends AbstractProcessor {
                 .addProperty("eapHash", STRING, sha1)
                 .addProperty("importedAt", LOCALDATETIME, time)
                 .build();
-        model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), edge);
+        model.addEdge(new ImplizitRelationId(), edge);
     }
 }

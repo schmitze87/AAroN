@@ -48,7 +48,7 @@ public class DiagramObjectsProcessor extends AbstractProcessor{
                 .addProperty("sequence", INTEGER, sequence)
                 .addProperty("objectStyle", STRING, objectStyle)
                 .build();
-        model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), showsEdge);
+        model.addEdge(new ImplizitRelationId(), showsEdge);
     }
 
 

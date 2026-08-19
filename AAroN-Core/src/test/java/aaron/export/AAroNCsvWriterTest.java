@@ -26,12 +26,15 @@ class AAroNCsvWriterTest {
         File file = new File(resource.getFile());
         Map<String, Object> config = new HashMap<>();
         config.put("taggedValues", "AS_PROPERTY");
-        Converter converter = new SparxJETConverter(Config.createFromMap(config), file, logger);
-        Model model = converter.convert();
+        Model.Builder modelBuilder = new Model.Builder();
+        Model model = modelBuilder.build();
+        Converter converter = new SparxJETConverter(model, Config.createFromMap(config), file, logger);
+        model = converter.convert();
         File nodesFile = new File("nodes.csv");
         File edgesFile = new File("edges.csv");
         System.out.println(nodesFile.getAbsoluteFile());
-        AAroNCsvWriter.write(model, nodesFile, edgesFile, false);
+        AAroNCsvWriter writer = new AAroNCsvWriter();
+        writer.write(model, nodesFile, edgesFile, false);
     }
 
     @Test
@@ -41,12 +44,17 @@ class AAroNCsvWriterTest {
         File file = new File(resource.getFile());
         Map<String, Object> config = new HashMap<>();
         config.put("taggedValues", "AS_PROPERTY");
-        Converter converter = new SparxSQLiteConverter(Config.createFromMap(config), file, logger);
-        Model model = converter.convert();
+        Model.Builder modelBuilder = new Model.Builder();
+        modelBuilder.workingDir(new File("."));
+        Model model = modelBuilder.build();
+        Converter converter = new SparxSQLiteConverter(model, Config.createFromMap(config), file, logger);
+        model = converter.convert();
         File nodesFile = new File("nodes.csv");
         File edgesFile = new File("edges.csv");
         System.out.println(nodesFile.getAbsoluteFile());
-        AAroNCsvWriter.write(model, nodesFile, edgesFile, false);
+        AAroNCsvWriter writer = new AAroNCsvWriter();
+        writer.write(model, nodesFile, edgesFile, false);
+        model.close();
     }
 
     @Disabled
@@ -57,11 +65,13 @@ class AAroNCsvWriterTest {
         File file = new File(resource.getFile());
         Map<String, Object> config = new HashMap<>();
         config.put("taggedValues", "AS_PROPERTY");
-        Converter converter = new SparxFirebirdConverter(Config.createFromMap(config), file, logger);
-        Model model = converter.convert();
+        Model model = new Model.Builder().workingDir(new File(".")).build();
+        Converter converter = new SparxFirebirdConverter(model, Config.createFromMap(config), file, logger);
+        model = converter.convert();
         File nodesFile = new File("nodes.csv");
         File edgesFile = new File("edges.csv");
         System.out.println(nodesFile.getAbsoluteFile());
-        AAroNCsvWriter.write(model, nodesFile, edgesFile, false);
+        AAroNCsvWriter writer = new AAroNCsvWriter();
+        writer.write(model, nodesFile, edgesFile, false);
     }
 }

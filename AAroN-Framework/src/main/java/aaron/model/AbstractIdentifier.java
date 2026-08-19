@@ -1,8 +1,9 @@
 package aaron.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class AbstractIdentifier<T> implements Identifier<T> {
+public class AbstractIdentifier<T> implements Identifier<T>, Serializable {
 
     private final T id;
 

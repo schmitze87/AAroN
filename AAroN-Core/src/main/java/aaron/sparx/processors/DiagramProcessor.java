@@ -1,10 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.logging.Logger;
-import aaron.model.AAroNEdge;
-import aaron.model.AAroNNode;
-import aaron.model.ImportConext;
-import aaron.model.Model;
+import aaron.model.*;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.*;
 import aaron.sparx.model.EADiagram;
@@ -13,7 +10,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
 import static aaron.model.PropertyType.*;
 
@@ -97,8 +93,10 @@ public class DiagramProcessor extends AbstractProcessor {
 
         DiagramId diagramIdentifier = new DiagramId(diagramId);
         ObjectGUID guidIdentifier = new ObjectGUID(eaGuid);
-        model.addNode(diagramIdentifier, diagramNode);
-        model.addNode(guidIdentifier, diagramNode);
+        UniqueNodeIdentifier<java.util.UUID> uniqueNodeIdentifier = new UniqueNodeIdentifierImpl();
+        model.addNode(uniqueNodeIdentifier, diagramNode);
+        model.addNodeIdentifier(diagramIdentifier, uniqueNodeIdentifier);
+        model.addNodeIdentifier(guidIdentifier, uniqueNodeIdentifier);
 
         //CONTAINS Edge
         PackageId packageIdentifier = new PackageId(packageId);
@@ -121,7 +119,7 @@ public class DiagramProcessor extends AbstractProcessor {
                     .addProperty("eapHash", STRING, sha1)
                     .addProperty("importedAt", LOCALDATETIME, time)
                     .build();
-            model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), parentEdge);
+            model.addEdge(new ImplizitRelationId(), parentEdge);
         }
     }
 

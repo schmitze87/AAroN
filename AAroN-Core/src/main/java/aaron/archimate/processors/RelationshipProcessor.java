@@ -3,7 +3,8 @@ package aaron.archimate.processors;
 import aaron.archimate.exchangexml.ElementType;
 import aaron.archimate.exchangexml.PropertiesType;
 import aaron.archimate.exchangexml.RelationshipType;
-import aaron.archimate.identifier.ArchiMateIdentifier;
+import aaron.archimate.identifier.ArchiMateEdgeIdentifier;
+import aaron.archimate.identifier.ArchiMateNodeIdentifier;
 import aaron.model.AAroNEdge;
 import aaron.model.Identifier;
 import aaron.model.Model;
@@ -26,8 +27,8 @@ public class RelationshipProcessor extends AbstractProcessor<RelationshipType> {
         String type = relationshipType.getClass().getSimpleName();
         PropertiesType properties = relationshipType.getProperties();
 
-        Identifier<String> start = new ArchiMateIdentifier(source.getIdentifier());
-        Identifier<String> end = new ArchiMateIdentifier(target.getIdentifier());
+        Identifier<String> start = new ArchiMateNodeIdentifier(source.getIdentifier());
+        Identifier<String> end = new ArchiMateNodeIdentifier(target.getIdentifier());
 
         AAroNEdge.Builder builder = AAroNEdge.builder();
         builder.setType(type);
@@ -37,6 +38,6 @@ public class RelationshipProcessor extends AbstractProcessor<RelationshipType> {
         builder.addProperty("name", STRING, name);
         processProperties(properties, builder::addProperty);
         AAroNEdge edge = builder.build();
-        model.addEdge(new ArchiMateIdentifier(identifier), edge);
+        model.addEdge(new ArchiMateEdgeIdentifier(identifier), edge);
     }
 }

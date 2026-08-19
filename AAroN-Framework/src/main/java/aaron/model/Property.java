@@ -1,6 +1,8 @@
 package aaron.model;
 
-public class Property<T> {
+import java.io.Serializable;
+
+public class Property<T extends Serializable> implements Serializable {
 
     private T value;
     private final PropertyType<T> type;

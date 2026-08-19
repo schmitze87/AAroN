@@ -17,8 +17,8 @@ public class SparxSQLiteConverter extends AbstractSparxConverter {
 
     private final File qeaFile;
 
-    public SparxSQLiteConverter(final Config config, final File qeaFile, Logger logger) {
-        super(new Model(), config, logger);
+    public SparxSQLiteConverter(final Model model, final Config config, final File qeaFile, Logger logger) {
+        super(model, config, logger);
         this.config = config;
         this.qeaFile = qeaFile;
     }

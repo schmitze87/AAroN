@@ -19,8 +19,8 @@ public class SparxJETConverter extends AbstractSparxConverter {
 
     private final File file;
 
-    public SparxJETConverter(final Config config, final File file, Logger logger) {
-        super(new Model(), config, logger);
+    public SparxJETConverter(final Model model, final Config config, final File file, Logger logger) {
+        super(model, config, logger);
         this.file = file;
     }
 

@@ -1,9 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.logging.Logger;
-import aaron.model.AAroNNode;
-import aaron.model.ImportConext;
-import aaron.model.Model;
+import aaron.model.*;
 import aaron.sparx.identifiers.ProjectGUID;
 import aaron.sparx.model.EASystem;
 
@@ -26,7 +24,10 @@ public class SystemProcessor extends AbstractProcessor {
             AAroNNode node = AAroNNode.builder().build();
             node.addLabel("EA_Project");
             node.addProperty("ProjectGUID", STRING, value);
-            model.addNode(new ProjectGUID(value), node);
+            ProjectGUID projectGUID = new ProjectGUID(value);
+            UniqueNodeIdentifier<java.util.UUID> uniqueNodeIdentifier = new UniqueNodeIdentifierImpl();
+            model.addNode(uniqueNodeIdentifier, node);
+            model.addNodeIdentifier(projectGUID, uniqueNodeIdentifier);
             context.setProjectGuid(value);
         }
     }

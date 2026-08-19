@@ -28,8 +28,8 @@ public class SparxMSSQLConverter extends AbstractSparxConverter {
     private final boolean trustServerCertificate;
     private final MSSQLDB.AuthenticationType authenticationType;
 
-    public SparxMSSQLConverter(final Config config, String host, String instance, long port, String databaseName, String username, String password, MSSQLDB.AuthenticationType authenticationType, Logger logger) {
-        super(new Model(), config, logger);
+    public SparxMSSQLConverter(final Model model, final Config config, String host, String instance, long port, String databaseName, String username, String password, MSSQLDB.AuthenticationType authenticationType, Logger logger) {
+        super(model, config, logger);
         this.config = config;
         this.host = host;
         this.instance = instance;
@@ -41,8 +41,8 @@ public class SparxMSSQLConverter extends AbstractSparxConverter {
         this.authenticationType = authenticationType;
     }
 
-    public SparxMSSQLConverter(final Config config, MSSQLDB dbToImport, Logger logger) {
-        super(new Model(), config, logger);
+    public SparxMSSQLConverter(final Model model, final Config config, MSSQLDB dbToImport, Logger logger) {
+        super(model, config, logger);
         this.config = config;
         this.host = dbToImport.getHostname();
         this.port = dbToImport.getPort();

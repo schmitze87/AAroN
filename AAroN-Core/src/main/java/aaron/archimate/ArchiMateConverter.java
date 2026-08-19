@@ -26,7 +26,8 @@ public class ArchiMateConverter implements Converter {
     public ArchiMateConverter(final File file, Logger logger) {
         this.file = file;
         this.logger = logger;
-        graphModel = new Model();
+        Model.Builder builder = new Model.Builder();
+        graphModel = builder.build();
     }
 
     public Model convert() {

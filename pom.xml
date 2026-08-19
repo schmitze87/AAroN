@@ -17,7 +17,7 @@
     <name>AAroN - Analyze Architecture on Neo4j</name>
 
     <properties>
-        <revision>2026.01.4</revision>
+        <revision>2026.01.4_1</revision>
         <changelist>-SNAPSHOT</changelist>
         <sha1></sha1>
         <maven.compiler.source>21</maven.compiler.source>
@@ -110,6 +110,14 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
                 <version>2.0.17</version>
+            </dependency>
+
+            <!-- Source: https://mvnrepository.com/artifact/com.h2database/h2-mvstore -->
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2-mvstore</artifactId>
+                <version>2.4.240</version>
+                <scope>compile</scope>
             </dependency>
 
             <!-- https://mvnrepository.com/artifact/org.firebirdsql.jdbc/jaybird -->

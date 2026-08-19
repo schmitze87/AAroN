@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.CleanupMode;
 import org.junit.jupiter.api.io.TempDir;
@@ -14,6 +15,10 @@ import org.testcontainers.utility.DockerImageName;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 
 class CliConverterTest {
 
@@ -55,6 +60,32 @@ class CliConverterTest {
         Assertions.assertNotNull(output);
         Assertions.assertTrue(output.getNodesToImport().isEmpty());
         Assertions.assertTrue(output.getEdgesToImport().isEmpty());
+    }
+
+    @Disabled
+    @Test
+    void testHausmesseConfig() throws IOException, AAroNConversionException {
+        ObjectMapper mapper = new ObjectMapper(new YAMLFactory())
+                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        mapper.findAndRegisterModules();
+        Config config = mapper.readValue(new File("src/test/resources/aaron_config_hausmesse.yml"), Config.class);
+        List<String> filesToConvert = new ArrayList<>();
+        for (String fileName : config.getFilesToConvert()) {
+            URL resource = ClassLoader.getSystemResource(fileName);
+            File file = new File(resource.getFile());
+            filesToConvert.add(file.getAbsolutePath());
+        }
+        config.setFilesToConvert(filesToConvert);
+
+        Assertions.assertNotNull(config);
+
+        CliConverter cliConverter = new CliConverter();
+        cliConverter.outputDir =  tempDir;
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        cliConverter.convert(config, outputStream);
+        AAronCLIOutput output = mapper.readValue(outputStream.toByteArray(), AAronCLIOutput.class);
+        Assertions.assertNotNull(output);
+        System.out.println(outputStream.toString(StandardCharsets.UTF_8));
     }
 
     @Test

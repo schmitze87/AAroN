@@ -1,10 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.logging.Logger;
-import aaron.model.AAroNEdge;
-import aaron.model.AAroNNode;
-import aaron.model.ImportConext;
-import aaron.model.Model;
+import aaron.model.*;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.ImplizitRelationId;
 import aaron.sparx.identifiers.ObjectId;
@@ -13,7 +10,6 @@ import aaron.sparx.identifiers.OperationId;
 
 import java.time.LocalDateTime;
 import java.util.Map;
-import java.util.UUID;
 
 import static aaron.model.PropertyType.*;
 import static aaron.sparx.model.EAOperation.*;
@@ -87,8 +83,10 @@ public class OperationProcessor extends AbstractProcessor {
         node.addProperty("eapHash", STRING, sha1);
         node.addProperty("importedAt", LOCALDATETIME, time);
 
-        model.addNode(operationIdentifier, node);
-        model.addNode(operationGUID, node);
+        UniqueNodeIdentifier<java.util.UUID> uniqueNodeIdentifier = new UniqueNodeIdentifierImpl();
+        model.addNode(uniqueNodeIdentifier, node);
+        model.addNodeIdentifier(operationIdentifier, uniqueNodeIdentifier);
+        model.addNodeIdentifier(operationGUID, uniqueNodeIdentifier);
 
         //TODO: Classifier
 
@@ -100,6 +98,6 @@ public class OperationProcessor extends AbstractProcessor {
                 .addProperty("eapHash", STRING, sha1)
                 .addProperty("importedAt", LOCALDATETIME, time)
                 .build();
-        model.addEdge(new ImplizitRelationId(UUID.randomUUID().toString()), edge);
+        model.addEdge(new ImplizitRelationId(), edge);
     }
 }

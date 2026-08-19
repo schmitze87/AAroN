@@ -1,7 +1,7 @@
 package aaron.archimate.processors;
 
 import aaron.archimate.exchangexml.ElementType;
-import aaron.archimate.identifier.ArchiMateIdentifier;
+import aaron.archimate.identifier.ArchiMateNodeIdentifier;
 import aaron.model.AAroNNode;
 import aaron.model.Model;
 
@@ -26,6 +26,6 @@ public class ElementProcessor extends AbstractProcessor<ElementType> {
 
         processProperties(element.getProperties(), builder::addProperty);
         AAroNNode node = builder.build();
-        model.addNode(new ArchiMateIdentifier(identifier), node);
+        model.addNode(new ArchiMateNodeIdentifier(identifier), node);
     }
 }

@@ -17,8 +17,8 @@ public class SparxFirebirdConverter extends AbstractSparxConverter {
 
     private final File file;
 
-    public SparxFirebirdConverter(final Config config, final File file, Logger logger) {
-        super(new Model(), config, logger);
+    public SparxFirebirdConverter(final Model model, final Config config, final File file, Logger logger) {
+        super(model, config, logger);
         this.file = file;
     }
 

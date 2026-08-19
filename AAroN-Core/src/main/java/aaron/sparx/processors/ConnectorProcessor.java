@@ -1,10 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.logging.Logger;
-import aaron.model.AAroNEdge;
-import aaron.model.AAroNNode;
-import aaron.model.ImportConext;
-import aaron.model.Model;
+import aaron.model.*;
 import aaron.sparx.GUIDHelper;
 import aaron.sparx.identifiers.ConnectorGUID;
 import aaron.sparx.identifiers.ConnectorId;
@@ -221,7 +218,9 @@ public class ConnectorProcessor extends AbstractProcessor {
 
         ConnectorId connectorIdentifier = new ConnectorId(connectorId);
         ConnectorGUID connectorGUIDIdentifier = new ConnectorGUID(eaGuid);
-        model.addEdge(connectorIdentifier, edge);
-        model.addEdge(connectorGUIDIdentifier, edge);
+        UniqueEdgeIdentifier<java.util.UUID> uniqueEdgeIdentifier = new UniqueEdgeIdentifierImpl();
+        model.addEdge(uniqueEdgeIdentifier, edge);
+        model.addEdgeIdentifier(connectorIdentifier, uniqueEdgeIdentifier);
+        model.addEdgeIdentifier(connectorGUIDIdentifier, uniqueEdgeIdentifier);
     }
 }

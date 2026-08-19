@@ -1,9 +1,7 @@
 package aaron.sparx.processors;
 
 import aaron.logging.Logger;
-import aaron.model.AAroNEdge;
-import aaron.model.ImportConext;
-import aaron.model.Model;
+import aaron.model.*;
 import aaron.sparx.identifiers.ConnectorId;
 
 import java.time.LocalDateTime;
@@ -36,7 +34,9 @@ public class ConnectorConstraintProcessor extends AbstractProcessor {
 //                .build();
 
         ConnectorId connectorIdentifier = new ConnectorId(connectorId);
-        AAroNEdge connectorEdge = model.getEdge(connectorIdentifier);
+        UniqueEdgeIdentifier<java.util.UUID> uniqueEdgeIdentifier = model.getUniqueEdgeIdentifier(connectorIdentifier);
+        AAroNEdge connectorEdge = model.getEdge(uniqueEdgeIdentifier);
         connectorEdge.addProperty("constraint_" + constraint, STRING_ARRAY, new String[]{notes, constraintType});
+        model.addEdge(uniqueEdgeIdentifier, connectorEdge);
     }
 }

@@ -48,16 +48,19 @@ public class XRefProcessor extends AbstractProcessor {
         switch (typeEnum) {
             case ELEMENT_PROPERTY:
                 ObjectGUID objectGUID = new ObjectGUID(client);
-                AAroNNode node = model.getNode(objectGUID);
+                UniqueNodeIdentifier<java.util.UUID> uniqueNodeIdentifier = model.getUniqueNodeIdentifier(objectGUID);
+                AAroNNode node = model.getNode(uniqueNodeIdentifier);
                 if (node != null) {
                     if (nameEnum == Name.STEREOTYPES) {
                         processXRefStereotypeDescription(node, description);
                     }
                 }
+                model.addNode(uniqueNodeIdentifier, node);
                 break;
             case CONNECTOR_PROPERTY:
                 ConnectorGUID connectorGUID = new ConnectorGUID(client);
-                AAroNEdge edge = model.getEdge(connectorGUID);
+                UniqueEdgeIdentifier<java.util.UUID> uniqueEdgeIdentifier = model.getUniqueEdgeIdentifier(connectorGUID);
+                AAroNEdge edge = model.getEdge(uniqueEdgeIdentifier);
                 if (edge != null) {
                     if (nameEnum == Name.STEREOTYPES) {
                         processXRefStereotypeDescription(edge, description);
@@ -71,6 +74,7 @@ public class XRefProcessor extends AbstractProcessor {
                         edge.addProperty("informationFlowsRealized", STRING_ARRAY, collect);
                     }
                 }
+                model.addEdge(uniqueEdgeIdentifier, edge);
                 break;
             case ATTRIBUTE_PROPERTY:
                 break;

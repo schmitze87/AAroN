@@ -22,8 +22,8 @@ public class SparxMySQLConverter extends AbstractSparxConverter {
     private final String username;
     private final String password;
 
-    public SparxMySQLConverter(final Config config, String host, long port, String databaseName, String username, String password, Logger logger) {
-        super(new Model(), config, logger);
+    public SparxMySQLConverter(final Model model, final Config config, String host, long port, String databaseName, String username, String password, Logger logger) {
+        super(model, config, logger);
         this.config = config;
         this.host = host;
         this.port = port;

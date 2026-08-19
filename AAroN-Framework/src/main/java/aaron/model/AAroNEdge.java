@@ -1,8 +1,9 @@
 package aaron.model;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class AAroNEdge extends WithProperties {
+public class AAroNEdge extends WithProperties implements Serializable {
 
     private String neo4jElementId;
     private String type;
@@ -45,7 +46,7 @@ public class AAroNEdge extends WithProperties {
     }
 
 
-    public <V, T extends PropertyType<V>> Property<V> addProperty(final T type, final String name, final V value) {
+    public <V extends Serializable, T extends PropertyType<V>> Property<V> addProperty(final T type, final String name, final V value) {
         return this.addProperty(name, type, value);
     }
 
@@ -89,7 +90,7 @@ public class AAroNEdge extends WithProperties {
             return this;
         }
 
-        public <E, T extends PropertyType<E>> Builder addProperty(final String key, final T type, final E value) {
+        public <E extends Serializable, T extends PropertyType<E>> Builder addProperty(final String key, final T type, final E value) {
             if (value != null) {
                 edge.addProperty(key, type, value);
             }

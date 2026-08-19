@@ -2,11 +2,9 @@ package aaron.archimate.processors;
 
 import aaron.archimate.exchangexml.OrganizationType;
 import aaron.archimate.exchangexml.ReferenceableType;
-import aaron.archimate.identifier.ArchiMateIdentifier;
-import aaron.model.AAroNEdge;
-import aaron.model.AAroNNode;
-import aaron.model.Identifier;
-import aaron.model.Model;
+import aaron.archimate.identifier.ArchiMateEdgeIdentifier;
+import aaron.archimate.identifier.ArchiMateNodeIdentifier;
+import aaron.model.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -26,18 +24,18 @@ public class OrganisationProcessor extends AbstractProcessor<OrganizationType> {
 
     public void process(final Identifier parentId, final OrganizationType organizationType) {
         AAroNNode node;
-        Identifier identifier;
+        UniqueNodeIdentifier identifier;
         Object identifierRef = organizationType.getIdentifierRef();
         if (identifierRef instanceof ReferenceableType) {
             ReferenceableType referencedObject = (ReferenceableType) identifierRef;
-            identifier = new ArchiMateIdentifier(referencedObject.getIdentifier());
+            identifier = new ArchiMateNodeIdentifier(referencedObject.getIdentifier());
         } else {
             String name = getName(organizationType.getLabelGroup());
             AAroNNode.Builder builder = AAroNNode.builder();
             builder.addLabel("Organization");
             builder.addProperty("name", STRING, name);
             node = builder.build();
-            identifier = new ArchiMateIdentifier(name);
+            identifier = new ArchiMateNodeIdentifier(name);
             model.addNode(identifier, node);
         }
         if (parentId != null) {
@@ -46,7 +44,7 @@ public class OrganisationProcessor extends AbstractProcessor<OrganizationType> {
                     .setEnd(identifier)
                     .setType("CONTAINS")
                     .build();
-            model.addEdge(new ArchiMateIdentifier(UUID.randomUUID().toString()), containsEdge);
+            model.addEdge(new ArchiMateEdgeIdentifier(UUID.randomUUID().toString()), containsEdge);
         }
         List<OrganizationType> itemList = organizationType.getItem();
         for (OrganizationType subOrganizationType : itemList) {

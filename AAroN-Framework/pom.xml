@@ -9,13 +9,47 @@
 
     <modelVersion>4.0.0</modelVersion>
     <artifactId>aaron-framework</artifactId>
+    <packaging>jar</packaging>
 
     <dependencies>
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2-mvstore</artifactId>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>org.neo4j</groupId>
             <artifactId>neo4j-graphdb-api</artifactId>
             <scope>provided</scope>
         </dependency>
     </dependencies>
+
+    <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                        <configuration>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 
 </project>

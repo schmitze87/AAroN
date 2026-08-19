@@ -14,6 +14,6 @@ public class ExporterTest {
         testData.put("bool", new boolean[]{true});
         Object value = testData.get("bool");
         Class<?> valueClass = value.getClass();
-        Assertions.assertEquals(boolean.class, valueClass);
+        Assertions.assertEquals(boolean[].class, valueClass);
     }
 }
