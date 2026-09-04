@@ -24,7 +24,7 @@ public class OrganisationProcessor extends AbstractProcessor<OrganizationType> {
 
     public void process(final Identifier parentId, final OrganizationType organizationType) {
         AAroNNode node;
-        UniqueNodeIdentifier identifier;
+        Identifier identifier;
         Object identifierRef = organizationType.getIdentifierRef();
         if (identifierRef instanceof ReferenceableType) {
             ReferenceableType referencedObject = (ReferenceableType) identifierRef;
@@ -35,8 +35,10 @@ public class OrganisationProcessor extends AbstractProcessor<OrganizationType> {
             builder.addLabel("Organization");
             builder.addProperty("name", STRING, name);
             node = builder.build();
+            UniqueNodeIdentifier<UUID> uniqueIdentifier = new UniqueNodeIdentifierImpl();
             identifier = new ArchiMateNodeIdentifier(name);
-            model.addNode(identifier, node);
+            model.addNode(uniqueIdentifier, node);
+            model.addNodeIdentifier(identifier, uniqueIdentifier);
         }
         if (parentId != null) {
             AAroNEdge containsEdge = AAroNEdge.builder()
@@ -44,7 +46,9 @@ public class OrganisationProcessor extends AbstractProcessor<OrganizationType> {
                     .setEnd(identifier)
                     .setType("CONTAINS")
                     .build();
-            model.addEdge(new ArchiMateEdgeIdentifier(UUID.randomUUID().toString()), containsEdge);
+            UniqueEdgeIdentifier<UUID> uniqueEdgeIdentifier = new UniqueEdgeIdentifierImpl();
+            model.addEdge(uniqueEdgeIdentifier, containsEdge);
+            model.addEdgeIdentifier(new ArchiMateEdgeIdentifier(UUID.randomUUID().toString()), uniqueEdgeIdentifier);
         }
         List<OrganizationType> itemList = organizationType.getItem();
         for (OrganizationType subOrganizationType : itemList) {

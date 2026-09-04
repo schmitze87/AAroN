@@ -9,6 +9,7 @@ import aaron.sparx.identifiers.ProjectGUID;
 
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.UUID;
 
 import static aaron.model.PropertyType.LOCALDATETIME;
 import static aaron.model.PropertyType.STRING;
@@ -30,10 +31,14 @@ public class PackageProcessor extends AbstractProcessor {
         String eaGuid = GUIDHelper.unwrapGuid(EA_GUID.value(row));
         Integer parentId = PARENT_ID.value(row);
 
-        AAroNNode node;
+        AAroNNode node = null;
         PackageId identifier = new PackageId(packageId);
-        UniqueNodeIdentifier<java.util.UUID> uniqueNodeIdentifier = model.getUniqueNodeIdentifier(identifier);
-        node = model.getNode(uniqueNodeIdentifier);
+        var uniqueNodeIdentifier = model.getUniqueNodeIdentifier(identifier);
+        if (uniqueNodeIdentifier != null) {
+            node = model.getNode(uniqueNodeIdentifier);
+        } else {
+            uniqueNodeIdentifier = new UniqueNodeIdentifierImpl();
+        }
         if (node == null) {
             node = AAroNNode.builder().build();
         }

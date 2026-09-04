@@ -4,6 +4,10 @@ import aaron.archimate.exchangexml.ElementType;
 import aaron.archimate.identifier.ArchiMateNodeIdentifier;
 import aaron.model.AAroNNode;
 import aaron.model.Model;
+import aaron.model.UniqueNodeIdentifier;
+import aaron.model.UniqueNodeIdentifierImpl;
+
+import java.util.UUID;
 
 import static aaron.model.PropertyType.STRING;
 
@@ -26,6 +30,8 @@ public class ElementProcessor extends AbstractProcessor<ElementType> {
 
         processProperties(element.getProperties(), builder::addProperty);
         AAroNNode node = builder.build();
-        model.addNode(new ArchiMateNodeIdentifier(identifier), node);
+        UniqueNodeIdentifier<UUID> uniqueIdentifier = new UniqueNodeIdentifierImpl();
+        model.addNode(uniqueIdentifier, node);
+        model.addNodeIdentifier(new ArchiMateNodeIdentifier(identifier), uniqueIdentifier);
     }
 }

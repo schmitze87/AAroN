@@ -48,32 +48,36 @@ public class XRefProcessor extends AbstractProcessor {
         switch (typeEnum) {
             case ELEMENT_PROPERTY:
                 ObjectGUID objectGUID = new ObjectGUID(client);
-                UniqueNodeIdentifier<java.util.UUID> uniqueNodeIdentifier = model.getUniqueNodeIdentifier(objectGUID);
-                AAroNNode node = model.getNode(uniqueNodeIdentifier);
-                if (node != null) {
-                    if (nameEnum == Name.STEREOTYPES) {
-                        processXRefStereotypeDescription(node, description);
+                var uniqueNodeIdentifier = model.getUniqueNodeIdentifier(objectGUID);
+                if (uniqueNodeIdentifier != null) {
+                    AAroNNode node = model.getNode(uniqueNodeIdentifier);
+                    if (node != null) {
+                        if (nameEnum == Name.STEREOTYPES) {
+                            processXRefStereotypeDescription(node, description);
+                        }
+                        model.addNode(uniqueNodeIdentifier, node);
                     }
-                    model.addNode(uniqueNodeIdentifier, node);
                 }
                 break;
             case CONNECTOR_PROPERTY:
                 ConnectorGUID connectorGUID = new ConnectorGUID(client);
-                UniqueEdgeIdentifier<java.util.UUID> uniqueEdgeIdentifier = model.getUniqueEdgeIdentifier(connectorGUID);
-                AAroNEdge edge = model.getEdge(uniqueEdgeIdentifier);
-                if (edge != null) {
-                    if (nameEnum == Name.STEREOTYPES) {
-                        processXRefStereotypeDescription(edge, description);
+                var uniqueEdgeIdentifier = model.getUniqueEdgeIdentifier(connectorGUID);
+                if (uniqueEdgeIdentifier != null) {
+                    AAroNEdge edge = model.getEdge(uniqueEdgeIdentifier);
+                    if (edge != null) {
+                        if (nameEnum == Name.STEREOTYPES) {
+                            processXRefStereotypeDescription(edge, description);
+                        }
+                        if (nameEnum == Name.MOF_PROPERTIES && behaviourEnum == BEHAVIOUR.CONVEYED && description != null) {
+                            String[] collect = Arrays.stream(description.split(",")).map(GUIDHelper::unwrapGuid).toArray(String[]::new);
+                            edge.addProperty("conveyed", STRING_ARRAY, collect);
+                        }
+                        if (nameEnum == Name.MOF_PROPERTIES && behaviourEnum == BEHAVIOUR.ABSTRACTION && description != null) {
+                            String[] collect = Arrays.stream(description.split(",")).map(GUIDHelper::unwrapGuid).toArray(String[]::new);
+                            edge.addProperty("informationFlowsRealized", STRING_ARRAY, collect);
+                        }
+                        model.addEdge(uniqueEdgeIdentifier, edge);
                     }
-                    if (nameEnum == Name.MOF_PROPERTIES && behaviourEnum == BEHAVIOUR.CONVEYED && description != null) {
-                        String[] collect = Arrays.stream(description.split(",")).map(GUIDHelper::unwrapGuid).toArray(String[]::new);
-                        edge.addProperty("conveyed", STRING_ARRAY, collect);
-                    }
-                    if (nameEnum == Name.MOF_PROPERTIES && behaviourEnum == BEHAVIOUR.ABSTRACTION && description != null) {
-                        String[] collect = Arrays.stream(description.split(",")).map(GUIDHelper::unwrapGuid).toArray(String[]::new);
-                        edge.addProperty("informationFlowsRealized", STRING_ARRAY, collect);
-                    }
-                    model.addEdge(uniqueEdgeIdentifier, edge);
                 }
                 break;
             case ATTRIBUTE_PROPERTY:

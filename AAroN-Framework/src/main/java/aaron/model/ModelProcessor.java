@@ -26,8 +26,8 @@ public class ModelProcessor {
 
     private void processNodes(final Model model) {
         try (BatchTransaction btx = new BatchTransaction(db, 1000, reporter)) {
-            for (Map.Entry<UniqueNodeIdentifier, AAroNNode> entry : model.iterateNodeEntries()) {
-                UniqueNodeIdentifier uniqueNodeIdentifier = entry.getKey();
+            for (Map.Entry<UniqueNodeIdentifier<UUID>, AAroNNode> entry : model.iterateNodeEntries()) {
+                UniqueNodeIdentifier<UUID> uniqueNodeIdentifier = entry.getKey();
                 AAroNNode node = entry.getValue();
                 Transaction tx = btx.getTransaction();
                 Node newNode = tx.createNode();

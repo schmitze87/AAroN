@@ -35,6 +35,7 @@ class AAroNCsvWriterTest {
         System.out.println(nodesFile.getAbsoluteFile());
         AAroNCsvWriter writer = new AAroNCsvWriter();
         writer.write(model, nodesFile, edgesFile, false);
+        model.close();
     }
 
     @Test
@@ -73,5 +74,6 @@ class AAroNCsvWriterTest {
         System.out.println(nodesFile.getAbsoluteFile());
         AAroNCsvWriter writer = new AAroNCsvWriter();
         writer.write(model, nodesFile, edgesFile, false);
+        model.close();
     }
 }

@@ -40,6 +40,7 @@ public class MSSQLServerConnectionTest {
         SparxMSSQLConverter converter = new SparxMSSQLConverter(model, config, dbToImport, logger);
         model = converter.convert();
         Assertions.assertNotNull(model);
+        model.close();
     }
 
     @Disabled
@@ -64,5 +65,6 @@ public class MSSQLServerConnectionTest {
         SparxMSSQLConverter converter = new SparxMSSQLConverter(model, config, dbToImport, logger);
         model = converter.convert();
         Assertions.assertNotNull(model);
+        model.close();
     }
 }

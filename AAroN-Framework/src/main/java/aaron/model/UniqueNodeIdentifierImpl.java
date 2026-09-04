@@ -1,9 +1,14 @@
 package aaron.model;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.UUID;
 
 public class UniqueNodeIdentifierImpl extends AbstractUniqueIdentifier<UUID> implements UniqueNodeIdentifier<UUID> {
+
+    public UniqueNodeIdentifierImpl(UUID identifier) {
+        super(identifier);
+    }
 
     public UniqueNodeIdentifierImpl() {
         super(UUID.randomUUID());

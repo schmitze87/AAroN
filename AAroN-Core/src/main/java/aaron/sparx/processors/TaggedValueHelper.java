@@ -42,19 +42,23 @@ public class TaggedValueHelper {
                 break;
             case AS_PROPERTY:
                 if (taggedElementIdentifier instanceof ConnectorId) {
-                    UniqueEdgeIdentifier<java.util.UUID> uniqueEdgeIdentifier = model.getUniqueEdgeIdentifier(taggedElementIdentifier);
-                    AAroNEdge taggedEdge = model.getEdge(uniqueEdgeIdentifier);
-                    if (taggedEdge != null) {
-                        taggedEdge.addProperty("tag_" + name, STRING, value);
+                    var uniqueEdgeIdentifier = model.getUniqueEdgeIdentifier(taggedElementIdentifier);
+                    if (uniqueEdgeIdentifier != null) {
+                        AAroNEdge taggedEdge = model.getEdge(uniqueEdgeIdentifier);
+                        if (taggedEdge != null) {
+                            taggedEdge.addProperty("tag_" + name, STRING, value);
+                            model.addEdge(uniqueEdgeIdentifier, taggedEdge);
+                        }
                     }
-                    model.addEdge(uniqueEdgeIdentifier, taggedEdge);
                 } else {
-                    UniqueNodeIdentifier<java.util.UUID> uniqueTaggedNodeIdentifier = model.getUniqueNodeIdentifier(taggedElementIdentifier);
-                    AAroNNode taggedNode = model.getNode(uniqueTaggedNodeIdentifier);
-                    if (taggedNode != null) {
-                        taggedNode.addProperty("tag_" + name, STRING, value);
+                    var uniqueTaggedNodeIdentifier = model.getUniqueNodeIdentifier(taggedElementIdentifier);
+                    if  (uniqueTaggedNodeIdentifier != null) {
+                        AAroNNode taggedNode = model.getNode(uniqueTaggedNodeIdentifier);
+                        if (taggedNode != null) {
+                            taggedNode.addProperty("tag_" + name, STRING, value);
+                            model.addNode(uniqueTaggedNodeIdentifier, taggedNode);
+                        }
                     }
-                    model.addNode(uniqueTaggedNodeIdentifier, taggedNode);
                 }
                 break;
         }

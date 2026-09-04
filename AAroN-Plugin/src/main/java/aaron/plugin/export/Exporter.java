@@ -49,7 +49,7 @@ public class Exporter {
 
     @Procedure(name = "aaron.export.csv", mode = Mode.READ)
     @Description("Export the whole Neo4j graph db to Neo4j's CSV header format.")
-    public Stream<ExportOutput> exportCSV(@Name("csvFileNamePrefix") String fileName, @Name(value = "config", defaultValue = "{}") Map<String, Object> configMap) {
+    public Stream<ExportOutput> exportCSV(@Name("csvFileNamePrefix") String fileName, @Name(value = "config", defaultValue = "{}") Map<String, Object> configMap) throws IOException {
         String importFolderStr;
         try (Transaction transaction = db.beginTx()) {
             importFolderStr = Util.getImportFolder(transaction);

@@ -29,108 +29,126 @@ public abstract class AbstractSparxConverter implements Converter {
             final String sha1, final LocalDateTime time, final T table) {
         SystemProcessor processor = new SystemProcessor(sha1, time, model, context, logger);
         table.forEach(processor::process);
+        model.flush();
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processObjectConstraints(
             final String sha1, final LocalDateTime time, final T table) {
         ObjectConstraintProcessor processor = new ObjectConstraintProcessor(sha1, time, model, context, logger);
         table.forEach(processor::process);
+        model.flush();
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processAttributeConstraints(
             final String sha1, final LocalDateTime time, final T table) {
         AttributeConstraintProcessor processor = new AttributeConstraintProcessor(sha1, time, model, context, logger);
         table.forEach(processor::process);
+        model.flush();
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processConnectorConstraints(
             final String sha1, final LocalDateTime time, final T table) {
         ConnectorConstraintProcessor processor = new ConnectorConstraintProcessor(sha1, time, model, context, logger);
         table.forEach(processor::process);
+        model.flush();
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processPackages(
             final String sha1, final LocalDateTime time, final T table) {
         Processor<Map<String, Object>> processor = new PackageProcessor(sha1, time, model, context, logger);
         table.forEach(processor::process);
+        model.flush();
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processObjects(
             final String sha1, final LocalDateTime time, final T table) {
         Processor<Map<String, Object>> processor = new ObjectProcessor(sha1, time, model, context, logger);
         table.forEach(processor::process);
+        model.flush();
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processConnectors(
             final String sha1, final LocalDateTime time, final T table) {
         Processor<Map<String, Object>> processor = new ConnectorProcessor(sha1, time, model, context, logger);
         table.forEach(processor::process);
+        model.flush();
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processConnectorTags(
             final String sha1, final LocalDateTime time, final T table) {
         Processor<Map<String, Object>> processor = new ConnectorTagProcessor(sha1, time, model, context, logger);
         table.forEach(processor::process);
+        model.flush();
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processDiagrams(
             final String sha1, final LocalDateTime time, final T table) {
         Processor<Map<String, Object>> processor = new DiagramProcessor(sha1, time, model, context, logger);
         table.forEach(processor::process);
+        model.flush();
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processDiagramObjects(
             final String sha1, final LocalDateTime time, final T table) {
         Processor<Map<String, Object>> processor = new DiagramObjectsProcessor(sha1, time, model, context, logger);
         table.forEach(processor::process);
+        model.flush();
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processDiagramLinks(
             final String sha1, final LocalDateTime time, final T table) {
         Processor<Map<String, Object>> processor = new DiagramLinksProcessor(sha1, time, model, context, logger);
         table.forEach(processor::process);
+        model.flush();
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processXRefs(
             final String sha1, final LocalDateTime time, final T table) {
         Processor<Map<String, Object>> processor = new XRefProcessor(sha1, time, model, context, logger);
         table.forEach(processor::process);
+        model.flush();
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processObjectProperties(
             final String sha1, final LocalDateTime time, final T table) {
         Processor<Map<String, Object>> processor = new ObjectPropertiesProcessor(sha1, time, model, context, config.getTaggedValueMode(), logger);
         table.forEach(processor::process);
+        model.flush();
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processOperations(
             final String sha1, final LocalDateTime time, final T table) {
         Processor<Map<String, Object>> processor = new OperationProcessor(sha1, time, model, context, logger);
         table.forEach(processor::process);
+        model.flush();
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processOperationTags(
             final String sha1, final LocalDateTime time, final T table) {
         Processor<Map<String, Object>> processor = new OperationTagProcessor(sha1, time, model, context, config.getTaggedValueMode(), logger);
         table.forEach(processor::process);
+        model.flush();
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processOperationParams(
             final String sha1, final LocalDateTime time, final T table) {
         Processor<Map<String, Object>> processor = new OperationParamsProcessor(sha1, time, model, context, logger);
         table.forEach(processor::process);
+        model.flush();
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processAttributes(
             final String sha1, final LocalDateTime time, final T table) {
         Processor<Map<String, Object>> processor = new AttributeProcessor(sha1, time, model, context, logger);
         table.forEach(processor::process);
+        model.flush();
     }
 
     protected <T extends Iterable<U>, U extends Map<String, Object>> void processAttributeTags(
             final String sha1, final LocalDateTime time, final T table) {
         Processor<Map<String, Object>> processor = new AttributeTagProcessor(sha1, time, model, context, config.getTaggedValueMode(), logger);
         table.forEach(processor::process);
+        model.flush();
     }
 
     protected void postProcessProxyConnectors() {
@@ -148,6 +166,7 @@ public abstract class AbstractSparxConverter implements Converter {
             node.addProperty("connectorType", PropertyType.STRING, connectorType);
             model.addNode(uniqueNodeIdentifier, node);
         }
+        model.flush();
     }
 
     void handleTable(String sha1, LocalDateTime now, Connection connection, ProcessInterface processInterface, String sql) throws SQLException {

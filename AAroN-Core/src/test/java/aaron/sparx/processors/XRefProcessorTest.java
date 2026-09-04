@@ -8,6 +8,7 @@ import aaron.sparx.identifiers.ObjectGUID;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -35,7 +36,7 @@ class XRefProcessorTest {
     }
 
     @Test
-    void elementStereotypeWithNullDescriptionDoesNotThrow() {
+    void elementStereotypeWithNullDescriptionDoesNotThrow() throws IOException {
         Model.Builder modelBuilder = new Model.Builder();
         Model model = modelBuilder.build();
         String client = "node-1";
@@ -47,10 +48,11 @@ class XRefProcessorTest {
         XRefProcessor processor = newProcessor(model);
 
         assertDoesNotThrow(() -> processor.process(stereotypeRow(client, null)));
+        model.close();
     }
 
     @Test
-    void connectorStereotypeWithNullDescriptionDoesNotThrow() {
+    void connectorStereotypeWithNullDescriptionDoesNotThrow() throws IOException {
         Model.Builder modelBuilder = new Model.Builder();
         Model model = modelBuilder.build();
         String client = "edge-1";
@@ -68,10 +70,11 @@ class XRefProcessorTest {
         row.put("description", null);
 
         assertDoesNotThrow(() -> processor.process(row));
+        model.close();
     }
 
     @Test
-    void connectorStereotypeWithMatchingNameSetsFqStereotype() {
+    void connectorStereotypeWithMatchingNameSetsFqStereotype() throws IOException {
         Model.Builder modelBuilder = new Model.Builder();
         Model model = modelBuilder.build();
         String client = "edge-2";
@@ -97,10 +100,11 @@ class XRefProcessorTest {
         // Da das Objekt serialisiert und wieder deserialisiert wird, bricht hier die Referenzierung.
         AAroNEdge extendedEdge = model.getEdge(uniqueEdgeIdentifier);
         assertEquals("ns::Foo", extendedEdge.getProperty(STRING, "fqStereotype"));
+        model.close();
     }
 
     @Test
-    void elementStereotypeWithMatchingNameSetsFqStereotype() {
+    void elementStereotypeWithMatchingNameSetsFqStereotype() throws IOException {
         Model.Builder modelBuilder = new Model.Builder();
         Model model = modelBuilder.build();
         String client = "node-2";
@@ -123,10 +127,11 @@ class XRefProcessorTest {
         // Da das Objekt serialisiert und wieder deserialisiert wird, bricht hier die Referenzierung.
         AAroNNode extendedNode = model.getNode(uniqueNodeIdentifier);
         assertEquals("ns::Foo", extendedNode.getProperty(STRING, "fqStereotype"));
+        model.close();
     }
 
     @Test
-    void elementStereotypeWithNonMatchingDescriptionSetsNothing() {
+    void elementStereotypeWithNonMatchingDescriptionSetsNothing() throws IOException {
         Model.Builder modelBuilder = new Model.Builder();
         Model model = modelBuilder.build();
         String client = "node-3";
@@ -146,5 +151,6 @@ class XRefProcessorTest {
         // Da das Objekt serialisiert und wieder deserialisiert wird, bricht hier die Referenzierung.
         AAroNNode extendedNode = model.getNode(uniqueNodeIdentifier);
         assertFalse(extendedNode.getProperties().containsKey("fqStereotype"));
+        model.close();
     }
 }

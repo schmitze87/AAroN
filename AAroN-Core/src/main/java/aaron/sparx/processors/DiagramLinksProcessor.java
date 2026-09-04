@@ -40,10 +40,10 @@ public class DiagramLinksProcessor extends AbstractProcessor{
 
             Identifier start = connectorEdge.getStart();
             Identifier end = connectorEdge.getEnd();
-            AAroNNode startNode = model.getNode(start);
-            AAroNNode endNode = model.getNode(end);
+            var startNodeUniqueIdentifier = model.getUniqueNodeIdentifier(start);
+            var endNodeUniqueIdentifier = model.getUniqueNodeIdentifier(end);
 
-            if (diagramGuid != null && eaGuid != null && startNode != null && endNode != null) {
+            if (diagramGuid != null && eaGuid != null && startNodeUniqueIdentifier != null && endNodeUniqueIdentifier != null) {
                 AAroNEdge diagramlinkEdge = AAroNEdge.builder()
                         .setType("DIAGRAMLINK")
                         .setStart(start)

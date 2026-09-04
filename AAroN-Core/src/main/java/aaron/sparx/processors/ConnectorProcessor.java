@@ -112,8 +112,6 @@ public class ConnectorProcessor extends AbstractProcessor {
             ObjectId end = new ObjectId(endObjectId);
             edge.setStart(start);
             edge.setEnd(end);
-            AAroNNode startNode = model.getNode(start);
-            AAroNNode endNode = model.getNode(end);
         } else {
             //start or end is missing
             //TODO: ExceptionHandling

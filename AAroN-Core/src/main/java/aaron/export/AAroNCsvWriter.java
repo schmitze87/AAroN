@@ -105,21 +105,6 @@ public class AAroNCsvWriter {
         return result;
     }
 
-    // a standard FileWriter, CSV is a normal text file
-    private void writeToCsvFile(List<String[]> list, File file) throws IOException {
-        List<String> collect = list.stream()
-                .map(this::convertToCsvFormat)
-                .toList();
-        // CSV is a normal text file, need a writer
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
-            for (String line : collect) {
-                bw.write(line);
-                bw.newLine();
-            }
-            bw.flush();
-        }
-    }
-
     public void write(final Model model, final File nodesFile, final File edgesFile, final boolean parenthesesFix) throws IOException {
         Set<CSVHeader> nodeHeaders = new HashSet<>();
         CSVHeader[] nodeCSVHeader;
@@ -129,42 +114,58 @@ public class AAroNCsvWriter {
             if (nodesFile.exists() && !nodesFile.canWrite()) {
                 LOG.error("can not write to nodes file. Check file permission");
             } else {
-                List<String[]> nodesData = new ArrayList<>();
                 for (AAroNNode n : model.iterateNodes()) {
                     for (Map.Entry<String, Property> entry : n.getProperties().entrySet()) {
                         nodeHeaders.add(new CSVHeader(entry.getKey(), entry.getValue(), parenthesesFix));
                     }
                 }
                 nodeCSVHeader = createNodeCSVHeader(nodeHeaders, model, parenthesesFix);
-                nodesData.add(Arrays.stream(nodeCSVHeader).map(CSVHeader::toString).toArray(String[]::new));
-                model.iterateNodeEntries().forEach(entry -> {
 
-                });
-                model.iterateNodeEntries().forEach(entry -> {
-                    String[] nodeRecord = createNodeRecord(model, nodeCSVHeader, entry.getKey(),  entry.getValue());
-                    nodesData.add(nodeRecord);
-                });
-                writeToCsvFile(nodesData, nodesFile);
+                try (BufferedWriter nodesWriter = new BufferedWriter(new FileWriter(nodesFile, StandardCharsets.UTF_8))) {
+                    //write header
+                    String[] headerArray = Arrays.stream(nodeCSVHeader).map(CSVHeader::toString).toArray(String[]::new);
+                    String headerLine = this.convertToCsvFormat(headerArray);
+                    nodesWriter.write(headerLine);
+                    nodesWriter.newLine();
+
+                    //write data
+                    for (var entry: model.iterateNodeEntries()) {
+                        String[] nodeRecord = createNodeRecord(model, nodeCSVHeader, entry.getKey(),  entry.getValue());
+                        String line = this.convertToCsvFormat(nodeRecord);
+                        nodesWriter.write(line);
+                        nodesWriter.newLine();
+                    }
+                    nodesWriter.flush();
+                }
             }
         }
         if (edgesFile != null) {
             if (edgesFile.exists() && !edgesFile.canWrite()) {
                 LOG.error("can not write to edges file. Check file permission");
             } else {
-                List<String[]> edgesData = new ArrayList<>();
                 for (AAroNEdge e : model.iterateEdges()) {
                     for (Map.Entry<String, Property> entry : e.getProperties().entrySet()) {
                         edgeHeaders.add(new CSVHeader(entry.getKey(), entry.getValue(), parenthesesFix));
                     }
                 }
                 edgeCSVHeader = createEdgeCSVHeader(edgeHeaders, model,parenthesesFix);
-                edgesData.add(Arrays.stream(edgeCSVHeader).map(CSVHeader::toString).toArray(String[]::new));
-                model.iterateEdges().forEach(edge -> {
-                    String[] edgeRecord = createEdgeRecord(model, edgeCSVHeader, edge);
-                    if (edgeRecord != null)
-                        edgesData.add(edgeRecord);
-                });
-                writeToCsvFile(edgesData, edgesFile);
+
+                try (BufferedWriter edgeWriter = new BufferedWriter(new FileWriter(edgesFile, StandardCharsets.UTF_8))) {
+                    //write header
+                    String[] headerArray = Arrays.stream(edgeCSVHeader).map(CSVHeader::toString).toArray(String[]::new);
+                    String headerLine = this.convertToCsvFormat(headerArray);
+                    edgeWriter.write(headerLine);
+                    edgeWriter.newLine();
+
+                    //write data
+                    for (var edge: model.iterateEdges()) {
+                        String[] edgeRecord = createEdgeRecord(model, edgeCSVHeader, edge);
+                        String line = this.convertToCsvFormat(edgeRecord);
+                        edgeWriter.write(line);
+                        edgeWriter.newLine();
+                    }
+                    edgeWriter.flush();
+                }
             }
         }
     }
