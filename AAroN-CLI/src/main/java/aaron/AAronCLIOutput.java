@@ -10,8 +10,9 @@ public class AAronCLIOutput {
     private int totalNodesCount;
     private int totalEdgesCount;
     private int totalPropertiesCount;
-
-
+    private double averageLabelCount;
+    private double averagePropertyBytes;
+    private int recommendedMemorySizeInMB;
 
     public List<String> getNodesToImport() {
         return nodesToImport;
@@ -51,5 +52,29 @@ public class AAronCLIOutput {
 
     public void setTotalPropertiesCount(int totalPropertiesCount) {
         this.totalPropertiesCount = totalPropertiesCount;
+    }
+
+    public double getAverageLabelCount() {
+        return averageLabelCount;
+    }
+
+    public void setAverageLabelCount(double averageLabelCount) {
+        this.averageLabelCount = averageLabelCount;
+    }
+
+    public double getAveragePropertyBytes() {
+        return averagePropertyBytes;
+    }
+
+    public void setAveragePropertyBytes(double averagePropertyBytes) {
+        this.averagePropertyBytes = averagePropertyBytes;
+    }
+
+    public int getRecommendedMemorySizeInMB() {
+        return recommendedMemorySizeInMB;
+    }
+
+    public void setRecommendedMemorySizeInMB(int recommendedMemorySizeInMB) {
+        this.recommendedMemorySizeInMB = recommendedMemorySizeInMB;
     }
 }

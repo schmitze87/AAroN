@@ -35,7 +35,7 @@ AAroN-CLI/target/
 .classpath
 .factorypath
 AAroN-Framework/target
-/AAroN-Docker/aaron-cli
+/AAroN-Container/aaron-cli
 
 .gitconfig
 .flattened-pom.xml

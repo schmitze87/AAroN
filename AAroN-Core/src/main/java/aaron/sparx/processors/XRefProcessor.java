@@ -54,8 +54,8 @@ public class XRefProcessor extends AbstractProcessor {
                     if (nameEnum == Name.STEREOTYPES) {
                         processXRefStereotypeDescription(node, description);
                     }
+                    model.addNode(uniqueNodeIdentifier, node);
                 }
-                model.addNode(uniqueNodeIdentifier, node);
                 break;
             case CONNECTOR_PROPERTY:
                 ConnectorGUID connectorGUID = new ConnectorGUID(client);
@@ -73,8 +73,8 @@ public class XRefProcessor extends AbstractProcessor {
                         String[] collect = Arrays.stream(description.split(",")).map(GUIDHelper::unwrapGuid).toArray(String[]::new);
                         edge.addProperty("informationFlowsRealized", STRING_ARRAY, collect);
                     }
+                    model.addEdge(uniqueEdgeIdentifier, edge);
                 }
-                model.addEdge(uniqueEdgeIdentifier, edge);
                 break;
             case ATTRIBUTE_PROPERTY:
                 break;

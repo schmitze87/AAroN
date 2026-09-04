@@ -34,15 +34,6 @@
         <developerConnection>scm:git:https://github.com/schmitze87/AAroN.git</developerConnection>
     </scm>
 
-    <repositories>
-        <repository>
-            <id>github-aaron</id>
-            <url>https://maven.pkg.github.com/schmitze87/AAroN</url>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-    </repositories>
 
     <distributionManagement>
         <repository>

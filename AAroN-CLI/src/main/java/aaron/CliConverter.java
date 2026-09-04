@@ -273,8 +273,8 @@ public class CliConverter implements Callable<Integer> {
                 } else {
                     throw new AAroNConversionException();
                 }
-                output.getNodesToImport().add(nodesFile.getAbsoluteFile().toString());
-                output.getEdgesToImport().add(edgesFile.getAbsoluteFile().toString());
+                output.getNodesToImport().add(nodesFile.getName());
+                output.getEdgesToImport().add(edgesFile.getName());
             } catch (IOException e) {
                 throw new AAroNConversionException(e);
             }
@@ -282,6 +282,12 @@ public class CliConverter implements Callable<Integer> {
         output.setTotalNodesCount(writer.getNodesCount());
         output.setTotalEdgesCount(writer.getEdgesCount());
         output.setTotalPropertiesCount(writer.getPropertiesCount());
+        output.setAverageLabelCount(writer.getAverageLabelCount());
+        output.setAveragePropertyBytes(writer.getAveragePropertyBytes());
+        output.setRecommendedMemorySizeInMB(MemorySizeCalculator.calculateMemory(
+                writer.getNodesCount(), writer.getEdgesCount(), writer.getPropertiesCount(),
+                writer.getAveragePropertyBytes(), writer.getAverageLabelCount()
+        ));
     }
 
     static class ConversionJob {

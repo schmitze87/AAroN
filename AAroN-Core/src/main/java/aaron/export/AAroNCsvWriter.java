@@ -29,8 +29,10 @@ public class AAroNCsvWriter {
     private static final String EMPTY_STRING = "";
 
     private int nodesCounter = 0;
+    private int totalLabelCounter = 0;
     private int edgesCounter = 0;
     private int propertiesCounter = 0;
+    private int totalPropertyBytes = 0;
 
     private int nodeIdCounter = 0;
 
@@ -49,6 +51,14 @@ public class AAroNCsvWriter {
 
     public int getPropertiesCount() {
         return propertiesCounter;
+    }
+
+    public double getAveragePropertyBytes() {
+        return (double) totalPropertyBytes / propertiesCounter;
+    }
+
+    public double getAverageLabelCount() {
+        return (double) totalLabelCounter / nodesCounter;
     }
 
     public String convertToCsvFormat(final String[] line) {
@@ -144,7 +154,6 @@ public class AAroNCsvWriter {
                 List<String[]> edgesData = new ArrayList<>();
                 for (AAroNEdge e : model.iterateEdges()) {
                     for (Map.Entry<String, Property> entry : e.getProperties().entrySet()) {
-                        propertiesCounter++;
                         edgeHeaders.add(new CSVHeader(entry.getKey(), entry.getValue(), parenthesesFix));
                     }
                 }
@@ -207,6 +216,7 @@ public class AAroNCsvWriter {
         csvRecord.add(Integer.toString(node.getId()));
         csvRecord.add(String.join(";", node.getLabels()));
         this.nodesCounter++;
+        this.totalLabelCounter += node.getLabels().size();
         addPropertiesToNodeRecord(csvRecord, headers, node);
         return csvRecord.toArray(new String[0]);
     }
@@ -257,14 +267,17 @@ public class AAroNCsvWriter {
                         Object[] objects = (Object[]) value;
                         String list = Arrays.stream(objects).filter(Objects::nonNull).map(Object::toString).collect(Collectors.joining(ARRAY_DELIMITER));
                         this.propertiesCounter++;
+                        this.totalPropertyBytes += list.getBytes(StandardCharsets.UTF_8).length;
                         csvRecord.add(list);
                     } else if (value instanceof LocalDateTime) {
                         LocalDateTime dateTime = (LocalDateTime) value;
                         String format = dateTime.format(DateTimeFormatter.ISO_DATE_TIME);
                         this.propertiesCounter++;
+                        this.totalPropertyBytes += format.getBytes(StandardCharsets.UTF_8).length;
                         csvRecord.add(format);
                     } else {
                         this.propertiesCounter++;
+                        this.totalPropertyBytes += value.toString().getBytes(StandardCharsets.UTF_8).length;
                         csvRecord.add(value.toString());
                     }
                 }

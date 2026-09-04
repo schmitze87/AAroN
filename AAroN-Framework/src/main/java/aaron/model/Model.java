@@ -4,24 +4,13 @@ import org.h2.mvstore.MVMap;
 import org.h2.mvstore.MVStore;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Path;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.*;
 
 public class Model implements Closeable {
-
-    private MVStore mvStoreNodes;
-    private MVStore mvStoreEdges;
-    private MVMap<UniqueNodeIdentifier, byte[]> nodes;
-    private MVMap<UniqueEdgeIdentifier, byte[]> edges;
-    @SuppressWarnings("rawtypes")
-    private final Map<Identifier, UniqueNodeIdentifier> nodeIdentifiers = new HashMap<>();
-    private final Map<UniqueNodeIdentifier, Set<Identifier>> IdentifiersByUniqueNodeIdentifiers = new HashMap<>();
-    @SuppressWarnings("rawtypes")
-    private final Map<Identifier, UniqueEdgeIdentifier> edgeIdentifiers = new HashMap<>();
-
-    private int totalPropertiesCount = 0;
-
-    private ImportConext context = null;
 
     public static class Builder {
 
@@ -40,7 +29,28 @@ public class Model implements Closeable {
         }
     }
 
+    private final MVStore mvStoreNodes;
+    private final MVStore mvStoreEdges;
+    @SuppressWarnings("rawtypes")
+    private final MVMap<UniqueNodeIdentifier, byte[]> nodes;
+    @SuppressWarnings("rawtypes")
+    private final MVMap<UniqueEdgeIdentifier, byte[]> edges;
+    @SuppressWarnings("rawtypes")
+    private final Map<Identifier, UniqueNodeIdentifier> nodeIdentifiers = new HashMap<>();
+    @SuppressWarnings("rawtypes")
+    private final Map<UniqueNodeIdentifier, Set<Identifier>> IdentifiersByUniqueNodeIdentifiers = new HashMap<>();
+    @SuppressWarnings("rawtypes")
+    private final Map<Identifier, UniqueEdgeIdentifier> edgeIdentifiers = new HashMap<>();
+    private int totalPropertiesCount = 0;
+    private ImportConext context = null;
+    private final Path mvStoreNodesPath;
+    private final Path mvStoreEdgesPath;
+
+    private String urlPrefix = "jdbc:sqlite:";
+
     private Model() {
+        this.mvStoreNodesPath = null;
+        this.mvStoreEdgesPath = null;
         mvStoreNodes = new MVStore.Builder().open();
         mvStoreEdges = new MVStore.Builder().open();
         nodes = mvStoreNodes.openMap("nodes");
@@ -49,14 +59,31 @@ public class Model implements Closeable {
 
     @SuppressWarnings("resource")
     private Model(File workingDir) {
-        Path nodesStorePath = workingDir.toPath().resolve("nodes.mvStore");
-        Path edgesStorePath = workingDir.toPath().resolve("edges.mvStore");
-        mvStoreNodes = new MVStore.Builder().fileName(nodesStorePath.toString()).compress().open();
-        mvStoreEdges = new MVStore.Builder().fileName(edgesStorePath.toString()).compress().open();
-        nodes = mvStoreNodes.openMap("nodes");
-        edges = mvStoreEdges.openMap("edges");
-        nodes.clear();
-        edges.clear();
+        UUID uuid = UUID.randomUUID();
+        this.mvStoreNodesPath = workingDir.toPath().resolve("nodes-" + uuid + ".mvStore");
+        this.mvStoreEdgesPath = workingDir.toPath().resolve("edges-" + uuid + ".mvStore");
+        this.mvStoreNodes = new MVStore.Builder()
+                .fileName(mvStoreNodesPath.toString())
+//                .compress()
+                .pageSplitSize(16)
+                .cacheSize(16)
+//                .autoCommitBufferSize(10240)
+                .autoCommitDisabled()
+                .open();
+        this.mvStoreEdges = new MVStore.Builder()
+                .fileName(mvStoreEdgesPath.toString())
+//                .compress()
+                .pageSplitSize(16)
+                .cacheSize(16)
+//                .autoCommitBufferSize(10240)
+                .autoCommitDisabled()
+                .open();
+        this.nodes = this.mvStoreNodes.openMap("nodes");
+        this.edges = this.mvStoreEdges.openMap("edges");
+        this.nodes.clear();
+        this.edges.clear();
+
+
     }
 
     public ImportConext getContext() {
@@ -84,6 +111,7 @@ public class Model implements Closeable {
                 .add(identifier);
     }
 
+    @SuppressWarnings("rawtypes")
     public Map<UniqueNodeIdentifier, Set<Identifier>> getIdentifiersByUniqueNodeIdentifiers() {
         return  IdentifiersByUniqueNodeIdentifiers;
     }
@@ -131,6 +159,7 @@ public class Model implements Closeable {
         };
     }
 
+    @SuppressWarnings("rawtypes")
     public Iterable<Map.Entry<UniqueNodeIdentifier, AAroNNode>> iterateNodeEntries() {
         return () -> new Iterator<>() {
             private final Iterator<Map.Entry<UniqueNodeIdentifier, byte[]>> iterator = nodes.entrySet().iterator();
@@ -143,8 +172,7 @@ public class Model implements Closeable {
             @Override
             public Map.Entry<UniqueNodeIdentifier, AAroNNode> next() {
                 Map.Entry<UniqueNodeIdentifier, byte[]> next = iterator.next();
-                Map.Entry<UniqueNodeIdentifier, AAroNNode> nodeEntry = Map.entry(next.getKey(), NodeSerializer.deserialize(next.getValue()));
-                return nodeEntry;
+                return Map.entry(next.getKey(), NodeSerializer.deserialize(next.getValue()));
             }
         };
     }
@@ -219,5 +247,15 @@ public class Model implements Closeable {
         mvStoreNodes.close();
         mvStoreEdges.commit();
         mvStoreEdges.close();
+        try {
+            Files.delete(this.mvStoreNodesPath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        try {
+            Files.delete(this.mvStoreEdgesPath);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

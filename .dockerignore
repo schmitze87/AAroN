@@ -1,0 +1,12 @@
+**
+!.mvn
+!pom.xml
+!AAroN-CLI/pom.xml
+!AAroN-CLI/src/**/*
+!AAroN-Core/pom.xml
+!AAroN-Core/src/**/*
+!AAroN-Framework/pom.xml
+!AAroN-Framework/src/**/*
+!AAroN-Plugin/pom.xml
+!AAroN-Plugin/src/**/*
+!AAroN-Container/aaron_config.yml
