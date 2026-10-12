@@ -55,10 +55,25 @@ class XRefProcessorTest {
     void connectorStereotypeWithNullDescriptionDoesNotThrow() throws IOException {
         Model.Builder modelBuilder = new Model.Builder();
         Model model = modelBuilder.build();
+
+        AAroNNode startNode = AAroNNode.builder().build();
+        AAroNNode endNode = AAroNNode.builder().build();
+
+        UniqueNodeIdentifier<UUID> uniqueStartNodeIdentifier = new UniqueNodeIdentifierImpl();
+        UniqueNodeIdentifier<UUID> uniqueEndNodeIdentifier = new UniqueNodeIdentifierImpl();
+
+        model.addNode(uniqueStartNodeIdentifier, startNode);
+        model.addNode(uniqueEndNodeIdentifier, endNode);
+
         String client = "edge-1";
         UniqueEdgeIdentifier<UUID> uniqueEdgeIdentifier = new UniqueEdgeIdentifierImpl();
         ConnectorGUID connectorGUID = new ConnectorGUID(client);
-        model.addEdge(uniqueEdgeIdentifier, AAroNEdge.builder().build());
+        AAroNEdge edge = AAroNEdge.builder()
+                .setStart(uniqueStartNodeIdentifier)
+                .setEnd(uniqueEndNodeIdentifier)
+                .setType("TEST")
+                .build();
+        model.addEdge(uniqueEdgeIdentifier, edge);
         model.addEdgeIdentifier(connectorGUID, uniqueEdgeIdentifier);
 
         XRefProcessor processor = newProcessor(model);
@@ -77,11 +92,25 @@ class XRefProcessorTest {
     void connectorStereotypeWithMatchingNameSetsFqStereotype() throws IOException {
         Model.Builder modelBuilder = new Model.Builder();
         Model model = modelBuilder.build();
-        String client = "edge-2";
+
+        AAroNNode startNode = AAroNNode.builder().build();
+        AAroNNode endNode = AAroNNode.builder().build();
+
+        UniqueNodeIdentifier<UUID> uniqueStartNodeIdentifier = new UniqueNodeIdentifierImpl();
+        UniqueNodeIdentifier<UUID> uniqueEndNodeIdentifier = new UniqueNodeIdentifierImpl();
+
+        model.addNode(uniqueStartNodeIdentifier, startNode);
+        model.addNode(uniqueEndNodeIdentifier, endNode);
+
+        UniqueEdgeIdentifier<UUID> uniqueEdgeIdentifier = new UniqueEdgeIdentifierImpl();
         AAroNEdge edge = AAroNEdge.builder()
+                .setStart(uniqueStartNodeIdentifier)
+                .setEnd(uniqueEndNodeIdentifier)
+                .setType("TEST")
                 .addProperty("stereotype", STRING, "Foo")
                 .build();
-        UniqueEdgeIdentifier<UUID> uniqueEdgeIdentifier = new UniqueEdgeIdentifierImpl();
+
+        String client = "edge-2";
         ConnectorGUID connectorGUID = new ConnectorGUID(client);
         model.addEdge(uniqueEdgeIdentifier, edge);
         model.addEdgeIdentifier(connectorGUID, uniqueEdgeIdentifier);

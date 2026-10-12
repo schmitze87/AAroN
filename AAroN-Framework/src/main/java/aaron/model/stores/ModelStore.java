@@ -1,4 +1,9 @@
-package aaron.model;
+package aaron.model.stores;
+
+import aaron.model.AAroNEdge;
+import aaron.model.AAroNNode;
+import aaron.model.UniqueEdgeIdentifier;
+import aaron.model.UniqueNodeIdentifier;
 
 import java.io.Closeable;
 import java.util.Map;

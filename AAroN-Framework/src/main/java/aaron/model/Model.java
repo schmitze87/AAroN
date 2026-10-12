@@ -1,11 +1,13 @@
 package aaron.model;
 
+import aaron.model.stores.InHeapModelStore;
+import aaron.model.stores.ModelStore;
+
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.*;
 
 public class Model implements Closeable {
@@ -20,19 +22,20 @@ public class Model implements Closeable {
             return this;
         }
 
+        public Builder modelStore(ModelStore modelStore) {
+            this.modelStore = modelStore;
+            return this;
+        }
+
         public Model build() {
-            UUID uuid = UUID.randomUUID();
             Path currentDir = Paths.get("").toAbsolutePath();
             if (workingDir == null) {
                 workingDir = currentDir.toFile();
             }
-            Path modelStoreFile = workingDir.toPath().resolve(uuid.toString() + ".db");
-            try {
-                SQLiteModelStore sqLiteModelStore = new SQLiteModelStore(modelStoreFile.toFile());
-                return new Model(sqLiteModelStore);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
+            if (modelStore == null) {
+                modelStore = new InHeapModelStore();
             }
+            return new Model(modelStore);
         }
     }
 
@@ -45,6 +48,8 @@ public class Model implements Closeable {
     private int totalPropertiesCount = 0;
     private ImportConext context = null;
     private final ModelStore modelStore;
+    private final Set<PropertyDefinition> nodePropertyDefinitions = new HashSet<>();
+    private final Set<PropertyDefinition> edgePropertyDefinitions = new HashSet<>();
 
     private Model(ModelStore modelStore) {
         this.modelStore = modelStore;
@@ -58,9 +63,17 @@ public class Model implements Closeable {
         this.context = context;
     }
 
+    public Set<PropertyDefinition> getNodePropertyDefinitions() {
+        return nodePropertyDefinitions;
+    }
+
+    public Set<PropertyDefinition> getEdgePropertyDefinitions() {
+        return edgePropertyDefinitions;
+    }
+
     @SuppressWarnings("rawtypes")
     public void addNode(final UniqueNodeIdentifier identifier, final AAroNNode node) {
-        totalPropertiesCount = (int) (totalPropertiesCount + node.properties.values().stream().filter(Objects::nonNull).count());
+        extractPropertyDefinitionsAndCount(node.getProperties(), nodePropertyDefinitions);
         modelStore.addNode(identifier, node);
         nodeIdentifiers.put(identifier, identifier);
     }
@@ -130,9 +143,27 @@ public class Model implements Closeable {
 
     @SuppressWarnings("rawtypes")
     public void addEdge(final UniqueEdgeIdentifier identifier, final AAroNEdge edge) {
-        totalPropertiesCount = (int) (totalPropertiesCount + edge.properties.values().stream().filter(Objects::nonNull).count());
+        Objects.requireNonNull(identifier, "There needs to be a unique identifier for an edge.");
+        Objects.requireNonNull(edge, "If you want to add an edge to the model it must not be null.");
+        Objects.requireNonNull(edge.getStart(), "An edge needs to have a start.");
+        Objects.requireNonNull(edge.getEnd() , "An edge needs to have a end.");
+        Objects.requireNonNull(edge.getType(), "An edge needs to have a type.");
+        extractPropertyDefinitionsAndCount(edge.getProperties(), edgePropertyDefinitions);
         modelStore.addEdge(identifier, edge);
         edgeIdentifiers.put(identifier, identifier);
+    }
+
+    private void extractPropertyDefinitionsAndCount(Map<String, Property> properties, Set<PropertyDefinition> edgePropertyDefinitions) {
+        for (var entry : properties.entrySet()) {
+            String key = entry.getKey();
+            Property property = entry.getValue();
+            if (property.getValue() != null) {
+                totalPropertiesCount++;
+            }
+            PropertyType type = property.getType();
+            PropertyDefinition propertyDefinition = new PropertyDefinition(key, type);
+            edgePropertyDefinitions.add(propertyDefinition);
+        }
     }
 
     @SuppressWarnings("rawtypes")

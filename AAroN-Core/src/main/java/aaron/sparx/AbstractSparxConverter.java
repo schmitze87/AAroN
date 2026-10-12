@@ -12,6 +12,8 @@ import java.util.*;
 
 public abstract class AbstractSparxConverter implements Converter {
 
+    private static final int DEFAULT_TABLE_CHUNK_SIZE = 1_000;
+
     protected Model model;
     protected Config config;
     protected ImportConext context;
@@ -170,30 +172,106 @@ public abstract class AbstractSparxConverter implements Converter {
     }
 
     void handleTable(String sha1, LocalDateTime now, Connection connection, ProcessInterface processInterface, String sql) throws SQLException {
-        ResultSet resultSet = null;
-        Statement statement = null;
-        try {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(sql);
-            processInterface.process(sha1, now, handleResultSet(resultSet));
-        } finally {
-            if (resultSet != null) {
-                try {
-                    resultSet.close();
-                } catch (SQLException ignored) {
-                } // ignore
+        handleTable(sha1, now, connection, processInterface, sql, DEFAULT_TABLE_CHUNK_SIZE);
+    }
+
+    void handleTable(String sha1, LocalDateTime now, Connection connection, ProcessInterface processInterface, String sql, int chunkSize) throws SQLException {
+        if (chunkSize <= 0) {
+            throw new IllegalArgumentException("chunkSize must be greater than 0");
+        }
+
+        SqlPagingDialect dialect = SqlPagingDialect.forConnection(connection);
+        String orderedSql = ensureOrderBy(stripTrailingSemicolon(sql));
+        long offset = 0;
+        boolean hasMoreRows = true;
+
+        while (hasMoreRows) {
+            List<Map<String, Object>> chunk;
+            String chunkSql = dialect.createChunkSql(orderedSql, chunkSize, offset);
+            try (Statement statement = connection.createStatement()) {
+                statement.setFetchSize(chunkSize);
+                try (ResultSet resultSet = statement.executeQuery(chunkSql)) {
+                    chunk = readResultSet(resultSet, chunkSize);
+                }
             }
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException ignored) {
-                } // ignore
+
+            if (chunk.isEmpty()) {
+                hasMoreRows = false;
+            } else {
+                processInterface.process(sha1, now, chunk);
+                hasMoreRows = chunk.size() == chunkSize;
+                offset += chunk.size();
             }
         }
     }
 
     Iterable<Map<String, Object>> handleResultSet(ResultSet rs) throws SQLException {
         return new SparxTableIterator(rs);
+    }
+
+    private List<Map<String, Object>> readResultSet(ResultSet resultSet, int chunkSize) throws SQLException {
+        ResultSetMetaData metaData = resultSet.getMetaData();
+        int columnCount = metaData.getColumnCount();
+        List<Map<String, Object>> rows = new ArrayList<>(chunkSize);
+        while (resultSet.next()) {
+            Map<String, Object> rowData = new HashMap<>();
+            for (int i = 1; i <= columnCount; i++) {
+                rowData.put(metaData.getColumnName(i).toLowerCase(Locale.ROOT), resultSet.getObject(i));
+            }
+            rows.add(rowData);
+        }
+        return rows;
+    }
+
+    private String stripTrailingSemicolon(String sql) {
+        String strippedSql = sql.strip();
+        while (strippedSql.endsWith(";")) {
+            strippedSql = strippedSql.substring(0, strippedSql.length() - 1).stripTrailing();
+        }
+        return strippedSql;
+    }
+
+    private String ensureOrderBy(String sql) {
+        if (sql.toUpperCase(Locale.ROOT).contains(" ORDER BY ")) {
+            return sql;
+        }
+        return sql + " ORDER BY 1";
+    }
+
+    private enum SqlPagingDialect {
+        LIMIT_OFFSET {
+            @Override
+            String createChunkSql(String sql, int chunkSize, long offset) {
+                return sql + " LIMIT " + chunkSize + " OFFSET " + offset;
+            }
+        },
+        OFFSET_FETCH {
+            @Override
+            String createChunkSql(String sql, int chunkSize, long offset) {
+                return sql + " OFFSET " + offset + " ROWS FETCH NEXT " + chunkSize + " ROWS ONLY";
+            }
+        },
+        FIREBIRD_ROWS {
+            @Override
+            String createChunkSql(String sql, int chunkSize, long offset) {
+                long firstRow = offset + 1;
+                long lastRow = offset + chunkSize;
+                return sql + " ROWS " + firstRow + " TO " + lastRow;
+            }
+        };
+
+        abstract String createChunkSql(String sql, int chunkSize, long offset);
+
+        static SqlPagingDialect forConnection(Connection connection) throws SQLException {
+            String productName = connection.getMetaData().getDatabaseProductName().toLowerCase(Locale.ROOT);
+            if (productName.contains("microsoft sql server")) {
+                return OFFSET_FETCH;
+            }
+            if (productName.contains("firebird")) {
+                return FIREBIRD_ROWS;
+            }
+            return LIMIT_OFFSET;
+        }
     }
 
     public static class SparxTableIterator implements Iterator<Map<String, Object>>, Iterable<Map<String, Object>> {

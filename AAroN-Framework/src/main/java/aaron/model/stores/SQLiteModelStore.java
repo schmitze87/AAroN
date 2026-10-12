@@ -1,20 +1,18 @@
-package aaron.model;
+package aaron.model.stores;
+
+import aaron.model.*;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
-import java.util.Objects;
-import java.util.Spliterators;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class SQLiteModelStore implements ModelStore {
+
+    private static final int NODE_ENTRY_CHUNK_SIZE = 1_000;
+    private static final int EDGE_ENTRY_CHUNK_SIZE = 1_000;
 
     private final Connection connection;
     private final File storeFile;
@@ -84,8 +82,7 @@ public class SQLiteModelStore implements ModelStore {
             ResultSet resultSet = pstmt.executeQuery();
             if (resultSet.next()) {
                 byte[] bytes = resultSet.getBytes(2);
-                AAroNNode node = NodeSerializer.deserialize(bytes);
-                return node;
+                return NodeSerializer.deserialize(bytes);
             } else {
                 return null;
             }
@@ -103,13 +100,11 @@ public class SQLiteModelStore implements ModelStore {
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public Iterable<Map.Entry<UniqueNodeIdentifier<UUID>, AAroNNode>> iterateNodeEntries() {
         return () -> getNodeEntries().iterator();
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public void addEdge(UniqueEdgeIdentifier<UUID> edgeIdentifier, AAroNEdge edge) {
         Objects.requireNonNull(edgeIdentifier, "edgeIdentifier must not be null");
         Objects.requireNonNull(edge, "edge must not be null");
@@ -129,7 +124,6 @@ public class SQLiteModelStore implements ModelStore {
     }
 
     @Override
-    @SuppressWarnings("rawtypes")
     public AAroNEdge getEdge(UniqueEdgeIdentifier<UUID> edgeIdentifier) {
         Objects.requireNonNull(edgeIdentifier, "edgeIdentifier must not be null");
         String sql = "SELECT key, value FROM edges WHERE key = ?";
@@ -138,8 +132,7 @@ public class SQLiteModelStore implements ModelStore {
             ResultSet resultSet = pstmt.executeQuery();
             if (resultSet.next()) {
                 byte[] bytes = resultSet.getBytes(2);
-                AAroNEdge edge = EdgeSerializer.deserialize(bytes);
-                return edge;
+                return EdgeSerializer.deserialize(bytes);
             } else {
                 return null;
             }
@@ -151,121 +144,115 @@ public class SQLiteModelStore implements ModelStore {
 
     @Override
     public Iterable<AAroNEdge> iterateEdges() {
-        return () -> getEdges().iterator();
+        return () -> getEdgeEntries()
+                .map(Map.Entry::getValue)
+                .iterator();
     }
 
-    @SuppressWarnings("rawtypes")
     private Stream<Map.Entry<UniqueNodeIdentifier<UUID>, AAroNNode>> getNodeEntries() {
-        String sql = "SELECT key, value FROM nodes";
-        PreparedStatement statement = null;
-        try {
-            statement = connection.prepareStatement(sql);
-            var pstmt = statement;
-            var resultSet = pstmt.executeQuery();
-            class NodeEntryIterator implements Iterator<Map.Entry<UniqueNodeIdentifier<UUID>, AAroNNode>>, AutoCloseable {
-                private boolean nextLoaded;
-                private boolean hasNext;
-                private boolean closed;
+        class NodeEntryIterator implements Iterator<Map.Entry<UniqueNodeIdentifier<UUID>, AAroNNode>> {
+            private Iterator<Map.Entry<UniqueNodeIdentifier<UUID>, AAroNNode>> chunkIterator = Collections.emptyIterator();
+            private String lastKey;
+            private boolean exhausted;
 
-                @Override
-                public boolean hasNext() {
-                    if (!nextLoaded) {
-                        try {
-                            hasNext = resultSet.next();
-                            nextLoaded = true;
-                            if (!hasNext) {
-                                close();
-                            }
-                        } catch (SQLException e) {
-                            closeAfterFailure(e);
-                            throw new IllegalStateException("Failed to iterate nodes", e);
-                        }
-                    }
-                    return hasNext;
+            @Override
+            public boolean hasNext() {
+                while (!chunkIterator.hasNext() && !exhausted) {
+                    fetchNextChunk();
                 }
-
-                @Override
-                public Map.Entry<UniqueNodeIdentifier<UUID>, AAroNNode> next() {
-                    if (!hasNext()) {
-                        throw new NoSuchElementException();
-                    }
-                    nextLoaded = false;
-                    try {
-                        String key = resultSet.getString(1);
-                        UniqueNodeIdentifier<UUID> identifier = new UniqueNodeIdentifierImpl(UUID.fromString(key));
-                        AAroNNode node = NodeSerializer.deserialize(resultSet.getBytes(2));
-                        return Map.entry(identifier, node);
-                    } catch (SQLException e) {
-                        closeAfterFailure(e);
-                        throw new IllegalStateException("Failed to iterate nodes", e);
-                    } catch (RuntimeException e) {
-                        closeAfterFailure(e);
-                        throw e;
-                    }
-                }
-
-                @Override
-                public void close() {
-                    if (closed) {
-                        return;
-                    }
-                    closed = true;
-                    SQLException failure = null;
-                    try {
-                        resultSet.close();
-                    } catch (SQLException e) {
-                        failure = e;
-                    }
-                    try {
-                        pstmt.close();
-                    } catch (SQLException e) {
-                        if (failure == null) {
-                            failure = e;
-                        } else {
-                            failure.addSuppressed(e);
-                        }
-                    }
-                    if (failure != null) {
-                        throw new IllegalStateException("Failed to close node iterator", failure);
-                    }
-                }
-
-                private void closeAfterFailure(Throwable originalException) {
-                    try {
-                        close();
-                    } catch (IllegalStateException closeException) {
-                        originalException.addSuppressed(closeException);
-                    }
-                }
+                return chunkIterator.hasNext();
             }
 
-            var iterator = new NodeEntryIterator();
-            return StreamSupport.stream(Spliterators.spliteratorUnknownSize(iterator, 0), false)
-                    .onClose(iterator::close);
-        } catch (SQLException e) {
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException closeException) {
-                    e.addSuppressed(closeException);
+            @Override
+            public Map.Entry<UniqueNodeIdentifier<UUID>, AAroNNode> next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                return chunkIterator.next();
+            }
+
+            private void fetchNextChunk() {
+                String sql = lastKey == null
+                        ? "SELECT key, value FROM nodes ORDER BY key LIMIT ?"
+                        : "SELECT key, value FROM nodes WHERE key > ? ORDER BY key LIMIT ?";
+                try (var pstmt = connection.prepareStatement(sql)) {
+                    if (lastKey == null) {
+                        pstmt.setInt(1, NODE_ENTRY_CHUNK_SIZE);
+                    } else {
+                        pstmt.setString(1, lastKey);
+                        pstmt.setInt(2, NODE_ENTRY_CHUNK_SIZE);
+                    }
+                    List<Map.Entry<UniqueNodeIdentifier<UUID>, AAroNNode>> chunk = new ArrayList<>(NODE_ENTRY_CHUNK_SIZE);
+                    try (var resultSet = pstmt.executeQuery()) {
+                        while (resultSet.next()) {
+                            String key = resultSet.getString(1);
+                            UniqueNodeIdentifier<UUID> identifier = new UniqueNodeIdentifierImpl(UUID.fromString(key));
+                            AAroNNode node = NodeSerializer.deserialize(resultSet.getBytes(2));
+                            chunk.add(Map.entry(identifier, node));
+                            lastKey = key;
+                        }
+                    }
+                    exhausted = chunk.size() < NODE_ENTRY_CHUNK_SIZE;
+                    chunkIterator = chunk.iterator();
+                } catch (SQLException e) {
+                    throw new IllegalStateException("Failed to iterate nodes", e);
                 }
             }
-            throw new IllegalStateException("Failed to iterate nodes", e);
         }
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(new NodeEntryIterator(), 0), false);
     }
 
-    private List<AAroNEdge> getEdges() {
-        String sql = "SELECT value FROM edges";
-        try (var pstmt = connection.prepareStatement(sql);
-             var resultSet = pstmt.executeQuery()) {
-            List<AAroNEdge> edges = new ArrayList<>();
-            while (resultSet.next()) {
-                edges.add(EdgeSerializer.deserialize(resultSet.getBytes(1)));
+    private Stream<Map.Entry<UniqueEdgeIdentifier<UUID>, AAroNEdge>> getEdgeEntries() {
+        class EdgeEntryIterator implements Iterator<Map.Entry<UniqueEdgeIdentifier<UUID>, AAroNEdge>> {
+            private Iterator<Map.Entry<UniqueEdgeIdentifier<UUID>, AAroNEdge>> chunkIterator = Collections.emptyIterator();
+            private String lastKey;
+            private boolean exhausted;
+
+            @Override
+            public boolean hasNext() {
+                while (!chunkIterator.hasNext() && !exhausted) {
+                    fetchNextChunk();
+                }
+                return chunkIterator.hasNext();
             }
-            return edges;
-        } catch (SQLException e) {
-            throw new IllegalStateException("Failed to iterate edges", e);
+
+            @Override
+            public Map.Entry<UniqueEdgeIdentifier<UUID>, AAroNEdge> next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                return chunkIterator.next();
+            }
+
+            private void fetchNextChunk() {
+                String sql = lastKey == null
+                        ? "SELECT key, value FROM edges ORDER BY key LIMIT ?"
+                        : "SELECT key, value FROM edges WHERE key > ? ORDER BY key LIMIT ?";
+                try (var pstmt = connection.prepareStatement(sql)) {
+                    if (lastKey == null) {
+                        pstmt.setInt(1, EDGE_ENTRY_CHUNK_SIZE);
+                    } else {
+                        pstmt.setString(1, lastKey);
+                        pstmt.setInt(2, EDGE_ENTRY_CHUNK_SIZE);
+                    }
+                    List<Map.Entry<UniqueEdgeIdentifier<UUID>, AAroNEdge>> chunk = new ArrayList<>(EDGE_ENTRY_CHUNK_SIZE);
+                    try (var resultSet = pstmt.executeQuery()) {
+                        while (resultSet.next()) {
+                            String key = resultSet.getString(1);
+                            UniqueEdgeIdentifier<UUID> identifier = new UniqueEdgeIdentifierImpl(UUID.fromString(key));
+                            AAroNEdge edge = EdgeSerializer.deserialize(resultSet.getBytes(2));
+                            chunk.add(Map.entry(identifier, edge));
+                            lastKey = key;
+                        }
+                    }
+                    exhausted = chunk.size() < EDGE_ENTRY_CHUNK_SIZE;
+                    chunkIterator = chunk.iterator();
+                } catch (SQLException e) {
+                    throw new IllegalStateException("Failed to iterate edges", e);
+                }
+            }
         }
+        return StreamSupport.stream(Spliterators.spliteratorUnknownSize(new EdgeEntryIterator(), 0), false);
     }
 
     @Override

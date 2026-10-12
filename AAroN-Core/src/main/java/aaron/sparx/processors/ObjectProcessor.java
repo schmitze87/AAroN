@@ -141,7 +141,22 @@ public class ObjectProcessor extends AbstractProcessor {
 
         ObjectId objectIdentifier = new ObjectId(objectId);
         ObjectGUID objectGUID = new ObjectGUID(eaGuid);
-        UniqueNodeIdentifier<java.util.UUID> uniqueNodeIdentifier = new UniqueNodeIdentifierImpl();
+
+
+        UniqueNodeIdentifier uniqueNodeIdentifier = null;
+        if ("Package".equals(objectType)) {
+            try {
+                int packageIdFromPDATA1 = Integer.parseInt(pdata1);
+                PackageId identifier = new PackageId(packageIdFromPDATA1);
+                uniqueNodeIdentifier = model.getUniqueNodeIdentifier(identifier);
+            } catch (NumberFormatException e) {
+                logger.warn("Unexpected value '{}' in pdata1 for objecId '{}' in t_object", pdata1, objectId);
+                uniqueNodeIdentifier = new UniqueNodeIdentifierImpl();
+            }
+        } else {
+            uniqueNodeIdentifier = new UniqueNodeIdentifierImpl();
+        }
+
         model.addNode(uniqueNodeIdentifier, node);
         model.addNodeIdentifier(objectIdentifier, uniqueNodeIdentifier);
         model.addNodeIdentifier(objectGUID, uniqueNodeIdentifier);

@@ -1,9 +1,9 @@
-package aaron.model;
+package aaron.model.stores;
 
+import aaron.model.*;
 import org.h2.mvstore.MVMap;
 import org.h2.mvstore.MVStore;
 
-import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;

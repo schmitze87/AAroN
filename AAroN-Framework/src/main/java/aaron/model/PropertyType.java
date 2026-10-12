@@ -5,6 +5,7 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Objects;
 
 import aaron.model.spatial.WGS84Point;
 
@@ -55,11 +56,19 @@ public class PropertyType<E extends Serializable> implements Serializable {
         return csvValue;
     }
 
-    public Class<? extends E> getClazz() {
-        return clazz;
-    }
-
     public E cast(Object value) {
         return clazz.cast(value);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        PropertyType<?> that = (PropertyType<?>) o;
+        return Objects.equals(csvValue, that.csvValue) && Objects.equals(clazz, that.clazz);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(csvValue, clazz);
     }
 }
