@@ -47,5 +47,6 @@ VOLUME ["/import"]
 VOLUME ["/output"]
 VOLUME ["/log"]
 
-ENTRYPOINT ["java", "-XX:InitialRAMPercentage=20", "-XX:MaxRAMPercentage=80", "-jar", "/app/aaron-cli.jar"]
+#ENTRYPOINT ["java", "-XX:InitialRAMPercentage=20", "-XX:MaxRAMPercentage=80", "-jar", "/app/aaron-cli.jar"]
+ENTRYPOINT ["java", "-jar", "/app/aaron-cli.jar"]
 CMD ["convert", "-o", "/output", "-c", "/config/aaron_config.yml", "-d", "/import"]
