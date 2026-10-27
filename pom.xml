@@ -17,8 +17,8 @@
     <name>AAroN - Analyze Architecture on Neo4j</name>
 
     <properties>
-        <revision>2026.01.4_1</revision>
-        <changelist>-SNAPSHOT</changelist>
+        <revision>2026.01.4.2</revision>
+        <changelist></changelist>
         <sha1></sha1>
         <maven.compiler.source>21</maven.compiler.source>
         <maven.compiler.target>21</maven.compiler.target>
