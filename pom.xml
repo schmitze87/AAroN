@@ -17,7 +17,7 @@
     <name>AAroN - Analyze Architecture on Neo4j</name>
 
     <properties>
-        <revision>2026.01.4.2</revision>
+        <revision>2026.10.1</revision>
         <changelist></changelist>
         <sha1></sha1>
         <maven.compiler.source>21</maven.compiler.source>
@@ -25,7 +25,7 @@
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <version.neo4j>2026.01.4</version.neo4j>
+        <version.neo4j>2026.10.1</version.neo4j>
         <version.picocli>4.7.7</version.picocli>
     </properties>
 
@@ -40,7 +40,7 @@
             <id>github-aaron</id>
             <name>AAroN</name>
             <url>https://maven.pkg.github.com/schmitze87/aaron</url>
-            <uniqueVersion>false</uniqueVersion>
+            <uniqueVersion>true</uniqueVersion>
         </repository>
     </distributionManagement>
 

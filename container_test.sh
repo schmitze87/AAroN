@@ -12,5 +12,5 @@ podman run -it --name aaron \
   --volume "`pwd`/import:/import:Z" \
   --volume "`pwd`/import:/output:Z" \
   --volume "`pwd`/conf:/conf:Z" \
-  --memory "2000m" \
+  --memory "4000m" \
     docker.io/mschmitze87/aaron:latest

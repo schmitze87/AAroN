@@ -1,7 +1,7 @@
 ############################
 # 1) Build stage
 ############################
-FROM docker.io/library/maven:3.9.9-eclipse-temurin-21-alpine AS build
+FROM docker.io/library/maven:3.10-eclipse-temurin-21-alpine@sha256:59df013352e3a01a18592b553c380cda6399b810d4213cefc86c867b22e1029e AS build
 
 WORKDIR /workspace
 
@@ -22,7 +22,13 @@ COPY AAroN-Plugin/src ./AAroN-Plugin/src
 RUN --mount=type=cache,target=/root/.m2 \
     mvn --batch-mode --no-transfer-progress -DskipTests clean package -pl AAroN-CLI -am
 
-FROM docker.io/library/eclipse-temurin:21-jre-alpine AS runtime
+FROM docker.io/library/eclipse-temurin:21-jre-alpine@sha256:b48e02e0ea88d7bfb305335df94923bdef394905f4147dccd52e873cf17b1088 AS java
+
+FROM docker.io/library/alpine:3.24.3@sha256:be2656061b536c1883c4034790e21d0a09c5aaaf51968b89368a3c0371ea2c9a AS runtime
+
+ENV JAVA_HOME=/opt/java/openjdk
+COPY --from=java $JAVA_HOME $JAVA_HOME
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
 
 WORKDIR app
 # Create non-root user
