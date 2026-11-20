@@ -303,38 +303,6 @@ public class AAroNCsvWriter {
         }
     }
 
-    private void addPropertiesToRecord(final List<String> csvRecord, final CSVHeader[] headers, final WithProperties withProperties, int skip) {
-        Arrays.stream(headers).skip(skip).forEach(h -> {
-            Property property = withProperties.getProperties().get(h.rawName);
-            if (property != null) {
-                Object value = property.getValue();
-                if (value == null) {
-                    csvRecord.add(null);
-                } else {
-                    if (value.getClass().isArray()) {
-                        Object[] objects = (Object[]) value;
-                        String list = Arrays.stream(objects).filter(Objects::nonNull).map(Object::toString).collect(Collectors.joining(ARRAY_DELIMITER));
-                        this.propertiesCounter++;
-                        this.totalPropertyBytes += list.getBytes(StandardCharsets.UTF_8).length;
-                        csvRecord.add(list);
-                    } else if (value instanceof LocalDateTime) {
-                        LocalDateTime dateTime = (LocalDateTime) value;
-                        String format = dateTime.format(DateTimeFormatter.ISO_DATE_TIME);
-                        this.propertiesCounter++;
-                        this.totalPropertyBytes += format.getBytes(StandardCharsets.UTF_8).length;
-                        csvRecord.add(format);
-                    } else {
-                        this.propertiesCounter++;
-                        this.totalPropertyBytes += value.toString().getBytes(StandardCharsets.UTF_8).length;
-                        csvRecord.add(value.toString());
-                    }
-                }
-            } else {
-                csvRecord.add(null);
-            }
-        });
-    }
-
     private void addPropertiesForHeader(final List<CSVHeader> header, final Set<CSVHeader> headerSet) {
         Map<String, List<CSVHeader>> groupHeaderMap = new HashMap<>();
         if (headerSet != null) {
@@ -381,12 +349,6 @@ public class AAroNCsvWriter {
             this.name = createName(name,parenthesesFix);
         }
 
-        CSVHeader(final String name, final Property<?> property, final boolean parenthesesFix) {
-            this.rawName = name;
-            this.type = property.getType().getCsvValue();
-            this.name = createName(name, parenthesesFix);
-        }
-
         CSVHeader(final String name, final PropertyType<?> propertyType, final boolean parenthesesFix) {
             this.rawName = name;
             this.type = propertyType.getCsvValue();
@@ -419,10 +381,6 @@ public class AAroNCsvWriter {
 
         public String getType() {
             return type;
-        }
-
-        public boolean isConflictingTypeDefinition() {
-            return conflictingTypeDefinition;
         }
 
         public void setConflictingTypeDefinition(boolean conflictingTypeDefinition) {
