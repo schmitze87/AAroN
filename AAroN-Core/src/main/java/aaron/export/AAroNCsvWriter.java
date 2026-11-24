@@ -37,6 +37,7 @@ public class AAroNCsvWriter {
 
     private int nodeIdCounter = 0;
 
+    @SuppressWarnings("rawtypes")
     private final Map<UniqueNodeIdentifier, Integer> uniqueIdToNodeId = new HashMap<>();
 
     public AAroNCsvWriter() {
@@ -215,7 +216,7 @@ public class AAroNCsvWriter {
         return header.toArray(new CSVHeader[header.size()]);
     }
 
-    String[] createNodeRecord(final CSVHeader[] headers, UniqueNodeIdentifier identifier, AAroNNode node) {
+    String[] createNodeRecord(final CSVHeader[] headers, @SuppressWarnings("rawtypes") UniqueNodeIdentifier identifier, AAroNNode node) {
         String[] csvRecord = new String[headers.length];
         this.nodeIdCounter++;
         node.setId(this.nodeIdCounter);
@@ -274,6 +275,7 @@ public class AAroNCsvWriter {
     void addPropertiesToRecord(final String[] csvRecord, final CSVHeader[] headers, final WithProperties withProperties, int skip) {
         for (int i = skip; i < headers.length; i++) {
             CSVHeader h =  headers[i];
+            @SuppressWarnings("rawtypes")
             Property property = withProperties.getProperties().get(h.rawName);
             if (property != null) {
                 Object value = property.getValue();
