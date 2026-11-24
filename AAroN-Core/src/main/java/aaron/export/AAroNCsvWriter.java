@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -36,7 +37,7 @@ public class AAroNCsvWriter {
 
     private int nodeIdCounter = 0;
 
-    private Map<UniqueNodeIdentifier, Integer> uniqueIdToNodeId = new HashMap<>();
+    private final Map<UniqueNodeIdentifier, Integer> uniqueIdToNodeId = new HashMap<>();
 
     public AAroNCsvWriter() {
     }
@@ -81,7 +82,7 @@ public class AAroNCsvWriter {
 
     }
 
-    private String formatCsvField(final String field, final boolean quote) {
+    String formatCsvField(final String field, final boolean quote) {
         String result = field;
         if (result == null) {
             return EMPTY_STRING;
@@ -94,11 +95,11 @@ public class AAroNCsvWriter {
             result = result.replace(DOUBLE_QUOTES, EMBEDDED_DOUBLE_QUOTES);
 
             // must wrap by or enclosed with double quotes
-            result = new StringBuilder().append(DOUBLE_QUOTES).append(result).append(DOUBLE_QUOTES).toString();
+            result = DOUBLE_QUOTES + result + DOUBLE_QUOTES;
         } else {
             // should all fields enclosed in double quotes
             if (quote) {
-                result = new StringBuilder().append(DOUBLE_QUOTES).append(result).append(DOUBLE_QUOTES).toString();
+                result = DOUBLE_QUOTES + result + DOUBLE_QUOTES;
             }
         }
         return result;
@@ -109,7 +110,7 @@ public class AAroNCsvWriter {
         writeEdges(model, edgesFile, parenthesesFix);
     }
 
-    private void writeEdges(Model model, File edgesFile, boolean parenthesesFix) throws IOException {
+    void writeEdges(Model model, File edgesFile, boolean parenthesesFix) throws IOException {
         if (edgesFile != null) {
             if (edgesFile.exists() && !edgesFile.canWrite()) {
                 LOG.error("can not write to edges file. Check file permission");
@@ -143,7 +144,7 @@ public class AAroNCsvWriter {
         }
     }
 
-    private void writeNodes(Model model, File nodesFile, boolean parenthesesFix) throws IOException {
+    void writeNodes(Model model, File nodesFile, boolean parenthesesFix) throws IOException {
         if (nodesFile != null) {
             if (nodesFile.exists() && !nodesFile.canWrite()) {
                 LOG.error("can not write to nodes file. Check file permission");
@@ -162,7 +163,7 @@ public class AAroNCsvWriter {
 
                     //write data
                     for (var entry: model.iterateNodeEntries()) {
-                        String[] nodeRecord = createNodeRecord(model, nodeCSVHeader, entry.getKey(),  entry.getValue());
+                        String[] nodeRecord = createNodeRecord(nodeCSVHeader, entry.getKey(),  entry.getValue());
                         String line = this.convertToCsvFormat(nodeRecord);
                         nodesWriter.write(line);
                         nodesWriter.newLine();
@@ -175,7 +176,7 @@ public class AAroNCsvWriter {
         }
     }
 
-    private CSVHeader[] createNodeCSVHeader(final Set<CSVHeader> headerSet, Model model, final boolean parenthesesFix) {
+    CSVHeader[] createNodeCSVHeader(final Set<CSVHeader> headerSet, Model model, final boolean parenthesesFix) {
         String idSpace = null;
         ImportConext context = model.getContext();
         if (context != null) {
@@ -192,7 +193,7 @@ public class AAroNCsvWriter {
         return header.toArray(new CSVHeader[header.size()]);
     }
 
-    private CSVHeader[] createEdgeCSVHeader(final Set<CSVHeader> headerSet, Model model, final boolean parenthesesFix) {
+    CSVHeader[] createEdgeCSVHeader(final Set<CSVHeader> headerSet, Model model, final boolean parenthesesFix) {
         String idSpace = null;
         ImportConext context = model.getContext();
         if (context != null) {
@@ -214,7 +215,7 @@ public class AAroNCsvWriter {
         return header.toArray(new CSVHeader[header.size()]);
     }
 
-    private String[] createNodeRecord(final Model model, final CSVHeader[] headers, UniqueNodeIdentifier identifier, AAroNNode node) {
+    String[] createNodeRecord(final CSVHeader[] headers, UniqueNodeIdentifier identifier, AAroNNode node) {
         String[] csvRecord = new String[headers.length];
         this.nodeIdCounter++;
         node.setId(this.nodeIdCounter);
@@ -227,7 +228,7 @@ public class AAroNCsvWriter {
         return csvRecord;
     }
 
-    private String[] createEdgeRecord(final Model model, final CSVHeader[] headers, final AAroNEdge edge) {
+    String[] createEdgeRecord(final Model model, final CSVHeader[] headers, final AAroNEdge edge) {
         String[] csvRecord = new String[headers.length];
 
         var startIdentifier = edge.getStart();
@@ -239,7 +240,7 @@ public class AAroNCsvWriter {
         if (uniqueStartNodeId != null) {
             startNodeId = uniqueIdToNodeId.get(uniqueStartNodeId);
             if (startNodeId == null) {
-                LOG.warn("StartNode of edge missing: " + edge.toString());
+                LOG.warn("StartNode of edge missing: " + edge);
             }
         }
 
@@ -247,7 +248,7 @@ public class AAroNCsvWriter {
         if (uniqueEndNodeId != null) {
             endNodeId = uniqueIdToNodeId.get(uniqueEndNodeId);
             if (endNodeId == null) {
-                LOG.warn("EndNode of edge missing: " + edge.toString());
+                LOG.warn("EndNode of edge missing: " + edge);
             }
         }
 
@@ -262,15 +263,15 @@ public class AAroNCsvWriter {
         return null;
     }
 
-    private void addPropertiesToNodeRecord(final String[] csvRecord, final CSVHeader[] headers, final WithProperties withProperties) {
+    void addPropertiesToNodeRecord(final String[] csvRecord, final CSVHeader[] headers, final WithProperties withProperties) {
         addPropertiesToRecord(csvRecord, headers, withProperties, 2);
     }
 
-    private void addPropertiesToEdgeRecord(final String[] csvRecord, final CSVHeader[] headers, final WithProperties withProperties) {
+    void addPropertiesToEdgeRecord(final String[] csvRecord, final CSVHeader[] headers, final WithProperties withProperties) {
         addPropertiesToRecord(csvRecord, headers, withProperties, 3);
     }
 
-    private void addPropertiesToRecord(final String[] csvRecord, final CSVHeader[] headers, final WithProperties withProperties, int skip) {
+    void addPropertiesToRecord(final String[] csvRecord, final CSVHeader[] headers, final WithProperties withProperties, int skip) {
         for (int i = skip; i < headers.length; i++) {
             CSVHeader h =  headers[i];
             Property property = withProperties.getProperties().get(h.rawName);
@@ -285,9 +286,13 @@ public class AAroNCsvWriter {
                         this.propertiesCounter++;
                         this.totalPropertyBytes += list.getBytes(StandardCharsets.UTF_8).length;
                         csvRecord[i] = list;
-                    } else if (value instanceof LocalDateTime) {
-                        LocalDateTime dateTime = (LocalDateTime) value;
+                    } else if (value instanceof LocalDateTime dateTime) {
                         String format = dateTime.format(DateTimeFormatter.ISO_DATE_TIME);
+                        this.propertiesCounter++;
+                        this.totalPropertyBytes += format.getBytes(StandardCharsets.UTF_8).length;
+                        csvRecord[i] = format;
+                    }  else if (value instanceof LocalDate localDate) {
+                        String format = localDate.format(DateTimeFormatter.ISO_DATE);
                         this.propertiesCounter++;
                         this.totalPropertyBytes += format.getBytes(StandardCharsets.UTF_8).length;
                         csvRecord[i] = format;
@@ -303,7 +308,7 @@ public class AAroNCsvWriter {
         }
     }
 
-    private void addPropertiesForHeader(final List<CSVHeader> header, final Set<CSVHeader> headerSet) {
+    void addPropertiesForHeader(final List<CSVHeader> header, final Set<CSVHeader> headerSet) {
         Map<String, List<CSVHeader>> groupHeaderMap = new HashMap<>();
         if (headerSet != null) {
             headerSet.forEach(h -> {
@@ -317,26 +322,27 @@ public class AAroNCsvWriter {
                 String definedType;
                 boolean typeConflict = false;
                 if (headerList.size() > 1) {
-                    CSVHeader firstHeader = headerList.get(0);
+                    CSVHeader firstHeader = headerList.getFirst();
                     definedType = firstHeader.getType();
                     for (int i = 1; i < headerList.size(); i++) {
                         String nextType = headerList.get(i).getType();
                         if (!definedType.equals(nextType)) {
                             typeConflict = true;
+                            break;
                         }
                     }
                     if (typeConflict) {
                         headerList.forEach(h -> h.setConflictingTypeDefinition(true));
-                        header.add(headerList.get(0));
+                        header.add(headerList.getFirst());
                     }
                 } else {
-                    header.add(headerList.get(0));
+                    header.add(headerList.getFirst());
                 }
             });
         }
     }
 
-    private static class CSVHeader {
+    static class CSVHeader {
 
         private final String rawName;
         private final String name;
@@ -355,7 +361,7 @@ public class AAroNCsvWriter {
             this.name = createName(name, parenthesesFix);
         }
 
-        private static String createName(final String value, final boolean parenthesesFix) {
+        static String createName(final String value, final boolean parenthesesFix) {
             if (value == null) {
                 return null;
             } else {

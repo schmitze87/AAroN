@@ -1,7 +1,9 @@
 package aaron.export;
 
 import aaron.logging.Logger;
+import aaron.model.AAroNNode;
 import aaron.model.Converter;
+import aaron.model.PropertyType;
 import aaron.model.stores.FilebasedModelStore;
 import aaron.model.Model;
 import aaron.model.stores.InHeapModelStore;
@@ -10,6 +12,7 @@ import aaron.sparx.SparxFirebirdConverter;
 import aaron.sparx.SparxJETConverter;
 import aaron.sparx.SparxSQLiteConverter;
 import aaron.sparx.config.Config;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.LoggerFactory;
@@ -18,6 +21,9 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -148,4 +154,36 @@ class AAroNCsvWriterTest {
         writer.write(model, nodesFile, edgesFile, false);
         model.close();
     }
+
+    @Test
+    void addPropertiesToNodeRecord_DateAndDateTimeTest() {
+        AAroNCsvWriter writer = new AAroNCsvWriter();
+        boolean parenthesesFix = false;
+        AAroNCsvWriter.CSVHeader idHeader = new AAroNCsvWriter.CSVHeader(null, "ID", parenthesesFix);
+        AAroNCsvWriter.CSVHeader labelHeader = new AAroNCsvWriter.CSVHeader(null, "LABEL", parenthesesFix);
+        AAroNCsvWriter.CSVHeader dateTestHeader = new AAroNCsvWriter.CSVHeader("dateTest", "date", parenthesesFix);
+        AAroNCsvWriter.CSVHeader dateTimeTestHeader = new AAroNCsvWriter.CSVHeader("dateTimeTest", "date", parenthesesFix);
+        AAroNCsvWriter.CSVHeader[] headers = new AAroNCsvWriter.CSVHeader[]{idHeader, labelHeader, dateTestHeader, dateTimeTestHeader};
+
+        LocalDate testDate = LocalDate.now();
+        LocalDateTime testDateTime = LocalDateTime.now();
+
+        AAroNNode node = AAroNNode.builder()
+                .addLabel("TestLabel")
+                .addProperty("dateTest", PropertyType.LOCALDATE, testDate)
+                .addProperty("dateTimeTest", PropertyType.LOCALDATETIME, testDateTime)
+                .build();
+
+        node.setId(42);
+
+        String[] csvRecord = new String[headers.length];
+        csvRecord[0] = Integer.toString(node.getId());
+        csvRecord[1] = String.join(";", node.getLabels());
+
+        writer.addPropertiesToNodeRecord(csvRecord, headers, node);
+
+        String[] expectedArray = new String[]{"42", "TestLabel", testDate.format(DateTimeFormatter.ISO_DATE), testDateTime.format(DateTimeFormatter.ISO_DATE_TIME)};
+        Assertions.assertArrayEquals(expectedArray, csvRecord);
+    }
+
 }
