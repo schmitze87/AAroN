@@ -58,10 +58,10 @@ public class ModelProcessor {
                 String startId = identifierToNeo4jId.get(edge.getStart());
                 String endId = identifierToNeo4jId.get(edge.getEnd());
                 if (startId == null) {
-                    return;
+                    continue;
                 }
                 if (endId == null) {
-                    return;
+                    continue;
                 }
                 Node startNode = tx.getNodeByElementId(startId);
                 Node endNode = tx.getNodeByElementId(endId);
