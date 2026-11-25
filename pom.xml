@@ -41,6 +41,9 @@
             <name>AAroN</name>
             <url>https://maven.pkg.github.com/schmitze87/aaron</url>
             <uniqueVersion>true</uniqueVersion>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
         </repository>
     </distributionManagement>
 
