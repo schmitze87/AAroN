@@ -1,7 +1,7 @@
 ############################
 # 1) Build stage
 ############################
-FROM docker.io/library/maven:3.10-eclipse-temurin-21-alpine@sha256:59df013352e3a01a18592b553c380cda6399b810d4213cefc86c867b22e1029e AS build
+FROM docker.io/library/maven:3.10-eclipse-temurin-21-alpine@sha256:cd76cdb312bf47bd75ca5abd82709ba440501e162acc8425bf69c1b178af7d8a AS build
 
 WORKDIR /workspace
 
@@ -22,9 +22,9 @@ COPY AAroN-Plugin/src ./AAroN-Plugin/src
 RUN --mount=type=cache,target=/root/.m2 \
     mvn --batch-mode --no-transfer-progress -DskipTests clean package -pl AAroN-CLI -am
 
-FROM docker.io/library/eclipse-temurin:21-jre-alpine@sha256:b48e02e0ea88d7bfb305335df94923bdef394905f4147dccd52e873cf17b1088 AS java
+FROM docker.io/library/eclipse-temurin:21-jre-alpine@sha256:5d7689f47d670aca766b9503a70bccc2d73b4eb9221ae8f714ae958313c4ce70 AS java
 
-FROM docker.io/library/alpine:3.24.3@sha256:be2656061b536c1883c4034790e21d0a09c5aaaf51968b89368a3c0371ea2c9a AS runtime
+FROM docker.io/library/alpine:3.24.4@sha256:f59abe656b692d901e184be3445e084786602108599d2a51d229c0f5a48c71bf AS runtime
 
 ENV JAVA_HOME=/opt/java/openjdk
 COPY --from=java $JAVA_HOME $JAVA_HOME
