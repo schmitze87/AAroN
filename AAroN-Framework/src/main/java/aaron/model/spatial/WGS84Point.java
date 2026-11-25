@@ -4,6 +4,7 @@ import org.neo4j.graphdb.spatial.Point;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 public class WGS84Point implements Point, Serializable {
 
@@ -30,6 +31,18 @@ public class WGS84Point implements Point, Serializable {
         return new CRSProxy(this.crs);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        WGS84Point that = (WGS84Point) o;
+        return Objects.equals(coordinate, that.coordinate) && Objects.equals(crs, that.crs);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(coordinate, crs);
+    }
+
     public static class CRSProxy implements org.neo4j.graphdb.spatial.CRS {
 
         private final CRS crs;
@@ -51,6 +64,18 @@ public class WGS84Point implements Point, Serializable {
         @Override
         public String getHref() {
             return crs.getHref();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (o == null || getClass() != o.getClass()) return false;
+            CRSProxy crsProxy = (CRSProxy) o;
+            return Objects.equals(crs, crsProxy.crs);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hashCode(crs);
         }
     }
 }
