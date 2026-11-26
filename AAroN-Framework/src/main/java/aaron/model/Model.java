@@ -153,7 +153,7 @@ public class Model implements Closeable {
         edgeIdentifiers.put(identifier, identifier);
     }
 
-    private void extractPropertyDefinitionsAndCount(Map<String, Property> properties, Set<PropertyDefinition> edgePropertyDefinitions) {
+    private void extractPropertyDefinitionsAndCount(Map<String, Property> properties, Set<PropertyDefinition> propertyDefinitions) {
         for (var entry : properties.entrySet()) {
             String key = entry.getKey();
             Property property = entry.getValue();
@@ -162,7 +162,7 @@ public class Model implements Closeable {
             }
             PropertyType type = property.getType();
             PropertyDefinition propertyDefinition = new PropertyDefinition(key, type);
-            edgePropertyDefinitions.add(propertyDefinition);
+            propertyDefinitions.add(propertyDefinition);
         }
     }
 
