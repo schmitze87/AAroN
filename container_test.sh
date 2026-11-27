@@ -8,7 +8,7 @@ cd docker_test || exit
 #--userns=keep-id \
 #  --user "`id -u`:`id -g`" \
 
-podman run -it --name aaron \
+podman run -it --rm --name aaron \
   --volume "`pwd`/import:/import:Z" \
   --volume "`pwd`/import:/output:Z" \
   --volume "`pwd`/conf:/conf:Z" \
