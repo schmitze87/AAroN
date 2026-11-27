@@ -39,3 +39,7 @@ AAroN-Framework/target
 
 .gitconfig
 .flattened-pom.xml
+
+/docker_test/
+/docker_test/*
+/docker_test/**/*
