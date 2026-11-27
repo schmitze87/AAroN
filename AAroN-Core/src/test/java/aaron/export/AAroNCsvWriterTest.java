@@ -159,11 +159,11 @@ class AAroNCsvWriterTest {
     void addPropertiesToNodeRecord_DateAndDateTimeTest() {
         AAroNCsvWriter writer = new AAroNCsvWriter();
         boolean parenthesesFix = false;
-        AAroNCsvWriter.CSVHeader idHeader = new AAroNCsvWriter.CSVHeader(null, "ID", parenthesesFix);
-        AAroNCsvWriter.CSVHeader labelHeader = new AAroNCsvWriter.CSVHeader(null, "LABEL", parenthesesFix);
-        AAroNCsvWriter.CSVHeader dateTestHeader = new AAroNCsvWriter.CSVHeader("dateTest", "date", parenthesesFix);
-        AAroNCsvWriter.CSVHeader dateTimeTestHeader = new AAroNCsvWriter.CSVHeader("dateTimeTest", "date", parenthesesFix);
-        AAroNCsvWriter.CSVHeader[] headers = new AAroNCsvWriter.CSVHeader[]{idHeader, labelHeader, dateTestHeader, dateTimeTestHeader};
+        CSVHeader idHeader = new CSVHeader(null, "ID", parenthesesFix);
+        CSVHeader labelHeader = new CSVHeader(null, "LABEL", parenthesesFix);
+        CSVHeader dateTestHeader = new CSVHeader("dateTest", "date", parenthesesFix);
+        CSVHeader dateTimeTestHeader = new CSVHeader("dateTimeTest", "date", parenthesesFix);
+        CSVHeader[] headers = new CSVHeader[]{idHeader, labelHeader, dateTestHeader, dateTimeTestHeader};
 
         LocalDate testDate = LocalDate.now();
         LocalDateTime testDateTime = LocalDateTime.now();

@@ -1,5 +1,6 @@
 package aaron;
 
+import aaron.export.AAroNConflictAwareCsvWriter;
 import aaron.export.AAroNCsvWriter;
 import aaron.logging.Logger;
 import aaron.model.Model;
@@ -260,7 +261,7 @@ public class CliConverter implements Callable<Integer> {
     }
 
     private static void processConversionJobs(List<ConversionJob> conversionJobs, AAronCLIOutput output, final boolean parenthesesFix) throws AAroNConversionException {
-        AAroNCsvWriter writer = new AAroNCsvWriter();
+        AAroNConflictAwareCsvWriter writer = new AAroNConflictAwareCsvWriter();
         for (ConversionJob conversionJob : conversionJobs) {
             AbstractSparxConverter converter = conversionJob.converter;
             File nodesFile = conversionJob.nodesFile;
@@ -268,13 +269,14 @@ public class CliConverter implements Callable<Integer> {
             try {
                 if (converter != null) {
                     conversionJob.model = converter.convert();
-                    writer.write(conversionJob.model, nodesFile, edgesFile, parenthesesFix);
+                    AAroNConflictAwareCsvWriter.CsvFiles csvFiles = writer.writeFiles(conversionJob.model, nodesFile, edgesFile, parenthesesFix);
                     conversionJob.model.close();
+                    csvFiles.nodeFiles().forEach(file -> output.getNodesToImport().add(file.getName()));
+                    csvFiles.edgeFiles().forEach(file -> output.getEdgesToImport().add(file.getName()));
                 } else {
                     throw new AAroNConversionException();
                 }
-                output.getNodesToImport().add(nodesFile.getName());
-                output.getEdgesToImport().add(edgesFile.getName());
+
             } catch (IOException e) {
                 throw new AAroNConversionException(e);
             }

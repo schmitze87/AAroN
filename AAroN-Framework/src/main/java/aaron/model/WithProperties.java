@@ -14,11 +14,15 @@ public abstract class WithProperties implements Serializable {
 
     public <T extends Serializable>Property<T> addProperty(final String name, final PropertyType<T> type, final T value) {
         Property<T> property = new Property<>(type, value);
-        return properties.put(name, property);
+        return properties.put(sanitizeString(name), property);
     }
 
     public <T extends Serializable, E extends PropertyType<T>> T getProperty(E type, final String name) {
-        Property property = properties.get(name);
+        Property property = properties.get(sanitizeString(name));
         return type.cast(property.getValue());
+    }
+
+    String sanitizeString(String name) {
+        return name.trim();
     }
 }

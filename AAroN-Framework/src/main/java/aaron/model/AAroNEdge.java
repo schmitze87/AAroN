@@ -45,11 +45,6 @@ public class AAroNEdge extends WithProperties implements Serializable {
         this.end = end;
     }
 
-
-    public <V extends Serializable, T extends PropertyType<V>> Property<V> addProperty(final T type, final String name, final V value) {
-        return this.addProperty(name, type, value);
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

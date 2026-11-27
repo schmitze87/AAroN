@@ -1,5 +1,6 @@
 package aaron.plugin.export;
 
+import aaron.export.AAroNConflictAwareCsvWriter;
 import aaron.export.AAroNCsvWriter;
 import aaron.model.AAroNEdge;
 import aaron.model.AAroNNode;
@@ -19,7 +20,9 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
 
@@ -43,8 +46,8 @@ public class Exporter {
     public static class ExportOutput {
         public long nodesCount;
         public long edgesCount;
-        public String nodesFile;
-        public String edgesFile;
+        public List<String> nodesToImport = new ArrayList<>();
+        public List<String> edgesToImport = new ArrayList<>();
     }
 
     @Procedure(name = "aaron.export.csv", mode = Mode.READ)
@@ -83,9 +86,10 @@ public class Exporter {
             });
             model.addEdge(new Neo4jEdgeIdentifier(id), aaronEdge);
         });
+        AAroNConflictAwareCsvWriter.CsvFiles csvFiles = null;
         try {
-            AAroNCsvWriter writer = new AAroNCsvWriter();
-            writer.write(model, nodesFile.toFile(), edgesFile.toFile(), parenthesesFix);
+            AAroNConflictAwareCsvWriter writer = new AAroNConflictAwareCsvWriter();
+            csvFiles = writer.writeFiles(model, nodesFile.toFile(), edgesFile.toFile(), parenthesesFix);
         } catch (IOException e) {
             log.error("Could not write CSV files", e);
             throw new RuntimeException(e);
@@ -93,8 +97,8 @@ public class Exporter {
         ExportOutput output = new ExportOutput();
         output.nodesCount = model.countNodes();
         output.edgesCount = model.countEdges();
-        output.nodesFile = nodesFile.toFile().toString();
-        output.edgesFile = edgesFile.toFile().toString();
+        csvFiles.nodeFiles().forEach(file -> output.nodesToImport.add(file.getName()));
+        csvFiles.edgeFiles().forEach(file -> output.edgesToImport.add(file.getName()));
         model.close();
         return Stream.of(output);
     }
