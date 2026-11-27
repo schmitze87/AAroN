@@ -25,7 +25,7 @@ public class MemorySizeCalculator {
         int edgeCost = 34;
         int propertiesCost = 41;
         int labelCost = 4;
-        double empiricalFactor = 1.5;
+        double empiricalFactor = 9;
 
         double ramUsageInBytes = empiricalFactor * ((nodeCost*nodesCount) + (edgeCost*edgesCount) + (propertiesCount*(propertiesCost + averagePropertySize)) + (averageLabelCount*labelCost));
         double ramUsageInMegabytes = ramUsageInBytes / (1024*1024);
